@@ -1,5 +1,5 @@
 
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 
 // ── Session ──────────────────────────────────────────────────────
 function getSession() {

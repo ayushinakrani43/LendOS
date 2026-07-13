@@ -2,7 +2,7 @@
 //  nbfc-borrowers.js  —  LendOS NBFC Borrowers Page
 // ═══════════════════════════════════════════════════════════════
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 let currentPage = 1;
 let allBorrowers = [];
 let searchTimer = null;

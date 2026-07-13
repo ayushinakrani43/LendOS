@@ -2,7 +2,7 @@
 ////  loan-apply.js  —  LendOS Borrower Loan Application
 //// ═══════════════════════════════════════════════════════════════
 //
-//const API = 'http://localhost:8000';
+//const API = window.location.origin;
 //
 //// ── State ─────────────────────────────────────────────────────
 //let nbfc             = null;
@@ -659,7 +659,7 @@
 //  loan-apply.js  —  LendOS Borrower Loan Application
 // ═══════════════════════════════════════════════════════════════
 
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 
 // ── State ─────────────────────────────────────────────────────
 let nbfc             = null;

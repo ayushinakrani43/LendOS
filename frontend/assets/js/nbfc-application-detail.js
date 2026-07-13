@@ -2,7 +2,7 @@
 //  nbfc-application-detail.js  —  LendOS NBFC Application Detail
 // ═══════════════════════════════════════════════════════════════
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 
 let loanId  = null;
 let nbfcId  = null;

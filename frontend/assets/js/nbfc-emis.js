@@ -1,5 +1,5 @@
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 let currentTab    = 'all';
 let allEmis       = [];
 let searchQuery   = '';

@@ -1,5 +1,5 @@
 
-const API   = 'http://localhost:8000';
+const API   = window.location.origin;
 const T_KEY = 'borrower_token';
 
 let state   = { nextStep: 'kyc' };

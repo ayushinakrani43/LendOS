@@ -2,7 +2,7 @@
 //  nbfc-settings.js  —  LendOS NBFC Settings Page
 // ═══════════════════════════════════════════════════════════════
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 
 // ── Session ──────────────────────────────────────────────────────
 function getSession() {

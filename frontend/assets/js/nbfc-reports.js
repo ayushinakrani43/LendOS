@@ -2,7 +2,7 @@
 //  nbfc-reports.js — LendOS NBFC Reports Page
 // ═══════════════════════════════════════════════════════════════
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 
 function getSession() {
     const token = localStorage.getItem('nbfc_token');
@@ -218,11 +218,12 @@ function renderKPIs(loans, emis) {
 
 // ── Funnel ────────────────────────────────────────────────────
 function renderFunnel(loans) {
-    const total    = loans.length;
-    const applied  = loans.filter(l => ['applied','approved','active','disbursed','closed'].includes(l.status)).length;
-    const approved = loans.filter(l => ['approved','active','disbursed','closed'].includes(l.status)).length;
-    const active   = loans.filter(l => ['active','disbursed'].includes(l.status)).length;
-    const rejected = loans.filter(l => l.status === 'rejected').length;
+    const base     = allLoans;          // ← always use full dataset for funnel
+    const total    = base.length;
+    const applied  = base.filter(l => ['applied','approved','active','disbursed','closed'].includes(l.status)).length;
+    const approved = base.filter(l => ['approved','active','disbursed','closed'].includes(l.status)).length;
+    const active   = base.filter(l => ['active','disbursed'].includes(l.status)).length;
+    const rejected = base.filter(l => l.status === 'rejected').length;
 
     const pct = (n) => total > 0 ? Math.round((n / total) * 100) : 0;
 

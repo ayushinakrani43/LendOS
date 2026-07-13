@@ -45,7 +45,7 @@ async def trigger_emi_jobs_manually():
     return {"message": "EMI jobs executed manually."}
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://your-actual-url.up.railway.app"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

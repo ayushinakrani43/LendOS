@@ -2,7 +2,7 @@
 ////  nbfc-overview.js  —  LendOS NBFC Overview Page
 //// ═══════════════════════════════════════════════════════════════
 //
-//const API = window.API_BASE || 'http://localhost:8000';
+//const API = window.API_BASE || window.location.origin;
 //
 //// ── Session ──────────────────────────────────────────────────────
 //function getSession() {
@@ -240,7 +240,7 @@
 //  nbfc-overview.js  —  LendOS NBFC Overview Page
 // ═══════════════════════════════════════════════════════════════
 
-const API = window.API_BASE || 'http://localhost:8000';
+const API = window.API_BASE || window.location.origin;
 
 // ── Session ──────────────────────────────────────────────────────
 function getSession() {

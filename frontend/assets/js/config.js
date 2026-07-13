@@ -1,8 +1,8 @@
 
 // ─── API Configuration ────────────────────────────────────────────────────────
 const CONFIG = {
-    BASE_URL: "http://localhost:8000",   // Change to your deployed URL in production
-
+//    BASE_URL: "http://localhost:8000",   // Change to your deployed URL in production
+        BASE_URL: window.location.origin,
     // NBFC session keys
     TOKEN_KEY:     "nbfc_token",
     NBFC_ID_KEY:   "nbfc_id",

@@ -1,4 +1,4 @@
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 
 // ── Session keys (must match borrower-login.js saveSession) ───────────────────
 function getSession() {
