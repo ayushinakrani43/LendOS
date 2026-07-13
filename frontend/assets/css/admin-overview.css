@@ -1,0 +1,200 @@
+/* ═══════════════════════════════════════════════════════════════
+   admin-overview.css — LendOS SuperAdmin Overview Page
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:none; } }
+
+/* ── Health banner ── */
+.health-banner {
+  display: flex; align-items: center; gap: 0;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 10px 18px;
+  margin-bottom: 16px; font-size: 12.5px; color: var(--text-secondary);
+  flex-wrap: wrap; gap: 12px;
+}
+.health-item { display: flex; align-items: center; gap: 6px; }
+.health-divider { width: 1px; height: 16px; background: var(--border); }
+
+/* ── KPI strip ── */
+.kpi-strip {
+  display: grid; grid-template-columns: repeat(6,1fr);
+  gap: 10px; margin-bottom: 16px;
+}
+.kpi-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 2px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  animation: fadeUp 0.3s ease;
+}
+.kpi-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); border-color: var(--adm-100); }
+.kpi-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.kpi-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.kpi-icon.teal   { background: #e6f4f8; color: #1b5068; }
+.kpi-icon.purple { background: #f5f3ff; color: #7c3aed; }
+.kpi-icon.blue   { background: #eff6ff; color: #2563eb; }
+.kpi-icon.green  { background: #ecfdf5; color: #059669; }
+.kpi-icon.orange { background: #fff7ed; color: #ea580c; }
+.kpi-icon.emerald{ background: #ecfdf5; color: #059669; }
+.kpi-chip {
+  font-size: 10px; font-weight: 700; padding: 2px 6px;
+  border-radius: 99px; display: none;
+}
+.kpi-chip.show { display: inline-flex; }
+.kpi-chip.ok   { background: #ecfdf5; color: #059669; }
+.kpi-chip.warn { background: #fff7ed; color: #ea580c; }
+.kpi-val   { font-size: 22px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); line-height: 1; }
+.kpi-label { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 3px; }
+.kpi-sub   { font-size: 10.5px; color: var(--text-muted); margin-top: 1px; }
+
+/* ── 2-col grid ── */
+.dash-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+/* ── Dash card ── */
+.dash-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 14px;
+}
+.dash-grid-2 .dash-card { margin-bottom: 0; }
+.dash-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 18px; border-bottom: 1px solid var(--border-light);
+}
+.dash-card-title {
+  font-size: 13px; font-weight: 700; color: var(--text-primary);
+  display: flex; align-items: center; gap: 7px;
+}
+.dash-card-title i { font-size: 14px; color: var(--adm-500); }
+.dash-card-link {
+  font-size: 12px; font-weight: 600; color: var(--adm-500);
+  text-decoration: none; transition: color 0.15s;
+}
+.dash-card-link:hover { color: var(--adm-700); }
+
+.list-loading {
+  padding: 28px; text-align: center;
+  color: var(--text-muted); font-size: 13px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+/* ── NBFC list ── */
+.nbfc-list { padding: 6px 0; }
+.nbfc-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 18px; border-bottom: 1px solid var(--border-light);
+  transition: background 0.1s;
+}
+.nbfc-row:last-child { border-bottom: none; }
+.nbfc-row:hover { background: var(--adm-50); }
+.nbfc-av {
+  width: 34px; height: 34px; border-radius: var(--radius-md);
+  background: var(--adm-100); color: var(--adm-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.nbfc-info { flex: 1; min-width: 0; }
+.nbfc-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nbfc-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.nbfc-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.nbfc-loan-count { font-size: 12px; font-family: var(--font-mono); font-weight: 600; color: var(--text-primary); }
+.nbfc-loan-label { font-size: 10px; color: var(--text-muted); }
+
+/* ── Status badge ── */
+.s-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px; font-size: 10.5px; font-weight: 600;
+}
+.s-badge.active    { background: #ecfdf5; color: #065f46; }
+.s-badge.suspended { background: #fff1f2; color: #991b1b; }
+.s-badge.applied   { background: #eff6ff; color: #1d4ed8; }
+.s-badge.approved  { background: #ecfdf5; color: #059669; }
+.s-badge.pending            { background: #fef3c7; color: #92400e; }
+.s-badge.pending_agreement  { background: #ffedd5; color: #9a3412; }
+.s-badge.rejected           { background: #fff1f2; color: #991b1b; }
+.s-badge.declined           { background: #fef2f2; color: #b91c1c; }
+.s-badge.disbursed { background: #ecfdf5; color: #065f46; }
+.s-badge.blocked   { background: #fff1f2; color: #991b1b; }
+.s-badge.none      { background: var(--off-white); color: var(--text-muted); }
+
+/* ── Recent loans ── */
+.recent-loans { padding: 6px 0; }
+.loan-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 18px; border-bottom: 1px solid var(--border-light);
+  transition: background 0.1s;
+}
+.loan-row:last-child { border-bottom: none; }
+.loan-row:hover { background: var(--adm-50); }
+.loan-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.loan-info { flex: 1; min-width: 0; }
+.loan-borrower { font-size: 12.5px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.loan-nbfc { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.loan-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.loan-amount { font-size: 12.5px; font-family: var(--font-mono); font-weight: 700; color: var(--text-primary); }
+.loan-date { font-size: 10.5px; color: var(--text-muted); }
+
+/* ── Status breakdown ── */
+.status-breakdown { padding: 18px 20px; }
+.status-bar-list { display: flex; flex-direction: column; gap: 10px; }
+.sb-row { display: flex; align-items: center; gap: 12px; }
+.sb-label { width: 110px; font-size: 12px; color: var(--text-secondary); font-weight: 500; flex-shrink: 0; }
+.sb-track { flex: 1; height: 10px; background: var(--off-white); border-radius: 99px; overflow: hidden; }
+.sb-fill  { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+.sb-count { width: 30px; text-align: right; font-size: 12px; font-family: var(--font-mono); font-weight: 600; color: var(--text-primary); flex-shrink: 0; }
+.sb-fill.pending   { background: #f59e0b; }
+.sb-fill.applied   { background: #3b82f6; }
+.sb-fill.approved  { background: #10b981; }
+.sb-fill.active    { background: #7c3aed; }
+.sb-fill.disbursed { background: #059669; }
+.sb-fill.declined  { background: #f43f5e; }
+.sb-fill.rejected  { background: #ef4444; }
+.sb-fill.closed    { background: #94a3b8; }
+
+/* ── Admin table ── */
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table thead tr { background: var(--off-white); }
+.admin-table th {
+  padding: 9px 16px; text-align: left; font-size: 10.5px; font-weight: 700;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.admin-table td {
+  padding: 11px 16px; font-size: 12.5px; border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary); vertical-align: middle;
+}
+.admin-table tbody tr:last-child td { border-bottom: none; }
+.admin-table tbody tr:hover td { background: var(--adm-50); }
+.tbl-loading {
+  text-align: center; padding: 28px !important;
+  color: var(--text-muted); font-size: 13px;
+}
+.score-chip {
+  display: inline-flex; padding: 2px 8px; border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 700;
+}
+.score-chip.excellent { background: #ecfdf5; color: #065f46; }
+.score-chip.good      { background: #eff6ff; color: #1d4ed8; }
+.score-chip.fair      { background: #fef3c7; color: #92400e; }
+.score-chip.poor      { background: #fff1f2; color: #991b1b; }
+.score-chip.none      { background: var(--off-white); color: var(--text-muted); }
+.b-cell { display: flex; align-items: center; gap: 8px; }
+.b-av-sm {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--adm-400), var(--adm-700));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.mono { font-family: var(--font-mono); font-size: 12px; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) { .kpi-strip { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 800px)  { .dash-grid-2 { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 480px)  { .kpi-strip { grid-template-columns: 1fr 1fr; } }

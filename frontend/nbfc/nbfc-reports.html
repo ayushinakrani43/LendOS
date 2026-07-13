@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-reports.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/nbfc/dashboard">
+        <div class="logo-icon" id="topLogoIcon"
+          style="width:38px;height:38px;border-radius:8px;overflow:hidden;background:var(--teal-50);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
+          <i class="ti ti-building-bank"></i>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-company">
+        <div class="company-avatar" id="companyAvatar">N</div>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item" href="/nbfc/dashboard">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/nbfc/applications">
+          <i class="ti ti-file-invoice"></i><span>Loan Applications</span>
+          <span class="nav-badge pending" id="badge-loans"></span>
+        </a>
+        <a class="nav-item" href="/nbfc/borrowers">
+          <i class="ti ti-users"></i><span>Borrowers</span>
+        </a>
+        <a class="nav-item" href="/nbfc/emis">
+          <i class="ti ti-coin-rupee"></i><span>EMI Collections</span>
+          <span class="nav-badge danger" id="badge-emis"></span>
+        </a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item active" href="/nbfc/reports">
+          <i class="ti ti-chart-bar"></i><span>Reports</span>
+        </a>
+        <a class="nav-item" href="/nbfc/settings">
+          <i class="ti ti-settings"></i><span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status">
+              <span class="status-dot active"></span> Active
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reports</h1>
+          <p class="page-sub"> performance, collections, and borrower analytics.</p>
+        </div>
+        <div class="page-header-actions">
+          <!-- Period selector -->
+          <div class="period-tabs" id="periodTabs">
+            <button class="period-tab active" data-period="month" onclick="switchPeriod(this)">This Month</button>
+            <button class="period-tab" data-period="quarter" onclick="switchPeriod(this)">Quarter</button>
+            <button class="period-tab" data-period="year" onclick="switchPeriod(this)">This Year</button>
+            <button class="period-tab" data-period="all" onclick="switchPeriod(this)">All Time</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── KPI strip ── -->
+      <div class="kpi-strip" id="kpiStrip">
+        <div class="kpi-card">
+          <div class="kpi-icon teal"><i class="ti ti-coin-rupee"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiDisbursed">—</div>
+            <div class="kpi-label">Total Disbursed</div>
+          </div>
+          <div class="kpi-trend up" id="kpiDisbursedTrend"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green"><i class="ti ti-wallet"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiCollected">—</div>
+            <div class="kpi-label">EMI Collected</div>
+          </div>
+          <div class="kpi-trend up" id="kpiCollectedTrend"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon orange"><i class="ti ti-alert-triangle"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiOverdue">—</div>
+            <div class="kpi-label">Overdue EMIs</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon purple"><i class="ti ti-users"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiBorrowers">—</div>
+            <div class="kpi-label">Active Borrowers</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon blue"><i class="ti ti-chart-pie"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiApprovalRate">—</div>
+            <div class="kpi-label">Approval Rate</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon red"><i class="ti ti-file-off"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-val" id="kpiNPA">—</div>
+            <div class="kpi-label">NPA Rate</div>
+          </div>
+        </div>
+
+          <!-- Add after kpiNPA card (line 149) -->
+<div class="kpi-card">
+  <div class="kpi-icon teal"><i class="ti ti-trending-up"></i></div>
+  <div class="kpi-body">
+    <div class="kpi-val" id="kpiInterest">—</div>
+    <div class="kpi-label">Interest Earned</div>
+  </div>
+</div>
+<div class="kpi-card">
+  <div class="kpi-icon green"><i class="ti ti-receipt"></i></div>
+  <div class="kpi-body">
+    <div class="kpi-val" id="kpiNetProfit">—</div>
+    <div class="kpi-label">Net Profit</div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- ── Row 1: Application funnel + Loan status mix ── -->
+      <div class="report-grid-2">
+
+        <!-- Application Funnel -->
+        <div class="report-card">
+          <div class="report-card-header">
+            <div class="report-card-title"><i class="ti ti-filter"></i> Application Funnel</div>
+            <div class="report-card-sub">Conversion across stages</div>
+          </div>
+          <div class="funnel-wrap" id="funnelWrap">
+            <div class="funnel-loading"><i class="ti ti-loader-2 spin"></i></div>
+          </div>
+        </div>
+
+        <!-- Loan Status Mix -->
+        <div class="report-card">
+          <div class="report-card-header">
+            <div class="report-card-title"><i class="ti ti-chart-donut"></i> Portfolio Mix</div>
+            <div class="report-card-sub">Loans by current status</div>
+          </div>
+          <div class="donut-wrap" id="donutWrap">
+            <canvas id="donutChart" width="200" height="200"></canvas>
+            <div class="donut-legend" id="donutLegend"></div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!-- ── Row 2: Collection performance + Score distribution ── -->
+      <div class="report-grid-2">
+
+        <!-- Collection Rate -->
+        <div class="report-card">
+          <div class="report-card-header">
+            <div class="report-card-title"><i class="ti ti-trending-up"></i> Collection Performance</div>
+            <div class="report-card-sub">EMI paid vs overdue</div>
+          </div>
+          <div class="collection-wrap" id="collectionWrap">
+            <div class="funnel-loading"><i class="ti ti-loader-2 spin"></i></div>
+          </div>
+        </div>
+
+        <!-- Credit Score Distribution -->
+        <div class="report-card">
+          <div class="report-card-header">
+            <div class="report-card-title"><i class="ti ti-chart-histogram"></i> Credit Score Distribution</div>
+            <div class="report-card-sub">Borrowers by score band</div>
+          </div>
+          <div class="score-dist-wrap" id="scoreDistWrap">
+            <div class="funnel-loading"><i class="ti ti-loader-2 spin"></i></div>
+          </div>
+        </div>
+
+      </div>
+
+        <!-- Add between Row 2 and Row 3 (after line 205 </div>) -->
+<div class="report-card">
+  <div class="report-card-header">
+    <div class="report-card-title"><i class="ti ti-trending-up"></i> Revenue Breakdown</div>
+    <div class="report-card-sub">Interest income and processing fees</div>
+  </div>
+  <div class="collection-wrap" id="revenueWrap">
+    <div class="funnel-loading"><i class="ti ti-loader-2 spin"></i></div>
+  </div>
+</div>
+
+      <!-- ── Row 3: Top borrowers table ── -->
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-title"><i class="ti ti-trophy"></i> Top Borrowers</div>
+          <div class="report-card-sub">By loan amount disbursed</div>
+        </div>
+        <div class="top-borrowers-wrap">
+          <table class="report-table" id="topBorrowersTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Borrower</th>
+                <th>Loan Amount</th>
+                <th>EMI</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Applied</th>
+              </tr>
+            </thead>
+            <tbody id="topBorrowersBody">
+              <tr><td colspan="7" class="table-loading"><i class="ti ti-loader-2 spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── Row 4: EMI overdue list ── -->
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-title"><i class="ti ti-alert-circle" style="color:var(--error);"></i> Overdue EMIs</div>
+          <div class="report-card-sub">EMIs past due date requiring follow-up</div>
+        </div>
+        <div class="top-borrowers-wrap">
+          <table class="report-table" id="overdueTable">
+            <thead>
+              <tr>
+                <th>Borrower</th>
+                <th>Due Date</th>
+                <th>EMI #</th>
+                <th>Amount</th>
+                <th>Outstanding</th>
+                <th>Days Overdue</th>
+              </tr>
+            </thead>
+            <tbody id="overdueBody">
+              <tr><td colspan="6" class="table-loading"><i class="ti ti-loader-2 spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-reports.js"></script>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8"/>-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+<!--  <title>Reports — LendOS NBFC Portal</title>-->
+<!--  <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">-->
+<!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">-->
+<!--  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">-->
+<!--  <link rel="stylesheet" href="/static/assets/css/nbfc-reports.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="app">-->
+
+<!--  <header class="topbar">-->
+<!--    <div class="topbar-left">-->
+<!--      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>-->
+<!--      <a class="logo" href="/nbfc/dashboard">-->
+<!--        <div class="logo-icon" id="topLogoIcon" style="width:38px;height:38px;border-radius:8px;overflow:hidden;background:var(&#45;&#45;teal-50);border:1px solid var(&#45;&#45;border);display:flex;align-items:center;justify-content:center;">-->
+<!--          <i class="ti ti-building-bank"></i>-->
+<!--        </div>-->
+<!--        <div class="logo-text-group">-->
+<!--          <span class="logo-name" id="topNbfcName">Loading…</span>-->
+<!--          <span class="logo-sub">NBFC Partner</span>-->
+<!--        </div>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--    <div class="topbar-right">-->
+<!--      <div class="company-avatar" id="companyAvatar">N</div>-->
+<!--      <button class="icon-btn" onclick="handleLogout()"><i class="ti ti-logout"></i></button>-->
+<!--    </div>-->
+<!--  </header>-->
+
+<!--  <div class="app-body">-->
+<!--    <aside class="sidebar" id="sidebar">-->
+<!--      <nav class="sidebar-nav">-->
+<!--        <div class="nav-section-label">Main</div>-->
+<!--        <a class="nav-item" href="/nbfc/dashboard"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>-->
+<!--        <a class="nav-item" href="/nbfc/applications"><i class="ti ti-file-invoice"></i><span>Loan Applications</span><span class="nav-badge pending" id="badge-loans"></span></a>-->
+<!--        <a class="nav-item" href="/nbfc/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>-->
+<!--        <a class="nav-item" href="/nbfc/emis"><i class="ti ti-coin-rupee"></i><span>EMI Collections</span></a>-->
+<!--        <div class="nav-section-label" style="margin-top:8px;">Management</div>-->
+<!--        <a class="nav-item active" href="/nbfc/reports"><i class="ti ti-chart-bar"></i><span>Reports</span></a>-->
+<!--        <a class="nav-item" href="/nbfc/settings"><i class="ti ti-settings"></i><span>Settings</span></a>-->
+<!--      </nav>-->
+<!--      <div class="sidebar-footer">-->
+<!--        <div class="sidebar-nbfc-info">-->
+<!--          <div class="snbfc-avatar" id="sidebarAvatar">N</div>-->
+<!--          <div>-->
+<!--            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>-->
+<!--            <div class="snbfc-status"><span class="status-dot active"></span> Active</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </aside>-->
+
+<!--    <main class="main-content">-->
+
+<!--      &lt;!&ndash; Page header &ndash;&gt;-->
+<!--      <div class="rpt-page-header">-->
+<!--        <div>-->
+<!--          <h1 class="page-title">Reports & Analytics</h1>-->
+<!--          <p class="page-sub" id="reportDateRange">Portfolio performance and collection insights</p>-->
+<!--        </div>-->
+<!--        <div class="rpt-header-actions">-->
+<!--          <div class="period-pill">-->
+<!--            <i class="ti ti-calendar-stats"></i>-->
+<!--            <select id="periodSelect" class="period-select" onchange="loadReports()">-->
+<!--              <option value="3">Last 3 months</option>-->
+<!--              <option value="6" selected>Last 6 months</option>-->
+<!--              <option value="12">Last 12 months</option>-->
+<!--            </select>-->
+<!--          </div>-->
+<!--          <button class="rpt-btn-export" onclick="exportCSV()">-->
+<!--            <i class="ti ti-table-export"></i> Export CSV-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Loading &ndash;&gt;-->
+<!--      <div id="loadingState" class="rpt-loading">-->
+<!--        <div class="rpt-loading-ring"><i class="ti ti-loader-2 spin"></i></div>-->
+<!--        <div>-->
+<!--          <div class="rpt-loading-title">Generating report…</div>-->
+<!--          <div class="rpt-loading-sub">Fetching portfolio data and calculating metrics</div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div id="reportsContent" style="display:none;">-->
+
+<!--        &lt;!&ndash; ══ KPI ROW ══ &ndash;&gt;-->
+<!--        <div class="kpi-row">-->
+<!--          <div class="kpi-tile">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Total Portfolio</span>-->
+<!--              <div class="kpi-icon-wrap teal"><i class="ti ti-briefcase"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number" id="kpi-portfolio">₹0</div>-->
+<!--            <div class="kpi-meta" id="kpi-portfolio-meta">All disbursed loans</div>-->
+<!--          </div>-->
+<!--          <div class="kpi-tile">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Total Collected</span>-->
+<!--              <div class="kpi-icon-wrap green"><i class="ti ti-circle-check"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number green" id="kpi-collected">₹0</div>-->
+<!--            <div class="kpi-meta" id="kpi-collected-meta">EMI payments received</div>-->
+<!--          </div>-->
+<!--          <div class="kpi-tile">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Outstanding</span>-->
+<!--              <div class="kpi-icon-wrap blue"><i class="ti ti-clock-hour-4"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number blue" id="kpi-outstanding">₹0</div>-->
+<!--            <div class="kpi-meta">Remaining balance</div>-->
+<!--          </div>-->
+<!--          <div class="kpi-tile accent">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Collection Efficiency</span>-->
+<!--              <div class="kpi-icon-wrap teal"><i class="ti ti-trending-up"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number" id="kpi-efficiency">0%</div>-->
+<!--            <div class="kpi-progress-wrap">-->
+<!--              <div class="kpi-progress-track">-->
+<!--                <div class="kpi-progress-fill" id="kpi-efficiency-bar"></div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="kpi-tile">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Active Borrowers</span>-->
+<!--              <div class="kpi-icon-wrap purple"><i class="ti ti-users"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number purple" id="kpi-borrowers">0</div>-->
+<!--            <div class="kpi-meta">With active loans</div>-->
+<!--          </div>-->
+<!--          <div class="kpi-tile">-->
+<!--            <div class="kpi-tile-top">-->
+<!--              <span class="kpi-label">Overdue EMIs</span>-->
+<!--              <div class="kpi-icon-wrap red"><i class="ti ti-alert-triangle"></i></div>-->
+<!--            </div>-->
+<!--            <div class="kpi-number red" id="kpi-overdue">0</div>-->
+<!--            <div class="kpi-meta" id="kpi-overdue-meta">Needs attention</div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; ══ CHARTS ROW ══ &ndash;&gt;-->
+<!--        <div class="charts-row">-->
+
+<!--          &lt;!&ndash; Bar chart: Disbursements vs Collections &ndash;&gt;-->
+<!--          <div class="rpt-card wide-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-chart-bar-popular"></i> Monthly Performance</div>-->
+<!--              <div class="chart-legend-row">-->
+<!--                <span class="cl-item"><span class="cl-swatch teal"></span>Disbursed</span>-->
+<!--                <span class="cl-item"><span class="cl-swatch green"></span>Collected</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="chart-body">-->
+<!--              <div style="position:relative;width:100%;height:200px;">-->
+<!--                <canvas id="barChart" role="img" aria-label="Monthly disbursements and collections chart">Monthly loan data</canvas>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Donut: Loan status &ndash;&gt;-->
+<!--          <div class="rpt-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-chart-donut-3"></i> Portfolio Mix</div>-->
+<!--            </div>-->
+<!--            <div class="chart-body donut-body">-->
+<!--              <div style="position:relative;width:160px;height:160px;flex-shrink:0;">-->
+<!--                <canvas id="donutChart" role="img" aria-label="Loan status distribution donut chart">Loan status breakdown</canvas>-->
+<!--              </div>-->
+<!--              <div class="donut-legend" id="donutLegend"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; ══ EMI COLLECTION PANEL ══ &ndash;&gt;-->
+<!--        <div class="rpt-card" style="margin-bottom:16px;">-->
+<!--          <div class="rpt-card-header">-->
+<!--            <div class="rpt-card-title"><i class="ti ti-calendar-due"></i> EMI Collection — Current Month</div>-->
+<!--            <div class="collection-rate-badge" id="collectionRateBadge">—% collected</div>-->
+<!--          </div>-->
+<!--          <div class="emi-panel-grid">-->
+<!--            <div class="emi-panel-stat blue">-->
+<!--              <div class="eps-icon"><i class="ti ti-coin-rupee"></i></div>-->
+<!--              <div>-->
+<!--                <div class="eps-val" id="emi-due">—</div>-->
+<!--                <div class="eps-label">Total Due</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="emi-panel-stat green">-->
+<!--              <div class="eps-icon"><i class="ti ti-check-circle"></i></div>-->
+<!--              <div>-->
+<!--                <div class="eps-val" id="emi-collected">—</div>-->
+<!--                <div class="eps-label">Collected</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="emi-panel-stat orange">-->
+<!--              <div class="eps-icon"><i class="ti ti-clock"></i></div>-->
+<!--              <div>-->
+<!--                <div class="eps-val" id="emi-pending">—</div>-->
+<!--                <div class="eps-label">Pending EMIs</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="emi-panel-stat red">-->
+<!--              <div class="eps-icon"><i class="ti ti-alert-circle"></i></div>-->
+<!--              <div>-->
+<!--                <div class="eps-val" id="emi-overdue-count">—</div>-->
+<!--                <div class="eps-label">Overdue EMIs</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="emi-panel-progress">-->
+<!--              <div class="epp-header">-->
+<!--                <span>Collection progress</span>-->
+<!--                <span id="collectionPct" style="font-weight:700;color:var(&#45;&#45;teal-600);">0%</span>-->
+<!--              </div>-->
+<!--              <div class="epp-track">-->
+<!--                <div class="epp-fill" id="epp-fill"></div>-->
+<!--              </div>-->
+<!--              <div class="epp-labels">-->
+<!--                <span id="epp-collected-label">₹0 collected</span>-->
+<!--                <span id="epp-total-label">of ₹0 due</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; ══ RISK + SCORE ROW ══ &ndash;&gt;-->
+<!--        <div class="two-col-row" style="margin-bottom:16px;">-->
+
+<!--          &lt;!&ndash; Risk summary &ndash;&gt;-->
+<!--          <div class="rpt-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-shield-check"></i> Risk Summary</div>-->
+<!--            </div>-->
+<!--            <div class="risk-table">-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-chart-pie-2"></i> Avg credit score</span>-->
+<!--                <span class="risk-val teal" id="risk-avg-score">—</span>-->
+<!--              </div>-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-percentage"></i> Avg FOIR at application</span>-->
+<!--                <span class="risk-val" id="risk-avg-foir">—</span>-->
+<!--              </div>-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-users"></i> High risk (score &lt; 600)</span>-->
+<!--                <span class="risk-val red" id="risk-high-risk">—</span>-->
+<!--              </div>-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-file-check"></i> Approval rate</span>-->
+<!--                <span class="risk-val green" id="risk-approval-rate">—</span>-->
+<!--              </div>-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-x-circle"></i> Total rejected</span>-->
+<!--                <span class="risk-val" id="risk-rejected">—</span>-->
+<!--              </div>-->
+<!--              <div class="risk-row">-->
+<!--                <span class="risk-label"><i class="ti ti-rocket"></i> Active loans</span>-->
+<!--                <span class="risk-val" id="risk-active">—</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Credit score distribution &ndash;&gt;-->
+<!--          <div class="rpt-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-chart-histogram"></i> Score Distribution</div>-->
+<!--            </div>-->
+<!--            <div class="score-dist-body" id="scoreDistBody">-->
+<!--              <div class="rpt-empty-mini"><i class="ti ti-chart-histogram"></i><span>No data yet</span></div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; ══ BORROWER TABLE ══ &ndash;&gt;-->
+<!--        <div class="rpt-card">-->
+<!--          <div class="rpt-card-header">-->
+<!--            <div class="rpt-card-title"><i class="ti ti-users"></i> Borrower Portfolio</div>-->
+<!--            <span class="rpt-card-badge" id="borrowerCount">0 borrowers</span>-->
+<!--          </div>-->
+<!--          <div class="rpt-table-wrap">-->
+<!--            <table class="rpt-table">-->
+<!--              <thead>-->
+<!--                <tr>-->
+<!--                  <th>Borrower</th>-->
+<!--                  <th>Loan Amount</th>-->
+<!--                  <th>Monthly EMI</th>-->
+<!--                  <th>Tenure</th>-->
+<!--                  <th>Credit Score</th>-->
+<!--                  <th>FOIR</th>-->
+<!--                  <th>Status</th>-->
+<!--                  <th>Applied</th>-->
+<!--                </tr>-->
+<!--              </thead>-->
+<!--              <tbody id="borrowerTableBody">-->
+<!--                <tr><td colspan="8" class="rpt-empty-cell">Loading…</td></tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>&lt;!&ndash; /reportsContent &ndash;&gt;-->
+
+<!--    </main>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>-->
+<!--<script src="/static/assets/js/config.js"></script>-->
+<!--<script src="/static/assets/js/nbfc-reports.js"></script>-->
+<!--</body>-->
+<!--</html>-->

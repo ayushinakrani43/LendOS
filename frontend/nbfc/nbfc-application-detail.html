@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application Detail — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-application-detail.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/nbfc/dashboard">
+        <div class="logo-icon" id="topLogoIcon"
+     style="width:38px;height:38px;border-radius:8px;overflow:hidden;
+            background:var(--teal-50);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;">
+    <i class="ti ti-building-bank"></i>
+</div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-company">
+        <div class="company-avatar" id="companyAvatar">N</div>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item" href="/nbfc/dashboard">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item active" href="/nbfc/applications">
+          <i class="ti ti-file-invoice"></i><span>Loan Applications</span>
+          <span class="nav-badge pending" id="badge-loans"></span>
+        </a>
+        <a class="nav-item" href="/nbfc/borrowers">
+          <i class="ti ti-users"></i><span>Borrowers</span>
+        </a>
+        <a class="nav-item" href="/nbfc/emis">
+          <i class="ti ti-coin-rupee"></i><span>EMI Collections</span>
+          <span class="nav-badge danger" id="badge-emis"></span>
+        </a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item" href="/nbfc/reports">
+          <i class="ti ti-chart-bar"></i><span>Reports</span>
+        </a>
+        <a class="nav-item" href="/nbfc/settings">
+          <i class="ti ti-settings"></i><span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status">
+              <span class="status-dot active"></span> Active
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <a href="/nbfc/applications" class="back-btn">
+            <i class="ti ti-arrow-left"></i>
+          </a>
+          <div>
+            <h1 class="page-title" id="pageTitle">Application Detail</h1>
+            <p class="page-sub" id="pageSubtitle">Loading…</p>
+          </div>
+        </div>
+        <!-- Action buttons (shown only for pending/applied) -->
+        <div class="page-header-actions" id="headerActions" style="display:none;">
+          <button class="btn-reject" onclick="openRejectModal()">
+            <i class="ti ti-x"></i> Reject
+          </button>
+          <button class="btn-approve" onclick="approveApplication()">
+            <i class="ti ti-circle-check"></i> Approve
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div id="loadingState" style="padding:60px;text-align:center;color:var(--text-muted);">
+        <i class="ti ti-loader-2" style="font-size:32px;animation:spin 1s linear infinite;display:block;margin-bottom:12px;"></i>
+        Loading application…
+      </div>
+
+      <!-- Main content (hidden until loaded) -->
+      <div id="mainContent" style="display:none;">
+
+        <!-- Decision banner (shown when already decided) -->
+        <div id="decisionBanner" style="display:none;" class="decision-banner">
+          <i class="ti decision-banner-icon" id="decisionBannerIcon"></i>
+          <div>
+            <strong id="decisionBannerTitle"></strong>
+            <span id="decisionBannerSub"></span>
+          </div>
+        </div>
+
+        <!-- Two column grid -->
+        <div class="detail-grid">
+
+          <!-- ── LEFT COLUMN ── -->
+          <div class="detail-left">
+
+            <!-- Borrower Info -->
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <i class="ti ti-user"></i> Borrower Information
+              </div>
+              <div class="borrower-header">
+                <div class="borrower-avatar" id="borrowerAvatar">?</div>
+                <div>
+                  <div class="borrower-name" id="borrowerName">—</div>
+                  <div class="borrower-meta-row">
+                    <span id="borrowerMobile"><i class="ti ti-phone"></i> —</span>
+                    <span id="borrowerEmail"><i class="ti ti-mail"></i> —</span>
+                  </div>
+                </div>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="info-label">PAN Number</div>
+                  <div class="info-val mono" id="borrowerPan">—</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Aadhaar</div>
+                  <div class="info-val mono" id="borrowerAadhaar">—</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Date of Birth</div>
+                  <div class="info-val" id="borrowerDob">—</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Gender</div>
+                  <div class="info-val" id="borrowerGender">—</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Employment Type</div>
+                  <div class="info-val" id="borrowerEmployment">—</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">KYC Status</div>
+                  <div class="info-val" id="borrowerKyc">—</div>
+                </div>
+              </div>
+              <div class="info-item" style="margin-top:10px;">
+                <div class="info-label">Address</div>
+                <div class="info-val" id="borrowerAddress" style="font-size:13px;line-height:1.5;">—</div>
+              </div>
+            </div>
+
+            <!-- Credit Score -->
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <i class="ti ti-chart-pie"></i> Credit Score
+              </div>
+              <div class="score-hero-row">
+                <div class="score-circle" id="scoreCircle">
+                  <div class="score-num" id="scoreNum">—</div>
+                  <div class="score-max">/ 900</div>
+                </div>
+                <div class="score-grade-wrap">
+                  <div class="score-grade" id="scoreGrade">—</div>
+                  <div class="score-action" id="scoreAction">—</div>
+                </div>
+              </div>
+            </div>
+
+           <!-- Bank Summary -->
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <i class="ti ti-building-bank"></i> Bank Statement Summary
+              </div>
+              <div class="bank-rows">
+                <div class="bank-row">
+                  <span class="bank-label">Monthly Income</span>
+                  <span class="bank-val" id="bankIncome">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Existing EMI Obligations</span>
+                  <span class="bank-val" id="bankExistingEmi">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Avg Monthly Balance</span>
+                  <span class="bank-val" id="bankAvgBalance">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Total Credits (3 mo)</span>
+                  <span class="bank-val" id="bankTotalCredits">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Total Debits (3 mo)</span>
+                  <span class="bank-val" id="bankTotalDebits">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label bounce-label">
+                    <i class="ti ti-alert-triangle" style="color:#ef4444;font-size:13px;"></i>
+                    Bounce Count
+                  </span>
+                  <span class="bank-val" id="bankBounceCount">—</span>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">FOIR at Application</span>
+                  <span class="bank-val" id="bankFoir">—</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── RIGHT COLUMN ── -->
+          <div class="detail-right">
+
+            <!-- Loan Summary -->
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <i class="ti ti-file-invoice"></i> Loan Details
+              </div>
+              <div class="loan-amount-hero">
+                <div class="loan-amount-label">Requested Amount</div>
+                <div class="loan-amount-val" id="loanAmount">—</div>
+              </div>
+              <div class="loan-rows">
+                <div class="loan-row">
+                  <span class="loan-label">Tenure</span>
+                  <span class="loan-val" id="loanTenure">—</span>
+                </div>
+                <div class="loan-row">
+                  <span class="loan-label">Interest Rate</span>
+                  <span class="loan-val" id="loanRate">—</span>
+                </div>
+                <div class="loan-row">
+                  <span class="loan-label">Monthly EMI</span>
+                  <span class="loan-val green" id="loanEmi">—</span>
+                </div>
+                <div class="loan-divider"></div>
+                <div class="loan-row">
+                  <span class="loan-label">Total Interest</span>
+                  <span class="loan-val" id="loanTotalInterest">—</span>
+                </div>
+                <div class="loan-row">
+                  <span class="loan-label">Total Payable</span>
+                  <span class="loan-val strong" id="loanTotalPayable">—</span>
+                </div>
+                <div class="loan-divider"></div>
+                <div class="loan-row">
+                  <span class="loan-label">Processing Fee</span>
+                  <span class="loan-val" id="loanFee">—</span>
+                </div>
+                <div class="loan-row">
+                  <span class="loan-label">Amount Disbursed</span>
+                  <span class="loan-val green strong" id="loanDisbursed">—</span>
+                </div>
+                <div class="loan-divider"></div>
+                <div class="loan-row">
+                  <span class="loan-label">Purpose</span>
+                  <span class="loan-val" id="loanPurpose">—</span>
+                </div>
+                <div class="loan-row">
+                  <span class="loan-label">Applied On</span>
+                  <span class="loan-val" id="loanAppliedAt">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Affordability -->
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <i class="ti ti-shield-check"></i> Affordability Check
+              </div>
+              <div class="afford-rows">
+                <div class="afford-row">
+                  <span class="afford-label">Monthly Income</span>
+                  <span class="afford-val" id="affordIncome">—</span>
+                </div>
+                <div class="afford-row">
+                  <span class="afford-label">Existing EMI Obligations</span>
+                  <span class="afford-val" id="affordExisting">—</span>
+                </div>
+                <div class="afford-row">
+                  <span class="afford-label">NBFC FOIR Limit</span>
+                  <span class="afford-val" id="affordFoirLimit">—</span>
+                </div>
+                <div class="afford-row">
+                  <span class="afford-label">FOIR Used</span>
+                  <span class="afford-val" id="affordFoirUsed">—</span>
+                </div>
+              </div>
+              <!-- FOIR bar -->
+              <div class="afford-bar-wrap">
+                <div class="afford-bar-track">
+                  <div class="afford-bar-fill" id="affordBarFill"></div>
+                  <div class="afford-bar-marker" id="affordBarMarker"></div>
+                </div>
+                <div class="afford-bar-labels">
+                  <span>0%</span>
+                  <span id="affordBarLimitLabel">Limit 50%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+              <div class="afford-verdict" id="affordVerdict"></div>
+            </div>
+
+            <!-- Decision card (only for pending/applied) -->
+            <div class="detail-card decision-card" id="decisionCard" style="display:none;">
+              <div class="detail-card-title">
+                <i class="ti ti-gavel"></i> Your Decision
+              </div>
+              <p class="decision-note">Review the application above and make your decision. This action cannot be undone.</p>
+              <div class="decision-btns">
+                <button class="btn-reject-full" onclick="openRejectModal()">
+                  <i class="ti ti-x-circle"></i> Reject Application
+                </button>
+                <button class="btn-approve-full" onclick="approveApplication()">
+                  <i class="ti ti-circle-check"></i> Approve Application
+                </button>
+              </div>
+            </div>
+
+            <!-- Rejection reason (shown when rejected) -->
+            <div class="detail-card rejection-card" id="rejectionCard" style="display:none;">
+              <div class="detail-card-title" style="color:#dc2626;">
+                <i class="ti ti-x-circle"></i> Rejection Reason
+              </div>
+              <p class="rejection-reason-text" id="rejectionReasonText">—</p>
+            </div>
+
+
+              <!-- Disbursement card (shown when status = active) -->
+<div class="detail-card" id="disbursCard" style="display:none;">
+  <div class="detail-card-title">
+    <i class="ti ti-building-bank"></i> Disbursement
+  </div>
+  <p class="decision-note">
+    Transfer the loan amount to the borrower's bank account and enter the UTR number below.
+  </p>
+
+  <!-- Borrower bank details -->
+  <div class="bank-rows" style="margin-bottom:16px;">
+    <div class="bank-row"><span class="bank-label">Bank Name</span><span class="bank-val" id="disBankName">—</span></div>
+    <div class="bank-row"><span class="bank-label">Account Number</span><span class="bank-val" id="disAccNo">—</span></div>
+    <div class="bank-row"><span class="bank-label">IFSC Code</span><span class="bank-val" id="disIfsc">—</span></div>
+    <div class="bank-row"><span class="bank-label">Amount to Transfer</span><span class="bank-val" id="disAmount" style="color:var(--teal-600);">—</span></div>
+  </div>
+
+  <!-- UTR form -->
+  <div id="disForm">
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">UTR Number *</label>
+      <input type="text" id="utrInput" placeholder="e.g. HDFC0012345678"
+             style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:13px;font-family:var(--font-mono);outline:none;box-sizing:border-box;"/>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Transfer Mode *</label>
+      <select id="disMode" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:13px;font-family:var(--font-sans);outline:none;background:white;box-sizing:border-box;">
+        <option value="">— Select —</option>
+        <option value="IMPS">IMPS</option>
+        <option value="NEFT">NEFT</option>
+        <option value="RTGS">RTGS</option>
+        <option value="UPI">UPI</option>
+      </select>
+    </div>
+    <button class="btn-approve-full" onclick="markDisbursed()">
+      <i class="ti ti-check"></i> Mark as Disbursed
+    </button>
+  </div>
+
+  <!-- Disbursed confirmation (shown after disbursement) -->
+  <div id="disConfirm" style="display:none;">
+    <div style="background:#f0fdf9;border:1px solid #9fe1cb;border-radius:var(--radius-md);padding:14px 16px;">
+      <div style="font-size:13px;font-weight:600;color:#0e8c6a;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-circle-check"></i> Disbursed Successfully
+      </div>
+      <div class="bank-rows">
+        <div class="bank-row"><span class="bank-label">UTR Number</span><span class="bank-val" id="confirmedUtr">—</span></div>
+        <div class="bank-row"><span class="bank-label">Mode</span><span class="bank-val" id="confirmedMode">—</span></div>
+        <div class="bank-row"><span class="bank-label">Date</span><span class="bank-val" id="confirmedDate">—</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+          </div>
+        </div>
+      </div><!-- /mainContent -->
+
+    </main>
+  </div>
+</div>
+
+<!-- ── Reject Modal ── -->
+<div class="modal-overlay" id="rejectModal" style="display:none;" onclick="closeRejectModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title"><i class="ti ti-x-circle"></i> Reject Application</div>
+      <button class="modal-close" onclick="closeRejectModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">
+        Please provide a reason for rejection. This will be visible to the borrower.
+      </p>
+      <label class="field-label" style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">
+        Rejection Reason <span style="color:#dc2626;">*</span>
+      </label>
+      <textarea id="rejectReasonInput" class="reject-textarea"
+        placeholder="e.g. Credit score below minimum requirement, FOIR exceeds limit, insufficient income proof…"
+        rows="4"></textarea>
+      <div class="reject-quick-reasons">
+        <div class="quick-reasons-label">Quick select:</div>
+        <div class="quick-reasons-list">
+          <button onclick="setReason('Credit score below minimum requirement.')">Credit score low</button>
+          <button onclick="setReason('FOIR exceeds our maximum limit.')">FOIR too high</button>
+          <button onclick="setReason('Insufficient income to support EMI.')">Low income</button>
+          <button onclick="setReason('Bounce records detected in bank statement.')">Bounces detected</button>
+          <button onclick="setReason('Incomplete or unverified KYC documents.')">KYC incomplete</button>
+          <button onclick="setReason('Existing loan obligations too high.')">High obligations</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeRejectModal()">Cancel</button>
+      <button class="btn-reject-confirm" onclick="confirmReject()">
+        <i class="ti ti-x-circle"></i> Confirm Rejection
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Success toast ── -->
+<div class="toast" id="toast" style="display:none;"></div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-application-detail.js"></script>
+</body>
+</html>

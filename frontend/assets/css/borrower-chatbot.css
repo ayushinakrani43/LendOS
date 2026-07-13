@@ -1,0 +1,232 @@
+/* ═══════════════════════════════════════════════════════════════
+   borrower-chatbot.css — LendOS Borrower Portal AI Assistant
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes chatSlideUp { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes chatDotPulse { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
+@keyframes chatBubblePop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ── Floating launcher button ── */
+.chatbot-launcher {
+  position: fixed; bottom: 24px; right: 24px; z-index: 400;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-600) 0%, var(--teal-400) 100%);
+  color: white; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 16px rgba(27, 80, 104, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+  /* respects iPhone home-indicator / notch safe areas */
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  right: calc(24px + env(safe-area-inset-right));
+}
+.chatbot-launcher:hover { transform: scale(1.06); box-shadow: 0 6px 22px rgba(27, 80, 104, 0.45); }
+.chatbot-launcher.hidden { display: none; }
+.chatbot-launcher .unread-dot {
+  position: absolute; top: 2px; right: 2px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #dc2626; border: 2px solid white; display: none;
+}
+.chatbot-launcher .unread-dot.show { display: block; }
+
+/* ── Chat panel ──
+   Desktop default: fixed 380×560 box, clamped so it never overflows
+   smaller desktop/laptop windows either. */
+.chatbot-panel {
+  position: fixed; bottom: 24px; right: 24px; z-index: 401;
+  width: 380px; max-width: calc(100vw - 32px);
+  height: 560px; max-height: calc(100vh - 48px);
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 60px rgba(10, 30, 40, 0.25);
+  display: none; flex-direction: column; overflow: hidden;
+  animation: chatSlideUp 0.2s ease;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  right: calc(24px + env(safe-area-inset-right));
+}
+.chatbot-panel.open { display: flex; }
+
+.chatbot-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; background: linear-gradient(135deg, var(--teal-600), var(--teal-500));
+  color: white; flex-shrink: 0;
+}
+.chatbot-header-left { display: flex; align-items: center; gap: 10px; }
+.chatbot-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.chatbot-title { font-size: 13.5px; font-weight: 700; }
+.chatbot-subtitle { font-size: 11px; opacity: 0.85; display: flex; align-items: center; gap: 4px; }
+.chatbot-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; display: inline-block; }
+.chatbot-header-actions { display: flex; align-items: center; gap: 6px; }
+
+.chatbot-close {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.15); border: none; border-radius: var(--radius-sm);
+  color: white; cursor: pointer; font-size: 15px; transition: background 0.15s;
+}
+.chatbot-close:hover { background: rgba(255,255,255,0.28); }
+
+.chatbot-clear-btn {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--radius-sm);
+  color: rgba(255,255,255,0.55); cursor: pointer; font-size: 14px;
+  transition: color 0.15s, background 0.15s;
+}
+.chatbot-clear-btn:hover { color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.12); }
+
+/* ── Messages area ── */
+.chatbot-messages {
+  flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+  background: var(--off-white);
+  -webkit-overflow-scrolling: touch; /* smooth momentum scroll on iOS */
+}
+.chat-msg { display: flex; gap: 8px; max-width: 88%; animation: chatBubblePop 0.15s ease; }
+.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.chat-msg.bot  { align-self: flex-start; }
+
+.chat-msg-avatar {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+.chat-msg.bot .chat-msg-avatar { background: var(--teal-50); color: var(--teal-600); border: 1px solid var(--teal-100); }
+.chat-msg.user .chat-msg-avatar { background: var(--teal-600); color: white; }
+
+.chat-bubble {
+  padding: 9px 13px; border-radius: 14px; font-size: 13px; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word;
+}
+.chat-msg.bot .chat-bubble { background: var(--white); border: 1px solid var(--border); color: var(--text-primary); border-bottom-left-radius: 4px; }
+.chat-msg.user .chat-bubble { background: var(--teal-600); color: white; border-bottom-right-radius: 4px; }
+.chat-bubble ol, .chat-bubble ul { margin: 6px 0 6px 18px; padding: 0; }
+.chat-bubble li { margin-bottom: 3px; }
+.chat-bubble strong { font-weight: 700; }
+
+/* Typing indicator */
+.chat-typing { display: flex; gap: 4px; padding: 11px 13px; }
+.chat-typing span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--teal-300);
+  animation: chatDotPulse 1.2s infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Suggested question chips (shown on empty state) */
+.chat-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.chat-suggestion-chip {
+  text-align: left; padding: 9px 12px; border-radius: var(--radius-md);
+  background: var(--white); border: 1px solid var(--border);
+  font-size: 12.5px; color: var(--teal-700); cursor: pointer;
+  transition: all 0.15s; font-family: var(--font-sans);
+}
+.chat-suggestion-chip:hover { background: var(--teal-50); border-color: var(--teal-300); }
+
+.chat-empty-state { text-align: center; padding: 24px 12px; color: var(--text-muted); }
+.chat-empty-state i { font-size: 32px; color: var(--teal-300); margin-bottom: 8px; display: block; }
+.chat-empty-state p { font-size: 12.5px; margin-bottom: 4px; }
+
+/* ── Input area ── */
+.chatbot-input-row {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 12px; border-top: 1px solid var(--border); background: var(--white); flex-shrink: 0;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+.chatbot-input {
+  flex: 1; resize: none; border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  padding: 9px 13px; font-family: var(--font-sans); font-size: 13px; color: var(--text-primary);
+  outline: none; max-height: 90px; line-height: 1.4;
+  transition: border-color 0.15s;
+}
+.chatbot-input:focus { border-color: var(--teal-400); }
+.chatbot-send {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: var(--teal-600); color: white; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+  transition: background 0.15s, opacity 0.15s;
+}
+.chatbot-send:hover { background: var(--teal-500); }
+.chatbot-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.chat-error-bubble {
+  background: #fff1f2; border: 1px solid #fecdd3; color: #be123c;
+  padding: 9px 13px; border-radius: 12px; font-size: 12.5px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   Desktop (>1024px)      → full 380×560 panel, as designed
+   Small laptop (769–1024) → slightly narrower panel, same height
+   Tablet (481–768px)      → shorter panel, doesn't crowd the page
+   Phone (≤480px)          → full-screen sheet, uses dynamic viewport
+                              height so mobile browser chrome doesn't
+                              cut off the input row
+   Small phone (≤360px)    → tighter spacing, smaller launcher/avatars
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Small laptop / narrow desktop windows */
+@media (max-width: 1024px) {
+  .chatbot-panel {
+    width: 350px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .chatbot-panel {
+    width: 340px;
+    height: min(520px, 75vh);
+  }
+  .chatbot-launcher {
+    width: 52px; height: 52px; font-size: 22px;
+  }
+}
+
+/* Phones — full-screen sheet instead of a floating box */
+@media (max-width: 480px) {
+  .chatbot-panel {
+    right: 0; left: 0; bottom: 0; top: 0;
+    width: 100%; max-width: 100%;
+    height: 100dvh; /* dynamic viewport height: adapts as mobile browser UI shows/hides */
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+  .chatbot-launcher {
+    right: calc(16px + env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .chatbot-header {
+    padding-top: calc(14px + env(safe-area-inset-top));
+  }
+  .chat-msg {
+    max-width: 92%;
+  }
+}
+
+/* Small / older phones — tighten spacing and type scale */
+@media (max-width: 360px) {
+  .chatbot-launcher {
+    width: 48px; height: 48px; font-size: 20px;
+  }
+  .chatbot-avatar {
+    width: 30px; height: 30px; font-size: 15px;
+  }
+  .chatbot-title { font-size: 12.5px; }
+  .chatbot-subtitle { font-size: 10px; }
+  .chat-bubble { font-size: 12.5px; padding: 8px 11px; }
+  .chatbot-messages { padding: 12px; gap: 10px; }
+  .chatbot-input-row { padding: 10px; }
+}
+
+/* Landscape phones — the panel is often taller than the viewport in
+   landscape, so cap height and let messages scroll instead of clipping */
+@media (max-height: 420px) and (orientation: landscape) {
+  .chatbot-panel {
+    height: 100dvh;
+  }
+  .chatbot-messages {
+    padding: 10px 16px;
+  }
+}

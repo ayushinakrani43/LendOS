@@ -1,0 +1,147 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Loans — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-loans.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/borrower/documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item" href="/borrower/score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item" href="/borrower/nbfcs"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item active" href="/borrower/loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+          <a class="nav-item" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+    <script>
+      (function() {
+        if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+          var s = document.getElementById('sidebar');
+          s.classList.add('no-transition');
+          s.classList.add('collapsed');
+          setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+        }
+      })();
+    </script>
+
+    <main class="main-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Loans</h1>
+          <p class="page-sub">Track your loan applications, agreements and EMI payments.</p>
+        </div>
+      </div>
+
+      <!-- ── Loading state ── -->
+      <div id="loadingState" class="loans-loading">
+        <div class="loans-loading-spinner"><i class="ti ti-loader-2 spin"></i></div>
+        <span>Loading your loans…</span>
+      </div>
+
+      <!-- ── Empty state ── -->
+      <div id="emptyState" style="display:none;">
+        <div class="loans-empty">
+          <div class="loans-empty-icon"><i class="ti ti-file-invoice"></i></div>
+          <h3 class="loans-empty-title">No loans yet</h3>
+          <p class="loans-empty-sub">Once you apply for a loan, it will appear here with full status tracking.</p>
+          <a class="btn-primary" href="/borrower/nbfcs">
+            <i class="ti ti-building-bank"></i> Browse Lenders
+          </a>
+        </div>
+      </div>
+
+      <!-- ── Loan content (shown when loans exist) ── -->
+      <div id="loansContent" style="display:none;">
+
+        <!-- Stats strip -->
+        <div class="loan-stats-strip" id="loanStatsStrip"></div>
+
+        <!-- Loan cards -->
+        <div id="loanCards"></div>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Pay EMI Modal -->
+<div class="pay-modal-overlay" id="payModalOverlay" style="display:none;">
+  <div class="pay-modal">
+    <div class="pay-modal-header">
+      <div class="pay-modal-title"><i class="ti ti-credit-card"></i> Pay EMI #<span id="payModalInstNo"></span></div>
+      <button class="pay-modal-close" onclick="closePayModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="pay-modal-body">
+      <div class="pay-modal-amount">
+        <span>Amount Due</span>
+        <strong id="payModalAmount">—</strong>
+      </div>
+        <div id="payModalLateFeeNote" style="display:none;font-size:12px;color:#dc2626;margin-top:6px;text-align:center;"></div>
+      <div class="pay-modal-bank-card">
+        <div class="pay-modal-bank-row"><span>Bank Name</span><strong id="payModalBankName">—</strong></div>
+        <div class="pay-modal-bank-row"><span>Account Number</span><strong id="payModalAccNo">—</strong></div>
+        <div class="pay-modal-bank-row"><span>IFSC Code</span><strong id="payModalIfsc">—</strong></div>
+        <div class="pay-modal-bank-row"><span>UPI ID</span><strong id="payModalUpi">—</strong></div>
+      </div>
+      <p class="pay-modal-note">
+        <i class="ti ti-info-circle"></i>
+        Transfer the amount via UPI or bank transfer, then enter the payment reference (UTR / UPI Ref) below.
+      </p>
+      <label class="pay-modal-label">Payment Reference (UTR / UPI Ref)</label>
+      <input type="text" id="payRefInput" class="pay-modal-input" placeholder="e.g. 402812345678"/>
+    </div>
+    <div class="pay-modal-footer">
+      <button class="pay-modal-cancel" onclick="closePayModal()">Cancel</button>
+      <button class="pay-modal-submit" id="submitClaimBtn" onclick="submitEmiClaim()">
+        <i class="ti ti-check"></i> Submit Payment Proof
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/borrower-loans.js"></script>
+</body>
+</html>

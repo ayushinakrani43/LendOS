@@ -1,0 +1,49 @@
+# ── Local Docker testing setup ──
+# Spins up your FastAPI app AND a throwaway local Postgres together, so you
+# can test the fully containerized app before deploying anywhere. This is
+# for LOCAL TESTING ONLY — for your real deployment, DATABASE_URL should
+# point at Neon instead (see the "deploy" env var override below).
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lendos
+      POSTGRES_PASSWORD: lendos_local_password
+      POSTGRES_DB: lendos
+    ports:
+      - "5432:5432"
+    volumes:
+      - lendos_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lendos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      # Local container-to-container Postgres connection — note the service
+      # name "db" is used as the host (not "localhost"), since these two
+      # containers talk to each other over Docker's internal network.
+      # For real deployment, override BOTH of these in Render/Railway's
+      # dashboard with your Neon connection string (in each matching format).
+      DATABASE_URL: postgresql+asyncpg://lendos:lendos_local_password@db:5432/lendos
+      SYNC_DATABASE_URL: postgresql://lendos:lendos_local_password@db:5432/lendos
+      SECRET_KEY: ${SECRET_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GMAIL_ADDRESS: ${GMAIL_ADDRESS}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+
+volumes:
+  lendos_pgdata:

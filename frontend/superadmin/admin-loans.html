@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Loans — LendOS Super Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-base.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-loans.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/admin">
+        <div class="logo-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="logo-text-group">
+          <span class="logo-name">LendOS</span>
+          <span class="logo-sub">Super Admin</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-badge"><i class="ti ti-shield-half-filled"></i> SuperAdmin</div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="adminAvatar">A</div>
+        <span id="adminName">Admin</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Platform</div>
+        <a class="nav-item" href="/admin/overview">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/admin/nbfcs">
+          <i class="ti ti-building-bank"></i><span>NBFCs</span>
+          <span class="nav-badge" id="badgePending"></span>
+        </a>
+        <a class="nav-item" href="/admin/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item active" href="/admin/loans"><i class="ti ti-file-invoice"></i><span>All Loans</span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Analytics</div>
+        <a class="nav-item" href="/admin/scores"><i class="ti ti-chart-pie"></i><span>Credit Scores</span></a>
+        <a class="nav-item" href="/admin/reports"><i class="ti ti-chart-bar"></i><span>Platform Reports</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-footer-info">
+          <div class="admin-footer-avatar"><i class="ti ti-shield-check"></i></div>
+          <div>
+            <div class="admin-footer-name" id="sidebarAdminName">SuperAdmin</div>
+            <div class="admin-footer-role">Full platform access</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">All Loans</h1>
+          <p class="page-sub">View every loan application across all NBFCs on the platform.</p>
+        </div>
+        <div class="page-header-actions">
+          <div class="search-wrap">
+            <i class="ti ti-search"></i>
+            <input type="text" id="searchInput" placeholder="Search borrower, NBFC, mobile…"
+                   oninput="handleSearch(this.value)"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="loan-stats-strip">
+        <div class="loan-stat">
+          <div class="loan-stat-val" id="statTotal">—</div>
+          <div class="loan-stat-label">Total Loans</div>
+        </div>
+        <div class="loan-stat-div"></div>
+        <div class="loan-stat">
+          <div class="loan-stat-val active" id="statActive">—</div>
+          <div class="loan-stat-label">Active</div>
+        </div>
+        <div class="loan-stat-div"></div>
+        <div class="loan-stat">
+          <div class="loan-stat-val pending" id="statPending">—</div>
+          <div class="loan-stat-label">Pending</div>
+        </div>
+        <div class="loan-stat-div"></div>
+        <div class="loan-stat">
+          <div class="loan-stat-val closed" id="statClosed">—</div>
+          <div class="loan-stat-label">Closed</div>
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="tab-bar">
+        <div class="tab-list">
+          <button class="tab active" data-status="all"       onclick="switchTab(this)">All</button>
+          <button class="tab"        data-status="pending"    onclick="switchTab(this)">
+            Pending <span class="tab-badge pending" id="tab-count-pending">0</span>
+          </button>
+          <button class="tab"        data-status="approved"   onclick="switchTab(this)">Approved</button>
+          <button class="tab"        data-status="active"     onclick="switchTab(this)">Active</button>
+            <button class="tab" data-status="declined" onclick="switchTab(this)">Declined</button>
+          <button class="tab"        data-status="closed"     onclick="switchTab(this)">Closed</button>
+          <button class="tab"        data-status="rejected"   onclick="switchTab(this)">Rejected</button>
+        </div>
+        <span class="results-count" id="resultsCount">Loading…</span>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Borrower</th>
+                <th>NBFC</th>
+                <th>Requested</th>
+                <th>Approved</th>
+                <th>Tenure</th>
+                <th>EMI</th>
+                <th>Status</th>
+                <th>Applied</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-line w70"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-line w50"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-line w60"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon"><i class="ti ti-file-invoice"></i></div>
+          <div class="empty-title" id="emptyTitle">No loans found</div>
+          <div class="empty-sub" id="emptySub">Loan applications will appear here once borrowers apply.</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Loan Detail Modal -->
+<div class="modal-overlay" id="loanModal" onclick="closeModal(event)">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-loan-avatar" id="modalAvatar">B</div>
+        <div>
+          <div class="modal-title" id="modalTitle">—</div>
+          <div class="modal-sub" id="modalSub">—</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+      <div class="modal-loading"><i class="ti ti-loader-2 spin"></i> Loading…</div>
+    </div>
+
+    <div class="modal-footer" id="modalFooter">
+      <!-- Close button injected by JS -->
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/admin-loans.js"></script>
+</body>
+</html>

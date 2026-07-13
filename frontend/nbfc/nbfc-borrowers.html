@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Borrowers — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-borrowers.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/nbfc/dashboard">
+       <div class="logo-icon" id="topLogoIcon"
+     style="width:38px;height:38px;border-radius:8px;overflow:hidden;
+            background:var(--teal-50);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;">
+    <i class="ti ti-building-bank"></i>
+</div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="company-avatar" id="companyAvatar">N</div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item" href="/nbfc/dashboard"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/nbfc/applications"><i class="ti ti-file-invoice"></i><span>Loan Applications</span><span class="nav-badge pending" id="badge-loans"></span></a>
+        <a class="nav-item active" href="/nbfc/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item" href="/nbfc/emis"><i class="ti ti-coin-rupee"></i><span>EMI Collections</span><span class="nav-badge danger" id="badge-emis"></span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item" href="/nbfc/reports"><i class="ti ti-chart-bar"></i><span>Reports</span></a>
+        <a class="nav-item" href="/nbfc/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status"><span class="status-dot active"></span> Active</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Borrowers</h1>
+          <p class="page-sub">All borrowers who have applied through your portal.</p>
+        </div>
+        <div class="search-wrap">
+          <i class="ti ti-search"></i>
+          <input type="text" id="searchInput" placeholder="Search name, mobile, PAN…" oninput="handleSearch(this.value)"/>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="bor-stats-strip">
+        <div class="bor-stat"><div class="bor-stat-val" id="bstat-total">—</div><div class="bor-stat-label">Total Borrowers</div></div>
+        <div class="bor-stat-div"></div>
+        <div class="bor-stat"><div class="bor-stat-val teal" id="bstat-verified">—</div><div class="bor-stat-label">KYC Verified</div></div>
+        <div class="bor-stat-div"></div>
+        <div class="bor-stat"><div class="bor-stat-val amber" id="bstat-applied">—</div><div class="bor-stat-label">Loan Applied</div></div>
+        <div class="bor-stat-div"></div>
+        <div class="bor-stat"><div class="bor-stat-val green" id="bstat-active">—</div><div class="bor-stat-label">Active Loans</div></div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Borrower</th>
+                <th>Mobile</th>
+                <th>PAN</th>
+                <th>Employment</th>
+                <th>KYC</th>
+                <th>Credit Score</th>
+                <th>Loan Status</th>
+                <th>Joined</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr><td colspan="9" class="table-empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon"><i class="ti ti-users-off"></i></div>
+          <div class="empty-title">No borrowers yet</div>
+          <div class="empty-sub">Share your portal link with borrowers to get started.</div>
+        </div>
+        <div class="table-footer" id="tableFooter" style="display:none;">
+          <span class="footer-info" id="footerInfo"></span>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Borrower Profile Modal -->
+<div class="modal-overlay" id="profileModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-avatar" id="modalAvatar">?</div>
+        <div>
+          <div class="modal-title" id="modalName">—</div>
+          <div class="modal-sub" id="modalSub">—</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div style="text-align:center;padding:48px;color:var(--text-muted);"><i class="ti ti-loader-2" style="font-size:28px;animation:spin 1s linear infinite;"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-borrowers.js"></script>
+</body>
+</html>

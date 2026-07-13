@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SuperAdmin — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-base.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-overview.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/admin">
+        <div class="logo-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="logo-text-group">
+          <span class="logo-name">LendOS</span>
+          <span class="logo-sub">Super Admin</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-badge"><i class="ti ti-shield-half-filled"></i> SuperAdmin</div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="adminAvatar">A</div>
+        <span id="adminName">Admin</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Platform</div>
+        <a class="nav-item active" href="/admin/overview">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/admin/nbfcs">
+          <i class="ti ti-building-bank"></i><span>NBFCs</span>
+          <span class="nav-badge" id="badgeNbfcs"></span>
+        </a>
+          <a class="nav-item " href="/admin/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item" href="/admin/loans"><i class="ti ti-file-invoice"></i><span>All Loans</span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Analytics</div>
+        <a class="nav-item" href="/admin/scores"><i class="ti ti-chart-pie"></i><span>Credit Scores</span></a>
+        <a class="nav-item" href="/admin/reports"><i class="ti ti-chart-bar"></i><span>Platform Reports</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-footer-info">
+          <div class="admin-footer-avatar"><i class="ti ti-shield-check"></i></div>
+          <div>
+            <div class="admin-footer-name" id="sidebarAdminName">SuperAdmin</div>
+            <div class="admin-footer-role">Full platform access</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Platform Overview</h1>
+          <p class="page-sub" id="lastUpdated">Loading platform data…</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn-refresh" onclick="loadAll()" title="Refresh data">
+            <i class="ti ti-refresh"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Platform health banner -->
+      <div class="health-banner" id="healthBanner">
+        <div class="health-item">
+          <i class="ti ti-circle-check" style="color:#10b981;"></i>
+          <span>All systems operational</span>
+        </div>
+        <div class="health-divider"></div>
+        <div class="health-item">
+          <i class="ti ti-clock"></i>
+          <span id="healthTime">—</span>
+        </div>
+        <div class="health-divider"></div>
+        <div class="health-item">
+          <i class="ti ti-database"></i>
+          <span id="healthDb">Database connected</span>
+        </div>
+      </div>
+
+      <!-- KPI strip -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon teal"><i class="ti ti-building-bank"></i></div>
+            <span class="kpi-chip" id="chipNbfc"></span>
+          </div>
+          <div class="kpi-val" id="kpiNbfcs">—</div>
+          <div class="kpi-label">Total NBFCs</div>
+          <div class="kpi-sub" id="subNbfcs">— active · — suspended</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon purple"><i class="ti ti-users"></i></div>
+          </div>
+          <div class="kpi-val" id="kpiBorrowers">—</div>
+          <div class="kpi-label">Total Borrowers</div>
+          <div class="kpi-sub" id="subBorrowers">— KYC submitted</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon blue"><i class="ti ti-file-invoice"></i></div>
+          </div>
+          <div class="kpi-val" id="kpiLoans">—</div>
+          <div class="kpi-label">Total Loan Applications</div>
+          <div class="kpi-sub" id="subLoans">— active · — disbursed</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon green"><i class="ti ti-coin-rupee"></i></div>
+          </div>
+          <div class="kpi-val" id="kpiDisbursed">—</div>
+          <div class="kpi-label">Total Disbursed</div>
+          <div class="kpi-sub" id="subDisbursed">Across all NBFCs</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon orange"><i class="ti ti-alert-triangle"></i></div>
+          </div>
+          <div class="kpi-val" id="kpiOverdue">—</div>
+          <div class="kpi-label">Overdue EMIs</div>
+          <div class="kpi-sub" id="subOverdue">Platform-wide</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon emerald"><i class="ti ti-trending-up"></i></div>
+          </div>
+          <div class="kpi-val" id="kpiCollected">—</div>
+          <div class="kpi-label">EMI Collected</div>
+          <div class="kpi-sub" id="subCollected">All time</div>
+        </div>
+      </div>
+
+      <!-- Two column row -->
+      <div class="dash-grid-2">
+
+        <!-- NBFC list -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title"><i class="ti ti-building-bank"></i> NBFCs</div>
+            <a href="/admin/nbfcs" class="dash-card-link">View all →</a>
+          </div>
+          <div class="nbfc-list" id="nbfcList">
+            <div class="list-loading"><i class="ti ti-loader-2 spin"></i> Loading…</div>
+          </div>
+        </div>
+
+        <!-- Recent loans -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title"><i class="ti ti-file-invoice"></i> Recent Loan Applications</div>
+            <a href="/admin/loans" class="dash-card-link">View all →</a>
+          </div>
+          <div class="recent-loans" id="recentLoans">
+            <div class="list-loading"><i class="ti ti-loader-2 spin"></i> Loading…</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Loan status breakdown -->
+      <div class="dash-card" style="margin-bottom:16px;">
+        <div class="dash-card-header">
+          <div class="dash-card-title"><i class="ti ti-chart-donut"></i> Platform Loan Status</div>
+        </div>
+        <div class="status-breakdown" id="statusBreakdown">
+          <div class="list-loading"><i class="ti ti-loader-2 spin"></i> Loading…</div>
+        </div>
+      </div>
+
+      <!-- Recent borrowers -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-card-title"><i class="ti ti-users"></i> Recent Borrowers</div>
+          <a href="/admin/borrowers" class="dash-card-link">View all →</a>
+        </div>
+        <table class="admin-table" id="recentBorrowersTable">
+          <thead>
+            <tr>
+              <th>Borrower</th>
+              <th>Mobile</th>
+              <th>Credit Score</th>
+              <th>KYC</th>
+              <th>Loan Status</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="recentBorrowersBody">
+            <tr><td colspan="6" class="tbl-loading"><i class="ti ti-loader-2 spin"></i> Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/admin-overview.js"></script>
+</body>
+</html>

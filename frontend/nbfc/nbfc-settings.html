@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-settings.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/nbfc/dashboard">
+       <div class="logo-icon" id="topLogoIcon"
+     style="width:38px;height:38px;border-radius:8px;overflow:hidden;
+            background:var(--teal-50);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;">
+    <i class="ti ti-building-bank"></i>
+</div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-company">
+        <div class="company-avatar" id="companyAvatar">N</div>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item" href="/nbfc/dashboard">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/nbfc/applications">
+          <i class="ti ti-file-invoice"></i><span>Loan Applications</span>
+          <span class="nav-badge pending" id="badge-loans"></span>
+        </a>
+        <a class="nav-item" href="/nbfc/borrowers">
+          <i class="ti ti-users"></i><span>Borrowers</span>
+        </a>
+        <a class="nav-item" href="/nbfc/emis">
+          <i class="ti ti-coin-rupee"></i><span>EMI Collections</span>
+          <span class="nav-badge danger" id="badge-emis"></span>
+        </a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item" href="/nbfc/reports">
+          <i class="ti ti-chart-bar"></i><span>Reports</span>
+        </a>
+        <a class="nav-item active" href="/nbfc/settings">
+          <i class="ti ti-settings"></i><span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status">
+              <span class="status-dot active"></span> Active
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+      <div class="page-section active">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Loan Rules & Settings</h1>
+            <p class="page-sub">Configure your lending rules. These determine which borrowers can apply and what terms they receive.</p>
+          </div>
+          <div class="page-header-actions">
+            <a class="btn-outline" href="/nbfc/dashboard">
+              <i class="ti ti-arrow-left"></i> Back to Overview
+            </a>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="alert success" id="alert-ok" style="display:none;">
+          <i class="ti ti-circle-check"></i>
+          Settings saved successfully. Your NBFC is now visible in the borrower marketplace.
+        </div>
+        <div class="alert error" id="alert-err" style="display:none;">
+          <i class="ti ti-alert-circle"></i>
+          <span id="alert-err-text"></span>
+        </div>
+
+        <!-- Loading state -->
+        <div id="loadingState" class="settings-loading">
+          <i class="ti ti-loader-2 spin"></i>
+          <span>Loading your settings…</span>
+        </div>
+
+        <!-- Settings form (hidden until loaded) -->
+        <form id="settingsForm" onsubmit="saveSettings(event)" style="display:none;">
+          <div class="settings-grid">
+
+            <!-- ── Card 1: Loan Limits ── -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="settings-card-title">
+                  <div class="settings-card-icon teal">
+                    <i class="ti ti-coin-rupee"></i>
+                  </div>
+                  <div>
+                    <div class="settings-card-name">Loan Limits</div>
+                    <div class="settings-card-desc">Set the minimum and maximum loan amount and tenure</div>
+                  </div>
+                </div>
+              </div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Min Loan Amount (₹) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <span class="input-prefix">₹</span>
+                    <input class="form-control has-prefix" type="number"
+                           id="s-min-loan" placeholder="10000" min="1000" required/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Max Loan Amount (₹) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <span class="input-prefix">₹</span>
+                    <input class="form-control has-prefix" type="number"
+                           id="s-max-loan" placeholder="500000" required/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Min Tenure (months) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-min-tenure" placeholder="3" min="1" max="120" required/>
+                    <span class="input-suffix">mo</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Max Tenure (months) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-max-tenure" placeholder="36" min="1" max="120" required/>
+                    <span class="input-suffix">mo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Card 2: Interest & Fees ── -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="settings-card-title">
+                  <div class="settings-card-icon blue">
+                    <i class="ti ti-percentage"></i>
+                  </div>
+                  <div>
+                    <div class="settings-card-name">Interest & Fees</div>
+                    <div class="settings-card-desc">Define the rate of interest and processing fee</div>
+                  </div>
+                </div>
+              </div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Interest Rate (% p.a.) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-interest" placeholder="12" step="0.1" min="1" max="100" required/>
+                    <span class="input-suffix">%</span>
+                  </div>
+                  <div class="form-hint">Reducing balance method applied</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Processing Fee (% of loan) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-proc-fee" placeholder="2" step="0.1" min="0" max="10" required/>
+                    <span class="input-suffix">%</span>
+                  </div>
+                  <div class="form-hint">Deducted from disbursement amount</div>
+                </div>
+              </div>
+
+              <!-- Live EMI preview -->
+              <div class="emi-preview" id="emiPreview">
+                <div class="emi-preview-label">Sample EMI Preview</div>
+                <div class="emi-preview-row">
+                  <span>₹1,00,000 loan · <span id="previewRate">—</span>% · 12 months</span>
+                  <span class="emi-preview-val" id="previewEmi">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Card 3: Eligibility ── -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="settings-card-title">
+                  <div class="settings-card-icon green">
+                    <i class="ti ti-user-check"></i>
+                  </div>
+                  <div>
+                    <div class="settings-card-name">Eligibility Criteria</div>
+                    <div class="settings-card-desc">Control which borrowers can apply to your NBFC</div>
+                  </div>
+                </div>
+              </div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Minimum Credit Score <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-min-score" placeholder="600" min="300" max="900" required/>
+                  </div>
+                  <div class="form-hint">Borrowers below this score won't see your NBFC</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Max FOIR Limit (%) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-foir" placeholder="50" step="1" min="20" max="80" required/>
+                    <span class="input-suffix">%</span>
+                  </div>
+                  <div class="form-hint">Max % of salary that can go toward EMI. Industry standard: 40–50%</div>
+                </div>
+              </div>
+
+              <!-- Score band indicator -->
+              <div class="score-band">
+                <div class="score-band-label">Your NBFC will be visible to borrowers with score ≥ <strong id="scoreBandVal">—</strong></div>
+                <div class="score-band-track">
+                  <div class="score-band-fill" id="scoreBandFill"></div>
+                </div>
+                <div class="score-band-labels">
+                  <span>300</span><span>900</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Card 4: Late Payment Rules ── -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="settings-card-title">
+                  <div class="settings-card-icon orange">
+                    <i class="ti ti-alert-triangle"></i>
+                  </div>
+                  <div>
+                    <div class="settings-card-name">Late Payment Rules</div>
+                    <div class="settings-card-desc">Define grace period and penalty for missed EMIs</div>
+                  </div>
+                </div>
+              </div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Grace Period (days) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input class="form-control" type="number"
+                           id="s-grace" placeholder="3" min="0" max="30" required/>
+                    <span class="input-suffix">days</span>
+                  </div>
+                  <div class="form-hint">Days after due date before penalty applies</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Late Penalty (₹ flat) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <span class="input-prefix">₹</span>
+                    <input class="form-control has-prefix" type="number"
+                           id="s-penalty" placeholder="500" min="0" required/>
+                  </div>
+                  <div class="form-hint">Charged per missed EMI after grace period</div>
+                </div>
+              </div>
+            </div>
+
+              <!-- ── Card 5: Payment Details ── -->
+<div class="settings-card">
+  <div class="settings-card-header">
+    <div class="settings-card-title">
+      <div class="settings-card-icon purple">
+        <i class="ti ti-building-bank"></i>
+      </div>
+      <div>
+        <div class="settings-card-name">Payment Details</div>
+        <div class="settings-card-desc">Used to show borrowers where to send EMI payments</div>
+      </div>
+    </div>
+  </div>
+  <div class="fg-2">
+    <div class="form-group">
+      <label class="form-label">UPI ID</label>
+      <div class="input-wrap">
+        <input class="form-control" type="text"
+               id="s-upi" placeholder="yourcompany@hdfcbank"/>
+      </div>
+      <div class="form-hint">Shown to borrowers for EMI payment</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Bank Name</label>
+      <div class="input-wrap">
+        <input class="form-control" type="text"
+               id="s-bank-name" placeholder="HDFC Bank"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Account Number</label>
+      <div class="input-wrap">
+        <input class="form-control" type="text"
+               id="s-bank-acc" placeholder="0123456789"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">IFSC Code</label>
+      <div class="input-wrap">
+        <input class="form-control" type="text"
+               id="s-bank-ifsc" placeholder="HDFC0001234" style="text-transform:uppercase;"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /settings-grid -->
+
+
+<div class="settings-card">
+  <div class="settings-card-header">
+    <div class="settings-card-title">
+      <div class="settings-card-icon orange"><i class="ti ti-lock"></i></div>
+      <div>
+        <div class="settings-card-name">Change Password</div>
+        <div class="settings-card-desc">Update your login password.</div>
+      </div>
+    </div>
+  </div>
+  <div class="fg-2">
+    <div class="form-group">
+      <label class="form-label">Current Password<span class="req">*</span></label>
+      <input type="password" id="s-current-pw" class="form-control" autocomplete="off" name="current-password-no-autofill"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">New Password<span class="req">*</span></label>
+      <input type="password" id="s-new-pw" class="form-control"  autocomplete="new-password"/>
+    </div>
+  </div>
+  <button type="button" class="btn-save" onclick="changePassword()" style="align-self:flex-start;">
+    <i class="ti ti-key"></i> Update Password
+  </button>
+  <div id="pw-alert-ok" class="alert success" style="display:none;"><i class="ti ti-check"></i> Password updated.</div>
+  <div id="pw-alert-err" class="alert error" style="display:none;"><i class="ti ti-alert-circle"></i> <span id="pw-alert-err-text"></span></div>
+</div>
+
+<div class="settings-card danger">
+  <div class="settings-card-header">
+    <div class="settings-card-title">
+      <div class="settings-card-icon red"><i class="ti ti-trash"></i></div>
+      <div>
+        <div class="settings-card-name">Delete Account</div>
+        <div class="settings-card-desc">This deactivates your NBFC account. Cannot be undone.</div>
+      </div>
+    </div>
+  </div>
+<button type="button" class="btn-save danger" onclick="deleteAccount()" style="align-self:flex-start;">
+  <i class="ti ti-trash"></i> Delete My Account
+</button>
+</div>
+          <!-- Save bar -->
+          <div class="save-bar">
+            <div class="save-bar-note">
+              <i class="ti ti-info-circle"></i>
+              Changes take effect immediately and apply to new loan applications.
+            </div>
+            <button type="submit" class="btn-save" id="saveBtn">
+              <i class="ti ti-device-floppy"></i> Save Settings
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-settings.js"></script>
+</body>
+</html>

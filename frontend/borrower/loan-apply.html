@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loan Application — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+  <link rel="stylesheet" href="/static/assets/css/loan-apply.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview" data-tooltip="Overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/borrower/documents" data-tooltip="Upload Documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item" href="/borrower/score" data-tooltip="Credit Score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item active" href="/borrower/nbfcs" data-tooltip="Apply for Loan"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item" href="/borrower/loans" data-tooltip="My Loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+    <a class="nav-item" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+    <script>
+      (function() {
+        if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+          var s = document.getElementById('sidebar');
+          s.classList.add('no-transition');
+          s.classList.add('collapsed');
+          setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+        }
+      })();
+    </script>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+      <div class="page-section active">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <a href="/borrower/nbfcs" class="back-btn">
+              <i class="ti ti-arrow-left"></i>
+            </a>
+            <div>
+              <h1 class="page-title">Loan Application</h1>
+              <p class="page-sub" id="pageSubtitle">Loading lender details…</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rate notice warning (hidden by default) -->
+        <div class="rate-notice-box" id="rateNoticeBox" style="display:none;">
+          <i class="ti ti-alert-triangle"></i>
+          <div>
+            <strong>Rate Change Notice</strong>
+            <span id="rateNoticeText"></span>
+          </div>
+        </div>
+
+        <!-- Two column layout -->
+        <div class="apply-grid">
+
+          <!-- ── LEFT: Form ── -->
+          <div class="apply-left">
+
+            <!-- NBFC info banner -->
+            <div class="lender-card" id="lenderCard">
+              <div class="lender-card-logo" id="lenderLogo"></div>
+              <div class="lender-card-info">
+                <div class="lender-name" id="lenderName">—</div>
+                <div class="lender-meta" id="lenderMeta">
+                  <!-- chips injected by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Form fields -->
+            <div class="form-card">
+
+              <!-- Loan Amount -->
+              <div class="field-group">
+                <div class="field-label-row">
+                  <label class="field-label">Loan Amount</label>
+                  <div class="amount-input-wrap">
+                    <span class="rupee-sym">₹</span>
+                    <input type="number" id="loanAmountInput" class="amount-input"
+                           placeholder="0" min="0" step="1000"/>
+                  </div>
+                </div>
+                <input type="range" id="loanSlider" class="range-slider" min="0" max="5000000" step="1000" value="100000"/>
+                <div class="range-labels">
+                  <span id="sliderMin">₹0</span>
+                  <span id="sliderMax">₹50L</span>
+                </div>
+              </div>
+
+              <!-- Tenure -->
+              <div class="field-group">
+                <div class="field-label-row">
+                  <label class="field-label">Tenure</label>
+                  <div style="position:relative;display:inline-flex;align-items:center;">
+                    <div class="amount-input-wrap" style="width:90px;">
+                      <input type="number" id="tenureInput" class="amount-input"
+                             placeholder="12" min="6" max="60" step="1"
+                             style="padding-left:10px;padding-right:28px;text-align:center;"/>
+                      <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
+                                   font-size:11px;color:var(--text-muted);pointer-events:none;">mo</span>
+                    </div>
+                  </div>
+                </div>
+                <input type="range" id="tenureSlider" class="range-slider" min="6" max="60" step="1" value="12"/>
+                <div class="range-labels">
+                  <span id="tenureMin">6 mo</span>
+                  <span id="tenureMax">60 mo</span>
+                </div>
+              </div>
+
+              <!-- Section divider -->
+              <div class="form-section-divider">Details</div>
+
+              <!-- Purpose -->
+              <div class="field-group">
+                <label class="field-label">Purpose of Loan</label>
+                <div class="select-wrap">
+                  <select id="loanPurpose" class="field-select">
+                    <option value="">— Select purpose —</option>
+                    <option value="personal">Personal Use</option>
+                    <option value="medical">Medical Emergency</option>
+                    <option value="education">Education</option>
+                    <option value="home_renovation">Home Renovation</option>
+                    <option value="business">Business</option>
+                    <option value="vehicle">Vehicle Purchase</option>
+                    <option value="travel">Travel</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="debt_consolidation">Debt Consolidation</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <i class="ti ti-chevron-down select-chevron"></i>
+                </div>
+              </div>
+
+              <!-- Submit button -->
+              <button class="proceed-btn" id="proceedBtn" disabled onclick="submitApplication()">
+                <i class="ti ti-file-check"></i>
+                Proceed to Agreement
+              </button>
+              <p class="proceed-note">Your application will be reviewed by the lender after submission.</p>
+
+            </div>
+          </div>
+
+          <!-- ── RIGHT: Summary + Affordability ── -->
+          <div class="apply-right">
+
+            <!-- EMI Summary card -->
+            <div class="summary-card">
+
+              <!-- Hero EMI block -->
+              <div class="emi-hero">
+                <div class="emi-hero-label">Monthly EMI</div>
+                <div class="emi-hero-num" id="emiAmount">₹0</div>
+              </div>
+
+              <!-- Summary rows -->
+              <div class="summary-rows">
+                <div class="summary-row">
+                  <span class="sr-label">Loan Amount</span>
+                  <span class="sr-val" id="sumLoanAmt">₹0</span>
+                </div>
+                <div class="summary-row">
+                  <span class="sr-label">Interest Rate</span>
+                  <span class="sr-val" id="sumRate">—</span>
+                </div>
+                <div class="summary-row">
+                  <span class="sr-label">Tenure</span>
+                  <span class="sr-val" id="sumTenure">—</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row">
+                  <span class="sr-label">Total Interest</span>
+                  <span class="sr-val" id="sumInterest">₹0</span>
+                </div>
+                <div class="summary-row">
+                  <span class="sr-label">Total Payable</span>
+                  <span class="sr-val sr-strong" id="sumTotal">₹0</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row">
+                  <span class="sr-label">Processing Fee</span>
+                  <span class="sr-val" id="sumFee">₹0</span>
+                </div>
+                <div class="summary-row">
+                  <span class="sr-label">Amount Disbursed</span>
+                  <span class="sr-val sr-strong sr-green" id="sumDisbursed">₹0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Affordability card -->
+            <div class="afford-card" id="affordCard">
+              <div class="afford-card-title">Affordability Check</div>
+
+              <!-- Rows -->
+              <div class="afford-rows">
+                <div class="afford-row">
+                  <span class="ar-label">Monthly Income</span>
+                  <span class="ar-val" id="arIncome">₹—</span>
+                </div>
+                <div class="afford-row">
+                  <span class="ar-label">Existing EMI Obligations</span>
+                  <span class="ar-val" id="arExistingEmi">₹0</span>
+                </div>
+                <div class="afford-row">
+                  <span class="ar-label" id="arSafeEmiLabel">Safe EMI Limit (-%)</span>
+                  <span class="ar-val" id="arSafeEmi">₹—</span>
+                </div>
+                <div class="afford-row">
+                  <span class="ar-label">Your New EMI</span>
+                  <span class="ar-val ar-emi-val" id="arEmi">₹—</span>
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="afford-bar-wrap">
+                <div class="afford-bar-track">
+                  <div class="afford-bar-fill" id="affordBarFill"></div>
+                  <div class="afford-bar-limit"></div>
+                </div>
+                <div class="afford-bar-labels">
+                  <span>0%</span>
+                  <span id="affordBarLimitLabel">Safe -%</span>
+                  <span>100%+</span>
+                </div>
+              </div>
+
+              <!-- Status message -->
+              <div class="afford-msg" id="affordMsg">
+                <i class="ti ti-loader afford-msg-icon"></i>
+                <span>Enter loan details to check affordability.</span>
+              </div>
+
+              <!-- Suggestions (shown when EMI too high) -->
+              <div class="suggestions-wrap" id="suggestionsWrap" style="display:none;">
+                <div class="suggestions-title">
+                  <i class="ti ti-bulb"></i> Maximum you can safely borrow
+                </div>
+                <div class="suggestions-list" id="suggestionsList"></div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="/static/assets/js/loan-apply.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables / secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.zip
+# Database
+*.db
+*.sqlite3
+*.sqlite3-journal
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# FastAPI / uvicorn
+*.pyc
+instance/
+
+# Uploaded files / generated docs (adjust paths as needed)
+uploads/
+generated_pdfs/
+static/uploads/
+
+# Node (if you have any JS tooling)
+node_modules/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/

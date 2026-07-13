@@ -1,0 +1,528 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8"/>-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+<!--  <title>Platform Reports — LendOS Super Admin</title>-->
+<!--  <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">-->
+<!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">-->
+<!--  <link rel="stylesheet" href="/static/assets/css/admin-base.css">-->
+<!--  <link rel="stylesheet" href="/static/assets/css/admin-reports.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="app">-->
+
+<!--  <header class="topbar">-->
+<!--    <div class="topbar-left">-->
+<!--      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>-->
+<!--      <a class="logo" href="/admin">-->
+<!--        <div class="logo-icon"><i class="ti ti-shield-check"></i></div>-->
+<!--        <div class="logo-text-group">-->
+<!--          <span class="logo-name">LendOS</span>-->
+<!--          <span class="logo-sub">Super Admin</span>-->
+<!--        </div>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--    <div class="topbar-right">-->
+<!--      <div class="admin-badge"><i class="ti ti-shield-half-filled"></i> SuperAdmin</div>-->
+<!--      <div class="topbar-user">-->
+<!--        <div class="user-avatar" id="adminAvatar">A</div>-->
+<!--        <span id="adminName">Admin</span>-->
+<!--      </div>-->
+<!--      <button class="icon-btn" title="Logout" onclick="handleLogout()"><i class="ti ti-logout"></i></button>-->
+<!--    </div>-->
+<!--  </header>-->
+
+<!--  <div class="app-body">-->
+<!--    <aside class="sidebar" id="sidebar">-->
+<!--      <nav class="sidebar-nav">-->
+<!--        <div class="nav-section-label">Platform</div>-->
+<!--        <a class="nav-item" href="/admin/overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>-->
+<!--        <a class="nav-item" href="/admin/nbfcs"><i class="ti ti-building-bank"></i><span>NBFCs</span></a>-->
+<!--        <a class="nav-item" href="/admin/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>-->
+<!--        <a class="nav-item" href="/admin/loans"><i class="ti ti-file-invoice"></i><span>All Loans</span></a>-->
+<!--        <div class="nav-section-label" style="margin-top:8px;">Analytics</div>-->
+<!--        <a class="nav-item" href="/admin/scores"><i class="ti ti-chart-pie"></i><span>Credit Scores</span></a>-->
+<!--        <a class="nav-item active" href="/admin/reports"><i class="ti ti-chart-bar"></i><span>Platform Reports</span></a>-->
+<!--      </nav>-->
+<!--      <div class="sidebar-footer">-->
+<!--        <div class="admin-footer-info">-->
+<!--          <div class="admin-footer-avatar"><i class="ti ti-shield-check"></i></div>-->
+<!--          <div>-->
+<!--            <div class="admin-footer-name" id="sidebarAdminName">SuperAdmin</div>-->
+<!--            <div class="admin-footer-role">Full platform access</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </aside>-->
+
+<!--    <main class="main-content">-->
+
+<!--      <div class="page-header">-->
+<!--        <div>-->
+<!--          <h1 class="page-title">Platform Reports</h1>-->
+<!--          <p class="page-sub">Portfolio, borrower, and collection analytics across every NBFC — all-time totals.</p>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="rpt-loading" id="rptLoading">-->
+<!--        <i class="ti ti-loader-2 spin"></i>-->
+<!--        <div>Generating report…</div>-->
+<!--      </div>-->
+
+<!--      <div id="rptContent" style="display:none;">-->
+
+<!--        &lt;!&ndash; Section 1: Overview strip &ndash;&gt;-->
+<!--        <div class="overview-strip">-->
+<!--          <div class="overview-stat">-->
+<!--            <div class="overview-stat-val" id="statNBFCs">—</div>-->
+<!--            <div class="overview-stat-label">Active NBFCs</div>-->
+<!--          </div>-->
+<!--          <div class="overview-div"></div>-->
+<!--          <div class="overview-stat">-->
+<!--            <div class="overview-stat-val" id="statLoans">—</div>-->
+<!--            <div class="overview-stat-label">Total Loans Agreements</div>-->
+<!--          </div>-->
+<!--          <div class="overview-div"></div>-->
+<!--          <div class="overview-stat">-->
+<!--            <div class="overview-stat-val" id="statDisbursed">—</div>-->
+<!--            <div class="overview-stat-label">Total Disbursed</div>-->
+<!--          </div>-->
+<!--          <div class="overview-div"></div>-->
+<!--          <div class="overview-stat">-->
+<!--            <div class="overview-stat-val" id="statBorrowers">—</div>-->
+<!--            <div class="overview-stat-label">Total Borrowers</div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Section 2: Loan Portfolio &ndash;&gt;-->
+<!--        <div class="rpt-section">-->
+<!--          <div class="rpt-section-title"><i class="ti ti-briefcase"></i> Loan Portfolio</div>-->
+<!--          <div class="rpt-grid-2" style="margin-bottom:16px;">-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-chart-donut"></i> Loan Status Distribution</div>-->
+<!--                <div class="rpt-card-sub">All loans, current status</div>-->
+<!--              </div>-->
+<!--              <div class="donut-wrap">-->
+<!--                <canvas id="portfolioDonut" width="200" height="200"></canvas>-->
+<!--                <div class="donut-legend" id="portfolioLegend"></div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-chart-line"></i> Monthly Loans Disbursed</div>-->
+<!--                <div class="rpt-card-sub">Count, last 12 months</div>-->
+<!--              </div>-->
+<!--              <div class="chart-canvas-wrap">-->
+<!--                <canvas class="rpt-canvas" id="disbursedCountChart" width="480" height="200"></canvas>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="rpt-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-chart-histogram"></i> Monthly Loan Amount Disbursed</div>-->
+<!--              <div class="rpt-card-sub">₹ disbursed, last 12 months</div>-->
+<!--            </div>-->
+<!--            <div class="chart-canvas-wrap">-->
+<!--              <canvas class="rpt-canvas" id="disbursedAmountChart" width="980" height="220"></canvas>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Section 3: Borrower Analytics &ndash;&gt;-->
+<!--        <div class="rpt-section">-->
+<!--          <div class="rpt-section-title"><i class="ti ti-users"></i> Borrower Analytics</div>-->
+<!--          <div class="rpt-grid-3">-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-user-plus"></i> New Borrowers / Month</div>-->
+<!--                <div class="rpt-card-sub">Last 12 months</div>-->
+<!--              </div>-->
+<!--              <div class="chart-canvas-wrap">-->
+<!--                <canvas class="rpt-canvas" id="newBorrowersChart" width="280" height="180"></canvas>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-chart-donut"></i> Credit Score Distribution</div>-->
+<!--                <div class="rpt-card-sub">Latest score per borrower</div>-->
+<!--              </div>-->
+<!--              <div class="donut-wrap">-->
+<!--                <canvas id="scoreDonut" width="160" height="160"></canvas>-->
+<!--                <div class="donut-legend" id="scoreLegend"></div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-briefcase"></i> Employment Type</div>-->
+<!--                <div class="rpt-card-sub">All borrowers</div>-->
+<!--              </div>-->
+<!--              <div id="employmentBars"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Section 4: Collection Performance &ndash;&gt;-->
+<!--        <div class="rpt-section">-->
+<!--          <div class="rpt-section-title"><i class="ti ti-cash"></i> Collection Performance</div>-->
+<!--          <div class="rpt-grid-2" style="margin-bottom:16px;">-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-percentage"></i> EMI Collection Rate</div>-->
+<!--                <div class="rpt-card-sub" id="collectionSub">All-time</div>-->
+<!--              </div>-->
+<!--              <div style="font-size:40px; font-weight:700; font-family:var(&#45;&#45;font-mono); color:var(&#45;&#45;adm-600); text-align:center; padding:16px 0;" id="overallCollectionRate">—</div>-->
+<!--            </div>-->
+<!--            <div class="rpt-card">-->
+<!--              <div class="rpt-card-header">-->
+<!--                <div class="rpt-card-title"><i class="ti ti-alert-triangle"></i> Overdue EMIs Trend</div>-->
+<!--                <div class="rpt-card-sub">Count per month, last 12 months</div>-->
+<!--              </div>-->
+<!--              <div class="chart-canvas-wrap">-->
+<!--                <canvas class="rpt-canvas" id="overdueTrendChart" width="480" height="180"></canvas>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="rpt-card">-->
+<!--            <div class="rpt-card-header">-->
+<!--              <div class="rpt-card-title"><i class="ti ti-building-bank"></i> Per-NBFC Collection Rate</div>-->
+<!--              <div class="rpt-card-sub">Due vs. collected, all-time</div>-->
+<!--            </div>-->
+<!--            <table class="rpt-table">-->
+<!--              <thead><tr><th>NBFC</th><th>Due</th><th>Collected</th><th>Rate</th></tr></thead>-->
+<!--              <tbody id="perNbfcCollectionBody">-->
+<!--                <tr><td colspan="4" class="rpt-empty">Loading…</td></tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Section 5: NBFC Leaderboard &ndash;&gt;-->
+<!--        <div class="rpt-section">-->
+<!--          <div class="rpt-section-title"><i class="ti ti-trophy"></i> NBFC Leaderboard</div>-->
+<!--          <div class="rpt-card">-->
+<!--            <table class="rpt-table">-->
+<!--              <thead><tr><th>Rank</th><th>NBFC</th><th>Total Disbursed</th><th>Active Loans</th><th>Collection Rate</th></tr></thead>-->
+<!--              <tbody id="leaderboardBody">-->
+<!--                <tr><td colspan="5" class="rpt-empty">Loading…</td></tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+
+<!--    </main>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>-->
+<!--<script src="/static/assets/js/config.js"></script>-->
+<!--<script src="/static/assets/js/admin-reports.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Platform Reports — LendOS Super Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-base.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-reports.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/admin/dashboard">
+        <div class="logo-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="logo-text-group">
+          <span class="logo-name">LendOS</span>
+          <span class="logo-sub">Super Admin</span>
+        </div>
+      </a>
+      <div class="admin-badge"><i class="ti ti-shield-half-filled"></i> SuperAdmin</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="adminAvatar">A</div>
+        <span id="adminName">Admin</span>
+      </div>
+      <button class="icon-btn" onclick="handleLogout()" title="Logout"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Platform</div>
+        <a class="nav-item" href="/admin/overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/admin/nbfcs"><i class="ti ti-building-bank"></i><span>NBFCs</span></a>
+        <a class="nav-item" href="/admin/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item" href="/admin/loans"><i class="ti ti-file-invoice"></i><span>All Loans</span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Analytics</div>
+        <a class="nav-item" href="/admin/scores"><i class="ti ti-chart-pie"></i><span>Credit Scores</span></a>
+        <a class="nav-item active" href="/admin/reports"><i class="ti ti-chart-bar"></i><span>Platform Reports</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-footer-info">
+          <div class="admin-footer-avatar" id="sidebarAdminAvatar">A</div>
+          <div>
+            <div class="admin-footer-name" id="sidebarAdminName">Admin</div>
+            <div class="admin-footer-role">Full platform access</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Platform Reports</h1>
+          <p class="page-sub">Real-time analytics across all NBFCs, borrowers, and loan portfolios.</p>
+        </div>
+      
+      </div>
+
+      <!-- Loading state -->
+      <div class="rpt-loading" id="rptLoading">
+        <i class="ti ti-loader-2 spin"></i>
+        <span>Loading platform data…</span>
+      </div>
+
+      <!-- Report content -->
+      <div id="rptContent" style="display:none;">
+
+        <!-- ── KPI Cards ── -->
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi-card">
+            <div class="kpi-icon indigo"><i class="ti ti-building-bank"></i></div>
+            <div class="kpi-body">
+              <div class="kpi-val" id="statNBFCs">—</div>
+              <div class="kpi-label">Active NBFCs</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon green"><i class="ti ti-users"></i></div>
+            <div class="kpi-body">
+              <div class="kpi-val" id="statBorrowers">—</div>
+              <div class="kpi-label">Total Borrowers</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon blue"><i class="ti ti-file-invoice"></i></div>
+            <div class="kpi-body">
+              <div class="kpi-val" id="statLoans">—</div>
+              <div class="kpi-label">Total Loans</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon teal"><i class="ti ti-coin-rupee"></i></div>
+            <div class="kpi-body">
+              <div class="kpi-val" id="statDisbursed">—</div>
+              <div class="kpi-label">Total Disbursed</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 1: Loan Portfolio ── -->
+        <div class="rpt-section">
+          <div class="rpt-section-header">
+            <div class="rpt-section-title"><i class="ti ti-briefcase"></i> Loan Portfolio</div>
+            <div class="rpt-section-sub">Loan status distribution and disbursement trends</div>
+          </div>
+
+          <div class="rpt-grid-2" style="margin-bottom:16px;">
+            <!-- Donut -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-chart-donut"></i> Loan Status Distribution</div>
+                <div class="rpt-card-sub">All loans, current status</div>
+              </div>
+              <div class="donut-wrap">
+                <canvas id="portfolioDonut" width="180" height="180"></canvas>
+                <div class="donut-legend" id="portfolioLegend"></div>
+              </div>
+            </div>
+
+            <!-- Line chart -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-chart-line"></i> Monthly Loans Disbursed</div>
+                <div class="rpt-card-sub">Count, last 12 months</div>
+              </div>
+              <div class="chart-canvas-wrap">
+                <canvas class="rpt-canvas" id="disbursedCountChart" width="440" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bar chart full width -->
+          <div class="rpt-card">
+            <div class="rpt-card-header">
+              <div class="rpt-card-title"><i class="ti ti-chart-histogram"></i> Monthly Loan Amount Disbursed</div>
+              <div class="rpt-card-sub">₹ disbursed, last 12 months</div>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas class="rpt-canvas" id="disbursedAmountChart" width="940" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 2: Borrower Analytics ── -->
+        <div class="rpt-section">
+          <div class="rpt-section-header">
+            <div class="rpt-section-title"><i class="ti ti-users"></i> Borrower Analytics</div>
+            <div class="rpt-section-sub">Borrower growth, credit quality, and employment breakdown</div>
+          </div>
+
+          <div class="rpt-grid-3">
+            <!-- New borrowers bar -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-user-plus"></i> New Borrowers / Month</div>
+                <div class="rpt-card-sub">Last 12 months</div>
+              </div>
+              <div class="chart-canvas-wrap">
+                <canvas class="rpt-canvas" id="newBorrowersChart" width="260" height="170"></canvas>
+              </div>
+            </div>
+
+            <!-- Credit score donut -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-chart-donut"></i> Credit Score Distribution</div>
+                <div class="rpt-card-sub">Latest score per borrower</div>
+              </div>
+              <div class="donut-wrap" style="flex-direction:column;gap:12px;">
+                <canvas id="scoreDonut" width="140" height="140"></canvas>
+                <div class="donut-legend" id="scoreLegend" style="min-width:0;width:100%;"></div>
+              </div>
+            </div>
+
+            <!-- Employment type bars -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-briefcase"></i> Employment Type</div>
+                <div class="rpt-card-sub">All borrowers</div>
+              </div>
+              <div id="employmentBars" class="emp-bars-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 3: Collection Performance ── -->
+        <div class="rpt-section">
+          <div class="rpt-section-header">
+            <div class="rpt-section-title"><i class="ti ti-cash"></i> Collection Performance</div>
+            <div class="rpt-section-sub">EMI collection rates and overdue trends by NBFC</div>
+          </div>
+
+          <div class="rpt-grid-2" style="margin-bottom:16px;">
+            <!-- Overall rate -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-percentage"></i> Overall EMI Collection Rate</div>
+                <div class="rpt-card-sub" id="collectionSub">All-time</div>
+              </div>
+              <div class="collection-hero">
+                <div class="collection-rate-val" id="overallCollectionRate">—%</div>
+                <div class="collection-rate-bar">
+                  <div class="collection-rate-fill" id="collectionRateFill"></div>
+                </div>
+                <div class="collection-rate-labels">
+                  <span>0%</span><span>Target: 90%</span><span>100%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overdue trend -->
+            <div class="rpt-card">
+              <div class="rpt-card-header">
+                <div class="rpt-card-title"><i class="ti ti-chart-line"></i> Overdue EMI Trend</div>
+                <div class="rpt-card-sub">Count per month, last 6 months</div>
+              </div>
+              <div class="chart-canvas-wrap">
+                <canvas class="rpt-canvas" id="overdueTrendChart" width="440" height="160"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Per-NBFC collection table -->
+          <div class="rpt-card">
+            <div class="rpt-card-header">
+              <div class="rpt-card-title"><i class="ti ti-table"></i> Collection Rate by NBFC</div>
+              <div class="rpt-card-sub">EMIs paid vs due per lender</div>
+            </div>
+            <div class="table-wrap">
+              <table class="rpt-table">
+                <thead>
+                  <tr>
+                    <th>NBFC</th>
+                    <th>EMIs Due</th>
+                    <th>EMIs Paid</th>
+                    <th>Collection Rate</th>
+                    <th>Overdue Count</th>
+                  </tr>
+                </thead>
+                <tbody id="perNbfcCollectionBody">
+                  <tr><td colspan="5" class="rpt-empty"><i class="ti ti-loader-2 spin"></i> Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 4: NBFC Leaderboard ── -->
+        <div class="rpt-section">
+          <div class="rpt-section-header">
+            <div class="rpt-section-title"><i class="ti ti-trophy"></i> NBFC Leaderboard</div>
+            <div class="rpt-section-sub">Ranked by total loans disbursed</div>
+          </div>
+
+          <div class="rpt-card">
+            <div class="table-wrap">
+              <table class="rpt-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>NBFC</th>
+                    <th>Total Loans</th>
+                    <th>Total Disbursed</th>
+                    <th>Active Borrowers</th>
+                    <th>Avg Loan Size</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                  <tr><td colspan="6" class="rpt-empty"><i class="ti ti-loader-2 spin"></i> Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /rptContent -->
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/admin-reports.js"></script>
+</body>
+</html>

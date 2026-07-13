@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EMI Collections — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-emis.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/nbfc/dashboard">
+       <div class="logo-icon" id="topLogoIcon"
+     style="width:38px;height:38px;border-radius:8px;overflow:hidden;
+            background:var(--teal-50);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;">
+    <i class="ti ti-building-bank"></i>
+</div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="company-avatar" id="companyAvatar">N</div>
+      <button class="icon-btn" onclick="handleLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item" href="/nbfc/dashboard"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/nbfc/applications"><i class="ti ti-file-invoice"></i><span>Loan Applications</span><span class="nav-badge pending" id="badge-loans"></span></a>
+        <a class="nav-item" href="/nbfc/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item active" href="/nbfc/emis"><i class="ti ti-coin-rupee"></i><span>EMI Collections</span><span class="nav-badge danger" id="badge-emis"></span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item" href="/nbfc/reports"><i class="ti ti-chart-bar"></i><span>Reports</span></a>
+        <a class="nav-item" href="/nbfc/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status"><span class="status-dot active"></span> Active</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">EMI Collections</h1>
+          <p class="page-sub">Track monthly EMI payments and manage overdue accounts.</p>
+        </div>
+<div class="page-header-actions">
+  <div class="search-wrap">
+    <i class="ti ti-search"></i>
+    <input type="text" id="searchInput" placeholder="Search borrower…" oninput="handleSearch(this.value)"/>
+  </div>
+  <div class="month-selector">
+            <button onclick="prevMonth()"><i class="ti ti-chevron-left"></i></button>
+            <span id="monthLabel">Loading…</span>
+            <button onclick="nextMonth()"><i class="ti ti-chevron-right"></i></button>
+          </div>
+
+    <button class="btn-export" onclick="exportToCSV()">
+      <i class="ti ti-download"></i> Export CSV
+    </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="emi-stats-grid">
+        <div class="emi-stat-card blue">
+          <div class="emi-stat-icon"><i class="ti ti-calendar-due"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val" id="emi-stat-due">—</div>
+            <div class="emi-stat-label">Total Due This Month</div>
+          </div>
+        </div>
+        <div class="emi-stat-card green">
+          <div class="emi-stat-icon"><i class="ti ti-circle-check"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val" id="emi-stat-collected">₹0</div>
+            <div class="emi-stat-label">Collected</div>
+          </div>
+        </div>
+        <div class="emi-stat-card orange">
+          <div class="emi-stat-icon"><i class="ti ti-clock-hour-4"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val" id="emi-stat-pending-count">—</div>
+            <div class="emi-stat-label">Pending EMIs</div>
+          </div>
+        </div>
+        <div class="emi-stat-card red">
+          <div class="emi-stat-icon"><i class="ti ti-alert-triangle"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val" id="emi-stat-overdue">—</div>
+            <div class="emi-stat-label">Overdue EMIs</div>
+          </div>
+        </div>
+        <div class="emi-stat-card purple">
+          <div class="emi-stat-icon"><i class="ti ti-trending-up"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val teal" id="emi-stat-interest">₹0</div>
+            <div class="emi-stat-label">Interest Earned</div>
+          </div>
+        </div>
+        <div class="emi-stat-card teal-light">
+          <div class="emi-stat-icon"><i class="ti ti-receipt"></i></div>
+          <div class="emi-stat-info">
+            <div class="emi-stat-val teal" id="emi-stat-profit">₹0</div>
+            <div class="emi-stat-label">Net Profit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interest breakdown strip -->
+      <div class="interest-strip" id="interestStrip" style="display:none;">
+        <div class="int-strip-label">
+          <i class="ti ti-trending-up"></i>
+          <span id="interestStripMonth">Profit breakdown</span>
+        </div>
+        <div class="int-strip-items">
+          <div class="int-strip-item">
+            <div class="int-strip-val" id="stripInterest">₹0</div>
+            <div class="int-strip-sub">Interest income</div>
+          </div>
+          <div class="int-strip-divider"></div>
+          <div class="int-strip-item">
+            <div class="int-strip-val" id="stripPrincipal">₹0</div>
+            <div class="int-strip-sub">Processing fees</div>
+          </div>
+          <div class="int-strip-divider"></div>
+          <div class="int-strip-item">
+            <div class="int-strip-val int-strip-val-lg" id="stripTotal">₹0</div>
+            <div class="int-strip-sub">Net profit this month</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collection progress bar -->
+      <div class="collection-progress-card" id="progressCard" style="display:none;">
+        <div class="cp-header">
+          <span class="cp-title">Collection Progress</span>
+          <span class="cp-pct" id="cpPct">0%</span>
+        </div>
+        <div class="cp-track"><div class="cp-fill" id="cpFill"></div></div>
+        <div class="cp-labels">
+          <span id="cpCollected">₹0 collected</span>
+          <span id="cpTotal">of ₹0 due</span>
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="switchTab('all',this)">All</button>
+        <button class="filter-tab" onclick="switchTab('pending',this)">Pending</button>
+        <button class="filter-tab" onclick="switchTab('paid',this)">Paid</button>
+        <button class="filter-tab" onclick="switchTab('overdue',this)">Overdue</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Borrower</th>
+                <th>Loan Amount</th>
+                <th>EMI Amount</th>
+                <th>Interest</th>
+                <th>Principal</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Late Fee</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="emisBody">
+              <tr><td colspan="6" class="table-empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon"><i class="ti ti-coin-off"></i></div>
+          <div class="empty-title" id="emptyTitle">No EMIs found</div>
+          <div class="empty-sub" id="emptySub">EMI data will appear here once loans are disbursed and active.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Mark Paid Confirm Modal -->
+<div class="modal-overlay" id="paidModal" onclick="closePaidModal(event)">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon green"><i class="ti ti-circle-check"></i></div>
+        <div>
+          <div class="modal-title">Mark as Paid</div>
+          <div class="modal-sub" id="paidModalSub">Confirm payment received</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closePaidModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px;">
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;">
+        Confirm that you have received the EMI payment of <strong id="paidModalAmt">—</strong> from <strong id="paidModalName">—</strong>.
+      </p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px;">
+        This action will mark the EMI as paid and update the borrower's repayment record.
+      </p>
+    </div>
+    <div class="modal-footer" style="display:flex;">
+      <div class="modal-footer-left"></div>
+      <div class="modal-footer-right">
+        <button class="btn-outline" onclick="closePaidModal()">Cancel</button>
+        <button class="btn-mark-paid" id="confirmPaidBtn" onclick="confirmMarkPaid()">
+          <i class="ti ti-circle-check"></i> Confirm Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dispute Payment Modal -->
+<div class="modal-overlay" id="disputeModal" onclick="closeDisputeModal(event)">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon red"><i class="ti ti-alert-triangle"></i></div>
+        <div>
+          <div class="modal-title">Dispute Payment</div>
+          <div class="modal-sub">Claim from <span id="disputeModalName">—</span></div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeDisputeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px;">
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;">
+        This will revert the EMI back to <strong>Pending</strong> and the borrower will need to resubmit payment proof.
+      </p>
+      <label style="font-size:12px;font-weight:600;color:var(--text-primary);display:block;margin-bottom:6px;">
+        Reason for dispute
+      </label>
+      <textarea id="disputeReasonInput" rows="3"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:13px;font-family:var(--font-sans);resize:vertical;outline:none;"
+        placeholder="e.g. Payment not received in our account yet"></textarea>
+    </div>
+    <div class="modal-footer" style="display:flex;">
+      <div class="modal-footer-left"></div>
+      <div class="modal-footer-right">
+        <button class="btn-outline" onclick="closeDisputeModal()">Cancel</button>
+        <button class="btn-mark-paid" id="confirmDisputeBtn" onclick="confirmDispute()"
+          style="background:#dc2626;">
+          <i class="ti ti-x"></i> Submit Dispute
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="display:none;"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-emis.js"></script>
+</body>
+</html>

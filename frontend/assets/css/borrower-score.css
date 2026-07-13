@@ -1,0 +1,198 @@
+/* ════════════════════════════════════════════════════════════════════════
+   Credit Score page
+   All colours/spacing come from the tokens already defined in
+   borrower-base.css (teal scale, success/warning/error, radius, fonts).
+   No JS changes required — every id/class the JS touches is unchanged.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero score card ──────────────────────────────────────────────────── */
+
+.score-main-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(10,31,42,0.04), 0 16px 32px -20px rgba(10,31,42,0.14);
+}
+/* one quiet signature touch — a soft wash in the corner, nothing more */
+.score-main-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(460px 240px at 108% -12%, var(--teal-50) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.score-circle-wrap {
+  position: relative;
+  width: 172px; height: 172px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.score-circle-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--teal-50) 0%, transparent 72%);
+  z-index: -1;
+}
+.score-ring { width: 100%; height: 100%; display: block; }
+#scoreRingArc { transition: stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1), stroke 0.4s ease; }
+
+.score-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.score-number {
+  font-size: 40px; font-weight: 700; font-family: var(--font-mono);
+  line-height: 1; letter-spacing: -0.5px; color: var(--text-primary);
+}
+.score-label {
+  font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+  margin-top: 4px; letter-spacing: 0.3px;
+}
+
+.score-info { flex: 1; min-width: 0; z-index: 1; }
+.score-eyebrow {
+  font-size: 11px; font-weight: 600; color: var(--teal-500);
+  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 9px;
+}
+.score-grade-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 23px; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 8px; letter-spacing: -0.3px;
+}
+.score-grade-pill .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--teal-300); flex-shrink: 0;
+}
+.score-grade-sub { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 22px; line-height: 1.6; max-width: 420px; }
+
+/* ── Range gauge ──────────────────────────────────────────────────────── */
+/* Static zone widths mirror the four grade tiers used on this page:
+   Poor < 550 (41.7%) · Fair 550–649 (16.7%) · Good 650–749 (16.7%) · Excellent ≥750 (25%) */
+
+.score-range-wrap { max-width: 420px; }
+.score-range-bar {
+  position: relative;
+  height: 10px; border-radius: 999px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border-light);
+  overflow: visible;
+  background: linear-gradient(to right,
+    rgba(192,57,43,0.18)  0%,    rgba(192,57,43,0.18)  41.7%,
+    rgba(212,130,10,0.18) 41.7%, rgba(212,130,10,0.18) 58.3%,
+    rgba(61,168,192,0.16)  58.3%, rgba(61,168,192,0.16)  75%,
+    rgba(14,140,106,0.18) 75%,   rgba(14,140,106,0.18) 100%
+  );
+}
+.score-range-fill {
+  position: relative;
+  height: 100%; width: 0%; border-radius: 999px;
+  transition: width 1.1s cubic-bezier(0.4,0,0.2,1), background 0.4s ease;
+}
+.score-range-fill::after {
+  content: "";
+  position: absolute; top: 50%; right: -2px;
+  width: 14px; height: 14px; margin-top: -7px;
+  border-radius: 50%; background: inherit;
+  box-shadow: 0 0 0 3px var(--white), 0 2px 5px rgba(10,31,42,0.22);
+}
+.score-range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 10.5px; color: var(--text-muted); font-family: var(--font-mono);
+}
+
+/* ── Breakdown card ───────────────────────────────────────────────────── */
+
+.breakdown-intro {
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.6;
+  margin-bottom: 16px;
+}
+.factor-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+background: var(--off-white);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 22px;
+}
+.factor-summary-item {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 22px;
+  flex: 1;
+background: var(--white);
+  border-radius: var(--radius-sm, 8px);
+  box-sizing: border-box;
+}
+.factor-summary-item.highlight {
+  background: var(--teal-50);
+}
+.factor-summary-item.highlight .fs-label { color: var(--teal-600); }
+.factor-summary-item.highlight .fs-val   { color: var(--teal-600); }
+
+.fs-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.fs-val   { font-size: 26px; font-weight: 500; font-family: var(--font-mono); color: var(--text-primary); line-height: 1; }
+.factor-summary-sep { font-size: 20px; font-weight: 300; color: var(--text-muted); }
+
+.score-dated { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+
+
+/* ── Individual factor rows ──────────────────────────────────────────── */
+
+.factor-item {
+  display: grid;
+  grid-template-columns: 16px 180px 1fr 160px 12px 72px;
+  align-items: center;
+  gap: 0 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.factor-item:first-child { padding-top: 0; }
+.factor-item:last-child  { padding-bottom: 0; border-bottom: none; }
+
+.factor-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.factor-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.factor-score {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  padding: 5px 14px;
+  border-radius: 999px;
+  text-align: center;
+  background: color-mix(in srgb, currentColor 8%, white);
+  white-space: nowrap;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.factor-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--off-white);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+
+}
+.factor-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}

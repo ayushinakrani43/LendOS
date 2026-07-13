@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Overview — LendOS NBFC Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-overview.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/nbfc/dashboard">
+       <div class="logo-icon" id="topLogoIcon"
+     style="width:38px;height:38px;border-radius:8px;overflow:hidden;background:var(--teal-50);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
+    <i class="ti ti-building-bank"></i>
+</div>
+        <div class="logo-text-group">
+          <span class="logo-name" id="topNbfcName">Loading…</span>
+          <span class="logo-sub">NBFC Partner</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-company">
+        <div class="company-avatar" id="companyAvatar">N</div>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-item active" href="/nbfc/dashboard">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/nbfc/applications">
+          <i class="ti ti-file-invoice"></i><span>Loan Applications</span>
+          <span class="nav-badge pending" id="badge-loans"></span>
+        </a>
+        <a class="nav-item" href="/nbfc/borrowers">
+          <i class="ti ti-users"></i><span>Borrowers</span>
+        </a>
+        <a class="nav-item" href="/nbfc/emis">
+          <i class="ti ti-coin-rupee"></i><span>EMI Collections</span>
+          <span class="nav-badge danger" id="badge-emis"></span>
+        </a>
+        <div class="nav-section-label" style="margin-top:8px;">Management</div>
+        <a class="nav-item" href="/nbfc/reports">
+          <i class="ti ti-chart-bar"></i><span>Reports</span>
+        </a>
+        <a class="nav-item" href="/nbfc/settings">
+          <i class="ti ti-settings"></i><span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-nbfc-info">
+          <div class="snbfc-avatar" id="sidebarAvatar">N</div>
+          <div>
+            <div class="snbfc-name" id="sidebarNbfcName">Loading…</div>
+            <div class="snbfc-status">
+              <span class="status-dot active"></span> Active
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main-content">
+      <div class="page-section active">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="welcomeTitle">Welcome back!</h1>
+            <p class="page-sub">Here's what's happening with your loans today.</p>
+          </div>
+          <div class="page-header-actions">
+            <a class="btn-primary" href="/nbfc/applications">
+              <i class="ti ti-eye"></i> View Applications
+            </a>
+          </div>
+        </div>
+
+        <!-- Stats grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon teal"><i class="ti ti-users"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-borrowers">—</div>
+              <div class="stat-label">Total Borrowers</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="ti ti-file-check"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-active">—</div>
+              <div class="stat-label">Active Loans</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="ti ti-coin-rupee"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-disbursed">—</div>
+              <div class="stat-label">Total Disbursed</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="ti ti-clock-hour-4"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-pending">—</div>
+              <div class="stat-label">Pending Applications</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="ti ti-calendar-due"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-emi-due">—</div>
+              <div class="stat-label">EMI Due This Month</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red"><i class="ti ti-alert-triangle"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-overdue">—</div>
+              <div class="stat-label">Overdue EMIs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loan rules status — now full width, own row -->
+        <div class="content-card">
+          <div class="card-header-row">
+            <div class="card-title"><i class="ti ti-settings"></i> Loan Rules Status</div>
+            <a class="card-link" href="/nbfc/settings">Edit →</a>
+          </div>
+          <div class="card-body-pad" id="rulesStatusCard">
+            <div class="rules-grid-loading" style="color:var(--text-muted);font-size:13px;">Loading…</div>
+          </div>
+        </div>
+
+        <!-- Recent applications -->
+        <div class="content-card" style="margin-top:20px;">
+          <div class="card-header-row">
+            <div class="card-title"><i class="ti ti-file-invoice"></i> Recent Applications</div>
+            <a class="card-link" href="/nbfc/applications">View all →</a>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Borrower</th>
+                  <th>Amount</th>
+                  <th>Tenure</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                  <th>Applied</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recentBody">
+                <tr><td colspan="7" class="table-empty">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/nbfc-overview.js"></script>
+</body>
+</html>

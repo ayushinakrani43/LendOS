@@ -1,0 +1,353 @@
+/* ═══════════════════════════════════════════════════════════════
+   loan-apply.css  —  LendOS Borrower Loan Application Page
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Back button ── */
+.back-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--white);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.back-btn:hover {
+  background: var(--teal-50);
+  border-color: var(--teal-100);
+  color: var(--teal-600);
+}
+
+/* ── Rate notice box ── */
+.rate-notice-box {
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: var(--radius-md); padding: 13px 15px;
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 18px;
+}
+.rate-notice-box i { color: #d97706; font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.rate-notice-box strong { display: block; font-size: 12px; color: #92400e; margin-bottom: 2px; font-weight: 600; }
+.rate-notice-box span { font-size: 12px; color: #b45309; }
+
+/* ── Two column grid ── */
+.apply-grid {
+  display: grid;
+  grid-template-columns: 1fr 370px;
+  gap: 18px;
+  align-items: start;
+}
+
+/* ── Lender banner (replaces old lender-card) ── */
+.lender-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.lender-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--teal-50) 0%, transparent 60%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.lender-card-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--teal-50); border: 1px solid var(--teal-100);
+  font-size: 13px; font-weight: 600; color: var(--teal-600);
+  flex-shrink: 0; overflow: hidden;
+  position: relative; z-index: 1;
+}
+.lender-card-logo img { width: 100%; height: 100%; object-fit: contain; }
+.lender-card-info { position: relative; z-index: 1; }
+.lender-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+
+/* ── Lender chips (replaces lender-meta) ── */
+.lender-meta {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.lender-chip {
+  font-size: 11px; font-weight: 500;
+  padding: 3px 9px; border-radius: 99px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.lender-chip.teal {
+  background: var(--teal-50);
+  border-color: var(--teal-100);
+  color: var(--teal-600);
+}
+.lender-chip i { font-size: 11px; }
+
+/* ── Form card ── */
+.form-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* ── Field group ── */
+.field-group { display: flex; flex-direction: column; gap: 8px; }
+.field-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.field-label-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+
+/* ── Section divider inside form ── */
+.form-section-divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.form-section-divider::before,
+.form-section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ── Amount input badge ── */
+.amount-input-wrap {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 5px 10px;
+  transition: border-color 0.15s;
+}
+.amount-input-wrap:focus-within { border-color: var(--teal-400); }
+.rupee-sym { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+.amount-input {
+  border: none; outline: none; background: transparent;
+  font-size: 14px; font-weight: 600; font-family: var(--font-mono);
+  color: var(--text-primary); width: 110px; text-align: right;
+}
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* ── Tenure display badge ── */
+.tenure-display {
+  font-size: 13px; font-weight: 600; font-family: var(--font-mono);
+  color: var(--teal-600); background: var(--teal-50);
+  border: 1px solid var(--teal-100); border-radius: 99px;
+  padding: 4px 13px;
+}
+
+/* ── Range slider ── */
+.range-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  background: var(--border); border-radius: 99px; outline: none;
+  cursor: pointer;
+}
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--teal-600); cursor: pointer;
+  border: 2.5px solid white;
+  box-shadow: 0 1px 5px rgba(10,31,42,0.16);
+  transition: transform 0.1s;
+}
+.range-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 10.5px; color: var(--text-muted); margin-top: 4px;
+}
+
+/* ── Select field ── */
+.select-wrap { position: relative; }
+.field-select {
+  width: 100%; padding: 9px 34px 9px 11px;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--white); font-size: 13px; font-family: var(--font-sans);
+  color: var(--text-primary); outline: none; appearance: none;
+  cursor: pointer; transition: border-color 0.15s;
+}
+.field-select:focus { border-color: var(--teal-400); }
+.select-chevron {
+  position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+  font-size: 15px; color: var(--text-muted); pointer-events: none;
+}
+
+/* ── Proceed button ── */
+.proceed-btn {
+  width: 100%; padding: 12px;
+  background: var(--teal-600); color: white; border: none;
+  border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+  font-family: var(--font-sans); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: opacity 0.15s;
+}
+.proceed-btn:hover:not(:disabled) { opacity: 0.88; }
+.proceed-btn:disabled {
+  background: var(--surface); color: var(--text-muted); cursor: not-allowed;
+  border: 1px solid var(--border);
+}
+.proceed-note {
+  font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: -8px;
+}
+
+/* ══════════════════════════════════════════
+   RIGHT COLUMN
+══════════════════════════════════════════ */
+
+/* ── EMI Summary card ── */
+.summary-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+/* EMI hero block */
+.emi-hero {
+  background: var(--teal-50); border-bottom: 1px solid var(--teal-100);
+  padding: 18px 20px; text-align: center;
+}
+.emi-hero-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--teal-600); font-weight: 600; margin-bottom: 5px;
+}
+.emi-hero-num {
+  font-size: 34px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--teal-600); line-height: 1;
+}
+
+/* No longer needed (title moved into hero) */
+.summary-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 14px;
+}
+
+/* Summary rows */
+.summary-rows {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 14px 20px;
+}
+.summary-row { display: flex; justify-content: space-between; align-items: center; }
+.sr-label { font-size: 12.5px; color: var(--text-secondary); }
+.sr-val { font-size: 12.5px; font-weight: 600; font-family: var(--font-mono); color: var(--text-primary); }
+.sr-strong { font-size: 13px; }
+.sr-green { color: var(--teal-600); }
+.summary-divider { height: 1px; background: var(--border); margin: 2px 0; }
+
+/* ── Affordability card ── */
+.afford-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.afford-card-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-muted);
+}
+
+/* Afford rows */
+.afford-rows { display: flex; flex-direction: column; gap: 7px; }
+.afford-row { display: flex; justify-content: space-between; align-items: center; }
+.ar-label { font-size: 12.5px; color: var(--text-secondary); }
+.ar-val { font-size: 12.5px; font-weight: 600; font-family: var(--font-mono); color: var(--text-primary); }
+.ar-emi-val { color: var(--teal-600); }
+
+/* Afford bar */
+.afford-bar-wrap { display: flex; flex-direction: column; gap: 4px; }
+.afford-bar-track {
+  position: relative; height: 7px; background: var(--surface);
+  border-radius: 99px; overflow: visible;
+}
+.afford-bar-fill {
+  height: 100%; border-radius: 99px;
+  background: var(--teal-400);
+  transition: width 0.3s ease, background 0.3s ease;
+  max-width: 100%;
+}
+.afford-bar-limit {
+  position: absolute; top: -3px;
+  width: 1.5px; height: 13px; background: var(--text-muted);
+  border-radius: 1px;
+}
+.afford-bar-labels {
+  position: relative;
+  height: 16px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+.afford-bar-labels span:first-child {
+  position: absolute;
+  left: 0;
+}
+
+.afford-bar-labels span:last-child {
+  position: absolute;
+  right: 0;
+}
+
+#affordBarLimitLabel {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  /* left is set dynamically by JS */
+}
+
+/* ── Afford message / status pill ── */
+.afford-msg {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12.5px; color: var(--text-secondary);
+  padding: 10px 13px; border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.afford-msg-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.afford-msg.state-safe   { background: var(--teal-50);  color: var(--teal-600); }
+.afford-msg.state-warn   { background: #fffbeb;          color: #92400e; }
+.afford-msg.state-danger { background: #fff1f2;          color: #be123c; }
+.afford-msg.state-block  { background: #fff1f2;          color: #be123c; }
+
+/* ── Suggestions ── */
+.suggestions-wrap {
+  border-top: 1px solid var(--border); padding-top: 14px;
+}
+.suggestions-title {
+  font-size: 11.5px; font-weight: 600; color: var(--text-secondary);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 5px;
+}
+.suggestions-title i { color: #d97706; }
+.suggestions-list { display: flex; flex-direction: column; gap: 7px; }
+.suggestion-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 9px 11px; gap: 8px;
+}
+.suggestion-info { flex: 1; }
+.suggestion-tenure { font-size: 10.5px; color: var(--text-muted); margin-bottom: 1px; }
+.suggestion-amount {
+  font-size: 13px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+.suggestion-emi { font-size: 10.5px; color: var(--text-secondary); margin-top: 1px; }
+.suggestion-set-btn {
+  background: var(--teal-50); color: var(--teal-600);
+  border: 1px solid var(--teal-100);
+  border-radius: var(--radius-md); padding: 6px 12px;
+  font-size: 11.5px; font-weight: 600; font-family: var(--font-sans);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: background 0.15s;
+}
+.suggestion-set-btn:hover { background: var(--teal-100); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .apply-grid { grid-template-columns: 1fr; }
+  .apply-right { order: -1; }
+}
+@media (max-width: 640px) {
+  .field-label-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .amount-input { width: 100px; }
+  .emi-hero-num { font-size: 28px; }
+}

@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Documents — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<!--  <link rel="stylesheet" href="/static/assets/css/borrower-dashboard.css">-->
+    <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+<link rel="stylesheet" href="/static/assets/css/borrower-documents.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+<!--    <div class="topbar-left">-->
+<!--      <a class="logo" href="/">-->
+      <div class="topbar-left">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="ti ti-menu-2"></i>
+  </button>
+  <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview" data-tooltip="Overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item active" href="/borrower/documents" data-tooltip="Upload Documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item" href="/borrower/score" data-tooltip="Credit Score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item" href="/borrower/nbfcs" data-tooltip="Apply for Loan"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item" href="/borrower/loans" data-tooltip="My Loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+          <a class="nav-item" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+ <script>
+    (function() {
+      if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+        var s = document.getElementById('sidebar');
+        s.classList.add('no-transition');
+        s.classList.add('collapsed');
+        setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+      }
+    })();
+  </script>
+    <main class="main-content">
+      <div class="page-section active">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Upload Documents</h1>
+            <p class="page-sub" id="page-sub-docs">Upload your bank statement and salary slip to generate your credit score.</p>
+          </div>
+        </div>
+
+
+
+        <div class="content-card">
+          <div class="card-header-row">
+            <div class="card-title"><i class="ti ti-info-circle"></i> Why we need these</div>
+          </div>
+          <div class="card-body-pad">
+            <div class="info-box">
+              <i class="ti ti-robot"></i>
+              <p>Our AI analyses your bank statement and salary slip to generate a credit score in under 60 seconds — no CIBIL check required. Your documents are encrypted and used only for scoring.</p>
+            </div>
+          </div>
+        </div>
+
+          <!-- Loan amount -->
+<div class="content-card">
+  <div class="card-header-row">
+    <div class="card-title"><i class="ti ti-cash"></i> Loan Amount</div>
+    <span class="required-badge">Required</span>
+  </div>
+  <div class="card-body-pad">
+    <p class="doc-desc">Enter the loan amount you wish to apply for. This helps calculate your Loan-to-Income ratio.</p>
+
+    <div class="form-group">
+      <label class="form-label">Requested Loan Amount (₹) *</label>
+      <div class="input-wrap">
+        <i class="ti ti-currency-rupee input-icon"></i>
+        <input class="form-control has-icon" type="number" id="requested_loan_amount"
+               placeholder="e.g. 100000" min="1000" step="1000"
+               oninput="document.getElementById('e_loan_amount').classList.remove('show')"/>
+      </div>
+      <div class="err-msg" id="e_loan_amount">Please enter a valid loan amount (minimum ₹1,000)</div>
+    </div>
+
+    <div class="quick-amounts">
+      <button type="button" class="quick-amt-btn" onclick="setLoanAmount(100000)">₹1L</button>
+      <button type="button" class="quick-amt-btn" onclick="setLoanAmount(300000)">₹3L</button>
+      <button type="button" class="quick-amt-btn" onclick="setLoanAmount(500000)">₹5L</button>
+      <button type="button" class="quick-amt-btn" onclick="setLoanAmount(1000000)">₹10L</button>
+    </div>
+  </div>
+</div>
+
+        <div class="upload-docs-grid">
+
+          <!-- Bank statement -->
+          <div class="content-card">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-building-bank"></i> 3-Month Bank Statement</div>
+              <span class="required-badge">Required</span>
+            </div>
+            <div class="card-body-pad">
+              <p class="doc-desc">Upload your last 3 months bank statement. PDF format preferred.</p>
+              <div class="doc-upload-box" id="bank-upload-box" onclick="document.getElementById('bank-file-input').click()">
+                <div class="doc-upload-idle" id="bank-idle">
+                  <i class="ti ti-file-text" style="font-size:32px;color:var(--teal-300);"></i>
+                  <div class="doc-upload-title">Click to upload</div>
+                  <div class="doc-upload-sub">PDF, PNG or JPG · Max 10MB</div>
+                </div>
+                <div class="doc-upload-done" id="bank-done" style="display:none;">
+                  <i class="ti ti-circle-check" style="color:var(--success);font-size:22px;"></i>
+                  <div>
+                    <div style="font-weight:600;color:var(--success);" id="bank-filename">file.pdf</div>
+                    <div style="font-size:11.5px;color:var(--text-muted);">Ready to upload</div>
+                  </div>
+                </div>
+                <input type="file" id="bank-file-input" accept=".pdf,image/png,image/jpeg,image/jpg" style="display:none;" onchange="handleFileSelect(this, 'bank')"/>
+              </div>
+              <div class="err-msg" id="e_bank">Please upload your bank statement</div>
+
+              <div class="form-group" id="bank-password-group" style="display:none; margin-top:12px;">
+                <label class="form-label">Bank Statement PDF Password</label>
+                <div class="input-wrap">
+                  <i class="ti ti-lock input-icon"></i>
+                  <input class="form-control has-icon" type="password" id="bank_statement_password"
+                         placeholder="Enter PDF password (if any)"
+                         autocomplete="new-password"
+                         oninput="document.getElementById('e_bank_password').classList.remove('show')"/>
+                </div>
+                <div class="err-msg" id="e_bank_password">Please enter the PDF password</div>
+                <p style="font-size:11.5px;color:var(--text-muted);margin-top:6px;">
+                  If your bank statement PDF is password protected, enter the password here. Leave blank if it isn't protected.
+                </p>
+              </div>
+
+              <div class="doc-tips">
+                <div class="tip-title">Tips for a valid statement:</div>
+                <ul>
+                  <li>Must show last 3 months transactions</li>
+                  <li>Must include account holder name</li>
+                  <li>Must show account number</li>
+                  <li>If password-protected, enter the PDF password below</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Salary Slip card — shown for Salaried -->
+          <div class="content-card" id="card-salary">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-receipt"></i> Latest Salary Slip</div>
+              <span class="required-badge">Required</span>
+            </div>
+            <div class="card-body-pad">
+              <p class="doc-desc">Upload your most recent salary slip from your employer.</p>
+              <div class="doc-upload-box" id="salary-upload-box" onclick="document.getElementById('salary-file-input').click()">
+                <div class="doc-upload-idle" id="salary-idle">
+                  <i class="ti ti-file-invoice" style="font-size:32px;color:var(--teal-300);"></i>
+                  <div class="doc-upload-title">Click to upload</div>
+                  <div class="doc-upload-sub">PDF, PNG or JPG · Max 10MB</div>
+                </div>
+                <div class="doc-upload-done" id="salary-done" style="display:none;">
+                  <i class="ti ti-circle-check" style="color:var(--success);font-size:22px;"></i>
+                  <div>
+                    <div style="font-weight:600;color:var(--success);" id="salary-filename">file.pdf</div>
+                    <div style="font-size:11.5px;color:var(--text-muted);">Ready to upload</div>
+                  </div>
+                </div>
+                <input type="file" id="salary-file-input" accept=".pdf,image/png,image/jpeg,image/jpg" style="display:none;" onchange="handleFileSelect(this, 'salary')"/>
+              </div>
+              <div class="err-msg" id="e_salary">Please upload your salary slip</div>
+              <div class="doc-tips">
+                <div class="tip-title">Tips for a valid salary slip:</div>
+                <ul>
+                  <li>Must show your full name</li>
+                  <li>Must show monthly net salary</li>
+                  <li>Must show employer name</li>
+                  <li>Must be from last 3 months</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITR card — shown for Self-Employed -->
+          <div class="content-card" id="card-itr" style="display:none;">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-file-certificate"></i> Latest ITR (Income Tax Return)</div>
+              <span class="required-badge">Required</span>
+            </div>
+            <div class="card-body-pad">
+              <p class="doc-desc">Since you are self-employed, please upload your latest filed ITR.</p>
+              <div class="doc-upload-box" id="itr-upload-box" onclick="document.getElementById('itr-file-input').click()">
+                <div class="doc-upload-idle" id="itr-idle">
+                  <i class="ti ti-file-certificate" style="font-size:32px;color:var(--teal-300);"></i>
+                  <div class="doc-upload-title">Click to upload</div>
+                  <div class="doc-upload-sub">PDF, PNG or JPG · Max 10MB</div>
+                </div>
+                <div class="doc-upload-done" id="itr-done" style="display:none;">
+                  <i class="ti ti-circle-check" style="color:var(--success);font-size:22px;"></i>
+                  <div>
+                    <div style="font-weight:600;color:var(--success);" id="itr-filename">file.pdf</div>
+                    <div style="font-size:11.5px;color:var(--text-muted);">Ready to upload</div>
+                  </div>
+                </div>
+                <input type="file" id="itr-file-input" accept=".pdf,image/png,image/jpeg,image/jpg" style="display:none;" onchange="handleFileSelect(this, 'itr')"/>
+              </div>
+              <div class="err-msg" id="e_itr">Please upload your ITR</div>
+
+                <div class="form-group" id="itr-password-group" style="display:none; margin-top:12px;">
+    <label class="form-label">ITR PDF Password</label>
+    <div class="input-wrap">
+        <i class="ti ti-lock input-icon"></i>
+        <input class="form-control has-icon" type="password" id="itr_password"
+               placeholder="Enter PDF password (if any)"
+               oninput="document.getElementById('e_itr_password').classList.remove('show')"/>
+    </div>
+    <div class="err-msg" id="e_itr_password">Please enter the PDF password</div>
+    <p style="font-size:11.5px;color:var(--text-muted);margin-top:6px;">
+        If your ITR PDF is password protected, enter the password here. Leave blank if it isn't protected.
+    </p>
+</div>
+
+              <div class="doc-tips">
+                <div class="tip-title">Tips for a valid ITR:</div>
+                <ul>
+                  <li>Must be the latest filed ITR (AY 2024-25 preferred)</li>
+                  <li>Must show your full name and PAN number</li>
+                  <li>Must show gross total income</li>
+                  <li>ITR-V acknowledgement or full ITR form accepted</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="content-card" style="margin-top:4px;">
+          <div class="card-body-pad">
+            <div class="alert error" id="docs-alert-err"></div>
+            <div class="alert success" id="docs-alert-ok"></div>
+            <button class="btn-primary" id="btn-upload-docs" onclick="uploadDocuments()" style="max-width:280px;">
+              <i class="ti ti-upload"></i> Upload & Generate Score
+            </button>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:10px;">
+              Your AI credit score will be generated immediately after upload.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Verified Documents View (shown after scoring) ────────────────── -->
+      <div id="verified-docs-view" style="display:none;">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Documents Verified</h1>
+            <p class="page-sub">Your documents have been verified and stored securely. Your credit score is ready.</p>
+          </div>
+        </div>
+
+        <div class="verified-banner">
+          <i class="ti ti-circle-check"></i>
+          <span id="verified-banner-text">Both documents verified successfully.</span>
+        </div>
+   <!-- Score impact strip -->
+        <div class="score-impact-strip">
+          <div class="score-impact-item">
+            <span class="si-label">AVG. Monthly Income</span>
+            <span class="si-val" id="si-income">—</span>
+            <span class="si-sub si-good" id="si-income-sub">—</span>
+          </div>
+          <div class="score-impact-item">
+           <span class="si-label">AVG. MONTHLY CLOSING BALANCE</span>
+            <span class="si-val" id="si-balance">—</span>
+            <span class="si-sub si-good" id="si-balance-sub">—</span>
+          </div>
+          <div class="score-impact-item">
+            <span class="si-label">Bounce Count</span>
+            <span class="si-val" id="si-bounces">—</span>
+            <span class="si-sub" id="si-bounces-sub">—</span>
+          </div>
+        </div>
+        <div class="verified-docs-grid">
+
+          <!-- Bank statement card -->
+          <div class="content-card">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-building-bank"></i> Bank Statement</div>
+              <span class="verified-badge-card"><i class="ti ti-check"></i> Verified</span>
+            </div>
+            <div class="card-body-pad">
+              <div class="verified-doc-name" id="v-bank-name">—</div>
+              <div class="verified-divider"></div>
+              <div class="verified-rows">
+                <div class="verified-row"><span class="v-label">Account holder</span><span class="v-val" id="v-bank-holder">—</span></div>
+                <div class="verified-row"><span class="v-label">Account number</span><span class="v-val" id="v-bank-acc">—</span></div>
+                  <div class="verified-row"><span class="v-label">IFSC code</span><span class="v-val" id="v-bank-ifsc">—</span></div>
+                <div class="verified-row"><span class="v-label">Period covered</span><span class="v-val" id="v-bank-period">—</span></div>
+                <div class="verified-row"><span class="v-label">Opening balance</span><span class="v-val" id="v-bank-opening">—</span></div>
+                <div class="verified-row"><span class="v-label">Total credit</span><span class="v-val highlight-green" id="v-bank-credit">—</span></div>
+                <div class="verified-row"><span class="v-label">Total debit</span><span class="v-val" id="v-bank-debit">—</span></div>
+                <div class="verified-row"><span class="v-label">Bounce count</span><span id="v-bank-bounce">—</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Income document card -->
+          <div class="content-card">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-file-certificate"></i> <span id="v-income-doc-title">Income Document</span></div>
+              <span class="verified-badge-card"><i class="ti ti-check"></i> Verified</span>
+            </div>
+            <div class="card-body-pad">
+              <div class="verified-doc-name" id="v-income-name">—</div>
+              <div class="verified-divider"></div>
+              <div class="verified-rows" id="v-income-rows">
+                <!-- populated by JS based on salary_slip or itr -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <!-- Next step prompt -->
+        <div class="content-card verified-next-card">
+          <div class="verified-next-text">
+            <div class="verified-next-title"><i class="ti ti-chart-pie"></i> Your credit score is ready</div>
+            <div class="verified-next-sub">View your AI-generated score and 7-factor breakdown on the Credit Score page.</div>
+          </div>
+          <div class="verified-next-actions">
+            <a href="/borrower/score" class="btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;width:auto;white-space:nowrap;">
+              <i class="ti ti-chart-pie"></i> View Credit Score
+            </a>
+            <a href="/borrower/nbfcs" class="btn-outline-verified" style="text-decoration:none;">
+              <i class="ti ti-building-bank"></i> Browse NBFCs
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/borrower-dashboard.js"></script>
+
+
+
+</body>
+</html>

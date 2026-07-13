@@ -1,0 +1,366 @@
+* ═══════════════════════════════════════════════════════════════
+   borrower-loans.css  —  LendOS My Loans Page
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Loading ── */
+.loans-loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 60px 0; justify-content: center;
+  color: var(--text-muted); font-size: 13.5px;
+}
+.loans-loading-spinner {
+  font-size: 22px; color: var(--teal-400);
+}
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Empty state ── */
+.loans-empty {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 64px 32px;
+  text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.loans-empty-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--teal-50); border: 1px solid var(--teal-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--teal-300);
+  margin: 0 auto 18px;
+}
+.loans-empty-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.loans-empty-sub {
+  font-size: 13.5px; color: var(--text-secondary);
+  margin-bottom: 24px; line-height: 1.7; max-width: 360px; margin-inline: auto;
+}
+
+/* ── Stats strip ── */
+.loan-stats-strip {
+  display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.loan-stat {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+  flex: 1; min-width: 140px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.loan-stat-icon {
+  width: 38px; height: 38px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.loan-stat-icon.teal   { background: var(--teal-50);   color: var(--teal-600); }
+.loan-stat-icon.green  { background: #f0fdf9; color: #0e8c6a; }
+.loan-stat-icon.orange { background: #fff7ed; color: #ea580c; }
+.loan-stat-icon.red    { background: #fff1f2; color: #dc2626; }
+.loan-stat-val {
+  font-size: 20px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--text-primary); line-height: 1;
+}
+.loan-stat-label { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Loan card ── */
+.loan-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04); overflow: hidden;
+}
+
+/* Card header */
+.loan-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  gap: 12px; flex-wrap: wrap;
+}
+.loan-card-header-left { display: flex; align-items: center; gap: 14px; }
+.loan-card-nbfc-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--white); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: var(--teal-600);
+  overflow: hidden; flex-shrink: 0;
+}
+.loan-card-nbfc-logo img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+.loan-card-nbfc-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.loan-card-app-id { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+.loan-card-header-right { display: flex; align-items: center; gap: 10px; }
+
+/* Status badges */
+.loan-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 99px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.loan-badge.pending         { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.loan-badge.applied         { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.loan-badge.approved        { background: #f0fdf9; color: #0e8c6a; border: 1px solid #a3d9c3; }
+.loan-badge.active          { background: #f0fdf9; color: #0e8c6a; border: 1px solid #a3d9c3; }
+.loan-badge.rejected        { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+.loan-badge.declined        { background: #f9fafb; color: #6b7280; border: 1px solid #d1d5db; }
+.loan-badge.closed          { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+/* Card body — details grid */
+.loan-card-body { padding: 20px 22px; }
+.loan-details-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-bottom: 0;
+}
+@media (max-width: 900px) { .loan-details-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .loan-details-grid { grid-template-columns: 1fr 1fr; } }
+
+.loan-detail-item {}
+.loan-detail-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px;
+}
+.loan-detail-val {
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+.loan-detail-val.teal { color: var(--teal-600); }
+.loan-detail-val.normal { font-family: var(--font-sans); }
+
+/* Card actions */
+.loan-card-actions {
+  display: flex; gap: 10px; padding: 14px 22px;
+  border-top: 1px solid var(--border); background: var(--off-white);
+  flex-wrap: wrap;
+}
+.loan-action-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-md);
+  font-size: 12.5px; font-weight: 600; font-family: var(--font-sans);
+  cursor: pointer; text-decoration: none; transition: all 0.15s;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-secondary);
+}
+.loan-action-btn:hover { background: var(--teal-50); color: var(--teal-600); border-color: var(--teal-200); }
+.loan-action-btn.primary {
+  background: var(--teal-600); color: white; border-color: var(--teal-600);
+  box-shadow: 0 2px 6px rgba(27,80,104,0.18);
+}
+.loan-action-btn.primary:hover { background: #154057; border-color: #154057; }
+
+/* ── EMI section ── */
+.emi-section { padding: 0 22px 20px; }
+.emi-section-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-muted);
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 14px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.emi-section-title i { color: var(--teal-400); font-size: 15px; }
+
+/* EMI progress bar */
+.emi-progress-wrap { margin-bottom: 16px; }
+.emi-progress-info {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text-muted); margin-bottom: 6px;
+}
+.emi-progress-track {
+  height: 6px; background: var(--border);
+  border-radius: 99px; overflow: hidden;
+}
+.emi-progress-fill {
+  height: 100%; background: var(--teal-400);
+  border-radius: 99px; transition: width 0.5s ease;
+}
+
+/* EMI table */
+.emi-table-wrap { overflow-x: auto; }
+.emi-table {
+  width: 100%; border-collapse: collapse; font-size: 12.5px;
+}
+.emi-table th {
+  padding: 8px 12px; text-align: left; font-size: 10.5px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); background: var(--off-white);
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.emi-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary); vertical-align: middle;
+}
+.emi-table tbody tr:last-child td { border-bottom: none; }
+.emi-table tbody tr:hover td { background: var(--teal-50); }
+
+.emi-status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px;
+  font-size: 11px; font-weight: 700;
+}
+.emi-status-badge.paid    { background: #f0fdf9; color: #0e8c6a; }
+.emi-status-badge.pending { background: #fffbeb; color: #92400e; }
+.emi-status-badge.overdue { background: #fff1f2; color: #be123c; }
+.emi-status-badge.waived  { background: #f3f4f6; color: #6b7280; }
+
+/* Toggle EMI button */
+.toggle-emi-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 12px; color: var(--teal-500); font-weight: 600;
+  display: flex; align-items: center; gap: 5px;
+  padding: 0; font-family: var(--font-sans);
+}
+.toggle-emi-btn:hover { color: var(--teal-700); }
+
+/* Rejected reason */
+.rejection-box {
+  margin: 0 22px 16px;
+  background: #fff1f2; border: 1px solid #fecdd3;
+  border-radius: var(--radius-md); padding: 12px 16px;
+  font-size: 12.5px; color: #be123c; line-height: 1.6;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.rejection-box i { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* Off white surface */
+:root {
+  --off-white: #f8fafc;
+  --border-light: #edf2f7;
+}
+
+/* ── Claimed badge ── */
+.emi-status-badge.claimed { background: #fff7ed; color: #c2410c; }
+
+/* ── Pay EMI button (row action) ── */
+.emi-pay-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: var(--radius-sm, 6px);
+  font-size: 11.5px; font-weight: 600; font-family: var(--font-sans);
+  cursor: pointer; border: 1.5px solid var(--teal-200);
+  background: var(--teal-50); color: var(--teal-600);
+  transition: all 0.15s;
+}
+.emi-pay-btn:hover { background: var(--teal-600); color: white; border-color: var(--teal-600); }
+
+/* ── Pay EMI modal ── */
+.pay-modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,31,42,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; padding: 16px;
+}
+.pay-modal {
+  background: var(--white); border-radius: var(--radius-lg);
+  width: 100%; max-width: 420px; overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+.pay-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.pay-modal-title {
+  font-size: 14.5px; font-weight: 700; color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.pay-modal-title i { color: var(--teal-500); }
+.pay-modal-close {
+  width: 28px; height: 28px; border-radius: 6px; border: none;
+  background: var(--off-white); color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.pay-modal-close:hover { background: var(--border); color: var(--text-primary); }
+.pay-modal-body { padding: 20px; }
+.pay-modal-amount {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--teal-50); border: 1px solid var(--teal-100);
+  border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px;
+  font-size: 13px; color: var(--text-secondary);
+}
+.pay-modal-amount strong { font-size: 18px; font-family: var(--font-mono); color: var(--teal-600); }
+.pay-modal-bank-card {
+  background: var(--off-white); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 14px;
+}
+.pay-modal-bank-row {
+  display: flex; justify-content: space-between; padding: 5px 0;
+  font-size: 12.5px; color: var(--text-secondary);
+}
+.pay-modal-bank-row strong { color: var(--text-primary); font-family: var(--font-mono); }
+.pay-modal-note {
+  display: flex; gap: 7px; font-size: 11.5px; color: var(--text-muted);
+  line-height: 1.6; margin-bottom: 14px;
+}
+.pay-modal-note i { color: var(--teal-400); flex-shrink: 0; margin-top: 1px; }
+.pay-modal-label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--text-primary); margin-bottom: 6px;
+}
+.pay-modal-input {
+  width: 100%; height: 40px; padding: 0 12px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  font-size: 13px; font-family: var(--font-mono); color: var(--text-primary);
+  outline: none;
+}
+.pay-modal-input:focus { border-color: var(--teal-400); }
+.pay-modal-footer {
+  display: flex; gap: 10px; padding: 16px 20px;
+  border-top: 1px solid var(--border); background: var(--off-white);
+}
+.pay-modal-cancel {
+  flex: 1; height: 40px; border-radius: var(--radius-md);
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.pay-modal-cancel:hover { background: var(--off-white); }
+.pay-modal-submit {
+  flex: 1.5; height: 40px; border-radius: var(--radius-md); border: none;
+  background: var(--teal-600); color: white; font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.pay-modal-submit:hover:not(:disabled) { background: #154057; }
+.pay-modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Next EMI strip ───────────────────────────────────────────── */
+.next-emi-strip {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 20px;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin: 0 -1px;
+}
+.next-emi-strip.normal  { background: var(--off-white); }
+.next-emi-strip.urgent  { background: #fffbeb; border-color: #fde68a; }
+.next-emi-strip.overdue { background: #fff1f2; border-color: #fecaca; }
+
+.nes-left  { display: flex; align-items: center; gap: 12px; }
+.nes-right { flex-shrink: 0; }
+
+.nes-icon {
+  font-size: 22px; flex-shrink: 0;
+}
+.next-emi-strip.normal  .nes-icon { color: var(--teal-600); }
+.next-emi-strip.urgent  .nes-icon { color: #d97706; }
+.next-emi-strip.overdue .nes-icon { color: #dc2626; }
+
+.nes-title {
+  font-size: 14px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 4px;
+}
+.nes-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-muted); flex-wrap: wrap;
+}
+
+/* Due date tag variants */
+.emi-due-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.emi-due-tag.normal  { background: var(--teal-50);  color: var(--teal-700); }
+.emi-due-tag.today   { background: #eff6ff; color: #1d4ed8; }
+.emi-due-tag.urgent  { background: #fef3c7; color: #92400e; }
+.emi-due-tag.overdue { background: #fee2e2; color: #991b1b; }
+
+/* Late fee tag */
+.emi-late-fee {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700; color: #dc2626;
+}
+
+/* Claimed tag */
+.emi-claimed-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 600; color: #d97706;
+}

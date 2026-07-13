@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply for Loan — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<!--  <link rel="stylesheet" href="/static/assets/css/borrower-dashboard.css">-->
+    <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+<link rel="stylesheet" href="/static/assets/css/borrower-nbfcs.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+   <div class="topbar-left">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="ti ti-menu-2"></i>
+  </button>
+  <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview" data-tooltip="Overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/borrower/documents" data-tooltip="Upload Documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item" href="/borrower/score" data-tooltip="Credit Score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item active" href="/borrower/nbfcs" data-tooltip="Apply for Loan"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item" href="/borrower/loans" data-tooltip="My Loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+          <a class="nav-item" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+       <script>
+    (function() {
+      if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+        var s = document.getElementById('sidebar');
+        s.classList.add('no-transition');
+        s.classList.add('collapsed');
+        setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+      }
+    })();
+  </script>
+
+    <main class="main-content">
+      <div class="page-section active">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Apply for a Loan</h1>
+            <p class="page-sub">Compare lenders and choose the best offer for you.</p>
+          </div>
+        </div>
+
+        <!-- No score warning -->
+        <div class="content-card" id="no-score-warning" style="display:none;">
+          <div class="card-body-pad">
+            <div class="warning-box">
+              <i class="ti ti-alert-triangle"></i>
+              <div>
+                <strong>Credit score required</strong><br/>
+                <span style="font-size:13px;">Please upload your documents to generate a credit score before applying.</span>
+                <br/>
+                <a class="btn-primary" href="/borrower/documents" style="margin-top:12px;max-width:200px;text-decoration:none;">
+                  <i class="ti ti-upload"></i> Upload Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NBFC list -->
+        <div id="nbfc-list-wrap">
+          <div class="nbfc-cards" id="nbfcCards">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="/static/assets/js/nbfcs.js"></script>
+
+</body>
+</html>

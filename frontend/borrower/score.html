@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Credit Score — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-score.css">
+</head>
+<body>
+<div class="app"><nav class="sidebar-nav">
+
+  <header class="topbar">
+  <div class="topbar-left">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="ti ti-menu-2"></i>
+  </button>
+  <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview" data-tooltip="Overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/borrower/documents" data-tooltip="Upload Documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item active" href="/borrower/score" data-tooltip="Credit Score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item" href="/borrower/nbfcs" data-tooltip="Apply for Loan"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item" href="/borrower/loans" data-tooltip="My Loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+          <a class="nav-item" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+       <script>
+    (function() {
+      if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+        var s = document.getElementById('sidebar');
+        s.classList.add('no-transition');
+        s.classList.add('collapsed');
+        setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+      }
+    })();
+  </script>
+
+    <main class="main-content">
+      <div class="page-section active">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Your Credit Score</h1>
+            <p class="page-sub">AI-generated score based on your financial documents.</p>
+          </div>
+        </div>
+
+        <!-- No score yet -->
+      <div id="no-score-card">
+
+          <!-- Hero empty state card -->
+          <div class="content-card" style="margin-bottom:16px;">
+            <div style="padding:52px 32px;text-align:center;">
+              <!-- Icon -->
+              <div style="width:72px;height:72px;border-radius:50%;
+                background:linear-gradient(135deg,#e6f4f8 0%,#b8e8f0 100%);
+                border:2px solid var(--teal-200);
+                display:flex;align-items:center;justify-content:center;
+                font-size:32px;color:var(--teal-600);
+                margin:0 auto 20px;">
+                <i class="ti ti-chart-pie"></i>
+              </div>
+
+              <!-- Title + sub -->
+              <h3 style="font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">
+                No Credit Score Yet
+              </h3>
+              <p style="font-size:13.5px;color:var(--text-muted);max-width:420px;margin:0 auto 28px;line-height:1.7;">
+                Upload your bank statement and salary slip to generate your
+                AI-powered credit score. Your score is calculated using
+                7 financial factors and takes under 60 seconds.
+              </p>
+
+              <!-- CTA -->
+              <a class="btn-primary" href="/borrower/documents"
+                 style="display:inline-flex;align-items:center;gap:8px;
+                        padding:12px 28px;font-size:14px;border-radius:var(--radius-md);
+                        text-decoration:none;">
+                <i class="ti ti-upload"></i> Upload Documents
+              </a>
+            </div>
+          </div>
+
+          <!-- What you'll get section -->
+          <div class="content-card">
+            <div style="padding:18px 20px 6px;border-bottom:1px solid var(--border);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;
+                text-transform:uppercase;color:var(--text-muted);">
+                What your score includes
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">
+
+              <div style="padding:16px 20px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-percent"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">FOIR</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Fixed obligation to income ratio</div>
+              </div>
+
+              <div style="padding:16px 20px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-trending-up"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Income Level</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Average monthly income assessment</div>
+              </div>
+
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-activity"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Income Consistency</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Stability of monthly income flow</div>
+              </div>
+
+              <div style="padding:16px 20px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-bounce-right"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Bounce Record</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Cheque / auto-debit return history</div>
+              </div>
+
+              <div style="padding:16px 20px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-wallet"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Average Balance</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Monthly closing bank balance</div>
+              </div>
+
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border-light);">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-scale"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Loan-to-Income</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Loan amount vs annual income</div>
+              </div>
+
+              <div style="padding:16px 20px;grid-column:1/-1;">
+                <div style="font-size:22px;color:var(--teal-600);margin-bottom:8px;"><i class="ti ti-briefcase"></i></div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Employment Type</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Salaried vs self-employed vs other</div>
+              </div>
+
+            </div>
+
+            <!-- Bottom info strip -->
+            <div style="padding:14px 20px;background:var(--teal-50);
+              border-top:1px solid var(--teal-100);
+              display:flex;align-items:center;gap:10px;">
+              <i class="ti ti-shield-check" style="color:var(--teal-600);font-size:18px;flex-shrink:0;"></i>
+              <span style="font-size:12.5px;color:var(--teal-700);line-height:1.5;">
+                <strong>No CIBIL check required.</strong>
+                Your score is calculated using our AI engine — 100% rule-based,
+                privacy-first. Score range: 300–900.
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Score display -->
+        <div id="score-display" style="display:none;">
+
+          <div class="score-main-card">
+            <div class="score-circle-wrap">
+              <svg class="score-ring" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--border)" stroke-width="10"/>
+                <circle cx="60" cy="60" r="52" fill="none"
+                        stroke="var(--score-color, #3da8c0)"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                        stroke-dasharray="326.7"
+                        stroke-dashoffset="326.7"
+                        id="scoreRingArc"
+                        transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="score-center">
+                <div class="score-number" id="scoreNumber">—</div>
+                <div class="score-label">out of 900</div>
+              </div>
+            </div>
+            <div class="score-info">
+              <div class="score-eyebrow">Credit Score</div>
+              <div class="score-grade-pill">
+                <span class="dot"></span>
+                <span id="scoreGrade">—</span>
+              </div>
+              <p class="score-grade-sub" id="scoreGradeSub">Upload documents to get your score</p>
+
+              <div class="score-range-wrap">
+                <div class="score-range-bar">
+                  <div class="score-range-fill" id="scoreRangeFill"></div>
+                </div>
+                <div class="score-range-labels">
+                  <span>300</span><span>900</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7-factor breakdown -->
+          <div class="content-card" style="margin-top:16px;">
+            <div class="card-header-row">
+              <div class="card-title"><i class="ti ti-list-check"></i> Score Breakdown — 7 Factors</div>
+              <span class="score-dated" id="scoreDated"></span>
+            </div>
+            <div class="card-body-pad">
+              <p class="breakdown-intro">Each factor is weighted by how much it predicts repayment — FOIR and Income Level carry the most weight.</p>
+
+              <!-- Summary row -->
+              <div class="factor-summary-row" id="factorSummaryRow" style="display:none;">
+                <div class="factor-summary-item">
+                  <span class="fs-label">Base Score</span>
+                  <span class="fs-val">300</span>
+                </div>
+                <div class="factor-summary-sep">+</div>
+                <div class="factor-summary-item">
+                  <span class="fs-label">Factor Points</span>
+                  <span class="fs-val" id="fsTotalPts">—</span>
+                </div>
+                <div class="factor-summary-sep">=</div>
+                <div class="factor-summary-item highlight">
+                  <span class="fs-label">Final Score</span>
+                  <span class="fs-val" id="fsFinalScore">—</span>
+                </div>
+              </div>
+
+              <div id="factorBreakdown">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay">
+<script src="/static/assets/js/borrower-dashboard.js"></script>
+
+</body>
+</html>

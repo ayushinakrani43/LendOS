@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — LendOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-base.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-settings.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ti ti-menu-2"></i>
+      </button>
+      <a class="logo" href="/">
+        <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
+        <span class="logo-name">LendOS</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Borrower Portal</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="user-avatar" id="userAvatar">B</div>
+        <span id="userName">Loading…</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">My Account</div>
+        <a class="nav-item" href="/borrower/overview"><i class="ti ti-layout-dashboard"></i><span>Overview</span></a>
+        <a class="nav-item" href="/borrower/documents"><i class="ti ti-file-upload"></i><span>Upload Documents</span></a>
+        <a class="nav-item" href="/borrower/score"><i class="ti ti-chart-pie"></i><span>Credit Score</span></a>
+        <a class="nav-item" href="/borrower/nbfcs"><i class="ti ti-building-bank"></i><span>Apply for Loan</span></a>
+        <a class="nav-item" href="/borrower/loans"><i class="ti ti-file-invoice"></i><span>My Loans</span></a>
+        <a class="nav-item active" href="/borrower/settings"><i class="ti ti-settings"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+    <script>
+      (function() {
+        if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth > 768) {
+          var s = document.getElementById('sidebar');
+          s.classList.add('no-transition');
+          s.classList.add('collapsed');
+          setTimeout(function(){ s.classList.remove('no-transition'); }, 50);
+        }
+      })();
+    </script>
+
+    <main class="main-content">
+      <div class="page-section active" id="page-settings">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-sub">Manage your profile and account security.</p>
+          </div>
+        </div>
+
+        <div id="loadingState" class="settings-loading">
+          <i class="ti ti-loader-2 spin"></i> Loading…
+        </div>
+
+        <div id="settingsContent" style="display:none;">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">
+                <div class="settings-card-icon teal"><i class="ti ti-user"></i></div>
+                <div>
+                  <div class="settings-card-name">My Profile</div>
+                  <div class="settings-card-desc">Your registered details on LendOS.</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-rows">
+              <div class="profile-row"><span class="profile-label">Full Name</span><span class="profile-val" id="p-name">—</span></div>
+              <div class="profile-row"><span class="profile-label">Mobile</span><span class="profile-val" id="p-mobile">—</span></div>
+              <div class="profile-row"><span class="profile-label">Email</span><span class="profile-val" id="p-email">—</span></div>
+              <div class="profile-row"><span class="profile-label">Aadhaar</span><span class="profile-val" id="p-aadhaar">—</span></div>
+              <div class="profile-row"><span class="profile-label">PAN</span><span class="profile-val" id="p-pan">—</span></div>
+              <div class="profile-row"><span class="profile-label">Date of Birth</span><span class="profile-val" id="p-dob">—</span></div>
+              <div class="profile-row"><span class="profile-label">Gender</span><span class="profile-val" id="p-gender">—</span></div>
+              <div class="profile-row"><span class="profile-label">Employment Type</span><span class="profile-val" id="p-employment">—</span></div>
+            </div>
+          </div>
+
+          <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-card-header">
+              <div class="settings-card-title">
+                <div class="settings-card-icon orange"><i class="ti ti-lock"></i></div>
+                <div>
+                  <div class="settings-card-name">Change Password</div>
+                  <div class="settings-card-desc">Update your login password.</div>
+                </div>
+              </div>
+            </div>
+            <div class="fg-2">
+              <div class="form-group">
+                <label class="form-label">Current Password<span class="req">*</span></label>
+                <input type="password" id="s-current-pw" class="form-control" autocomplete="off" name="current-password-no-autofill"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password<span class="req">*</span></label>
+                <input type="password" id="s-new-pw" class="form-control" autocomplete="new-password"/>
+              </div>
+            </div>
+            <button type="button" class="btn-save" onclick="changePassword()" style="align-self:flex-start;margin-top:14px;">
+              <i class="ti ti-key"></i> Update Password
+            </button>
+            <div id="pw-alert-ok" class="alert success" style="display:none;margin-top:14px;"><i class="ti ti-check"></i> Password updated.</div>
+            <div id="pw-alert-err" class="alert error" style="display:none;margin-top:14px;"><i class="ti ti-alert-circle"></i> <span id="pw-alert-err-text"></span></div>
+          </div>
+
+          <div class="settings-card danger" style="margin-top:16px;">
+            <div class="settings-card-header">
+              <div class="settings-card-title">
+                <div class="settings-card-icon red"><i class="ti ti-trash"></i></div>
+                <div>
+                  <div class="settings-card-name">Delete Account</div>
+                  <div class="settings-card-desc">This deactivates your borrower account. Cannot be undone.</div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn-save danger" onclick="deleteAccount()" style="align-self:flex-start;margin-top:14px;">
+              <i class="ti ti-trash"></i> Delete My Account
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/borrower-settings.js"></script>
+</body>
+</html>

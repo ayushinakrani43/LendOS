@@ -1,0 +1,210 @@
+/* ── Warning box ── */
+.warning-box {
+  background: var(--warning-bg); border: 1px solid var(--warning-border);
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.warning-box i { color: var(--warning); font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+/* ── Score banner ── */
+.score-banner {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+}
+.score-banner-left { display: flex; align-items: center; gap: 12px; }
+.score-banner-num {
+  font-size: 28px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--teal-600);
+}
+.score-banner-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.score-banner-text strong { color: var(--text-primary); display: block; font-size: 14px; }
+
+/* ── NBFC grid ── */
+.nbfc-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ── NBFC card — accent bar style ── */
+.nbfc-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--card-accent, var(--teal-400));
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  cursor: default;
+}
+.nbfc-card:hover {
+  box-shadow: 0 4px 20px rgba(10,31,42,0.10);
+  border-left-color: var(--card-accent, var(--teal-500));
+}
+
+/* ── Card top row: logo + name ── */
+/* ── Card top row: logo + name ── */
+.nbfc-card-top { display: flex; align-items: center; gap: 14px; }
+.nbfc-logo-box {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; overflow: hidden;
+  background: #ffffff;
+  border: 0.5px solid #e2e8f0;
+  padding: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.nbfc-logo-box img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+.nbfc-name { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+
+/* ── Interest rate (hero number) ── */
+.nbfc-rate {
+  font-size: 26px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--card-accent, var(--teal-600)); line-height: 1;
+}
+.nbfc-rate span { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-left: 3px; }
+
+/* ── Compact meta line ── */
+.nbfc-meta-line {
+  font-size: 12px; color: var(--text-secondary);
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+}
+.nbfc-meta-line .dot { color: var(--text-muted); }
+
+/* ── Bottom row: eligible badge + apply btn ── */
+.nbfc-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 2px; }
+.nbfc-eligible {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 500;
+  color: var(--success); background: var(--success-bg, #f0fdf9);
+  border: 1px solid var(--success-border, #9fe1cb);
+  border-radius: 99px; padding: 3px 10px;
+}
+.nbfc-eligible i { font-size: 13px; }
+.nbfc-min-score {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 500;
+  color: var(--teal-600); background: var(--teal-50);
+  border: 1px solid var(--teal-100);
+  border-radius: 99px; padding: 3px 10px;
+}
+
+.nbfc-apply-btn {
+  background: var(--card-accent, var(--teal-600));
+  color: white; border: none;
+  border-radius: var(--radius-md); padding: 8px 18px;
+  font-size: 13px; font-weight: 600; font-family: var(--font-sans);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: opacity 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nbfc-apply-btn:hover { opacity: 0.88; }
+
+/* ── Empty / loading states ── */
+.nbfc-empty {
+  grid-column: 1 / -1;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .nbfc-cards { grid-template-columns: 1fr; }
+  .nbfc-card-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .score-banner { flex-direction: column; }
+}
+
+/* ── Disabled / locked NBFC card ── */
+.nbfc-card--disabled {
+  --card-accent: #cbd5e1;
+  --logo-bg: #f8fafc;
+  --logo-color: #94a3b8;
+  --logo-border: #e2e8f0;
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+.nbfc-card--disabled:hover {
+  box-shadow: none;
+  border-left-color: #cbd5e1;
+}
+.nbfc-card--disabled .nbfc-rate {
+  color: #94a3b8;
+}
+.nbfc-card--disabled .nbfc-meta-line {
+  color: #94a3b8;
+}
+
+/* ── Disabled apply button ── */
+.nbfc-apply-btn--disabled {
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  gap: 5px;
+}
+.nbfc-apply-btn--disabled:hover {
+  opacity: 1 !important;
+}
+
+
+/* ── Existing loan card (shown instead of NBFC list) ─────────── */
+.existing-loan-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  max-width: 680px;
+}
+.elc-status {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px 20px; font-size: 13px; line-height: 1.5;
+}
+.elc-status i { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.elc-status strong { display: block; font-weight: 700; margin-bottom: 2px; }
+.elc-status.pending  { background: #fffbeb; color: #92400e; }
+.elc-status.applied  { background: #eff6ff; color: #1d4ed8; }
+.elc-status.approved { background: #f0fdf9; color: #0e8c6a; }
+.elc-status.active   { background: #f0fdf9; color: #0e8c6a; }
+
+.elc-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; padding: 8px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.elc-item {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 20px; border-bottom: 1px solid var(--border-light);
+}
+.elc-item:nth-child(odd) { border-right: 1px solid var(--border-light); }
+.elc-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.elc-val   { font-size: 13.5px; color: var(--text-primary); font-weight: 500; }
+.elc-strong { font-weight: 700; }
+.elc-teal   { color: var(--teal-600); }
+
+.elc-actions {
+  display: flex; gap: 10px; padding: 16px 20px;
+}
+
+.elc-btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: var(--radius-md);
+  background: var(--teal-600); color: white;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  transition: opacity 0.15s;
+}
+.elc-btn-primary:hover { opacity: 0.88; }
+.elc-btn-secondary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 18px; border-radius: var(--radius-md);
+  background: var(--white); color: var(--text-secondary);
+  border: 1px solid var(--border);
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.elc-btn-secondary:hover { border-color: var(--teal-300); color: var(--teal-600); }
+

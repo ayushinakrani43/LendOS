@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Credit Scores — LendOS Super Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-base.css">
+  <link rel="stylesheet" href="/static/assets/css/admin-scores.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+      <a class="logo" href="/admin">
+        <div class="logo-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="logo-text-group">
+          <span class="logo-name">LendOS</span>
+          <span class="logo-sub">Super Admin</span>
+        </div>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-badge"><i class="ti ti-shield-half-filled"></i> SuperAdmin</div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="adminAvatar">A</div>
+        <span id="adminName">Admin</span>
+      </div>
+      <button class="icon-btn" title="Logout" onclick="handleLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Platform</div>
+        <a class="nav-item" href="/admin/overview">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="nav-item" href="/admin/nbfcs"><i class="ti ti-building-bank"></i><span>NBFCs</span></a>
+        <a class="nav-item" href="/admin/borrowers"><i class="ti ti-users"></i><span>Borrowers</span></a>
+        <a class="nav-item" href="/admin/loans"><i class="ti ti-file-invoice"></i><span>All Loans</span></a>
+        <div class="nav-section-label" style="margin-top:8px;">Analytics</div>
+        <a class="nav-item active" href="/admin/scores"><i class="ti ti-chart-pie"></i><span>Credit Scores</span></a>
+        <a class="nav-item" href="/admin/reports"><i class="ti ti-chart-bar"></i><span>Platform Reports</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-footer-info">
+          <div class="admin-footer-avatar"><i class="ti ti-shield-check"></i></div>
+          <div>
+            <div class="admin-footer-name" id="sidebarAdminName">SuperAdmin</div>
+            <div class="admin-footer-role">Full platform access</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Credit Scores</h1>
+          <p class="page-sub">Review every credit-score record generated across the platform.</p>
+        </div>
+        <div class="page-header-actions">
+          <div class="search-wrap">
+            <i class="ti ti-search"></i>
+            <input type="text" id="searchInput" placeholder="Search borrower, mobile…"
+                   oninput="handleSearch(this.value)"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribution stats strip -->
+      <div class="score-stats-strip">
+        <div class="score-stat">
+          <div class="score-stat-val" id="statTotal">—</div>
+          <div class="score-stat-label">Total Records</div>
+        </div>
+        <div class="score-stat-div"></div>
+        <div class="score-stat">
+          <div class="score-stat-val excellent" id="statExcellent">—</div>
+          <div class="score-stat-label">Excellent</div>
+        </div>
+        <div class="score-stat-div"></div>
+        <div class="score-stat">
+          <div class="score-stat-val good" id="statGood">—</div>
+          <div class="score-stat-label">Good</div>
+        </div>
+        <div class="score-stat-div"></div>
+        <div class="score-stat">
+          <div class="score-stat-val fair" id="statFair">—</div>
+          <div class="score-stat-label">Fair</div>
+        </div>
+        <div class="score-stat-div"></div>
+        <div class="score-stat">
+          <div class="score-stat-val poor" id="statPoor">—</div>
+          <div class="score-stat-label">Poor / Very Poor</div>
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="tab-bar">
+        <div class="tab-list">
+          <button class="tab active" data-grade="all"       onclick="switchTab(this)">All</button>
+          <button class="tab"        data-grade="excellent" onclick="switchTab(this)">Excellent</button>
+          <button class="tab"        data-grade="good"      onclick="switchTab(this)">Good</button>
+          <button class="tab"        data-grade="fair"      onclick="switchTab(this)">Fair</button>
+          <button class="tab"        data-grade="poor"      onclick="switchTab(this)">Poor / Very Poor</button>
+        </div>
+        <span class="results-count" id="resultsCount">Loading…</span>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Borrower</th>
+                <th>NBFC</th>
+                <th>Score</th>
+                <th>Grade</th>
+                <th>NBFC Action</th>
+                <th>Generated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-line w70"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-line w50"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-line w60"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon"><i class="ti ti-chart-pie"></i></div>
+          <div class="empty-title" id="emptyTitle">No credit score records found</div>
+          <div class="empty-sub" id="emptySub">Scores will appear here once borrowers complete document upload.</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Score Detail Modal -->
+<div class="modal-overlay" id="scoreModal" onclick="closeModal(event)">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-score-avatar" id="modalAvatar">B</div>
+        <div>
+          <div class="modal-title" id="modalTitle">—</div>
+          <div class="modal-sub" id="modalSub">—</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+      <div class="modal-loading"><i class="ti ti-loader-2 spin"></i> Loading…</div>
+    </div>
+
+    <div class="modal-footer" id="modalFooter">
+      <!-- Close button injected by JS -->
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<script src="/static/assets/js/config.js"></script>
+<script src="/static/assets/js/admin-scores.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Never bake secrets into the image — env vars are injected at runtime instead
+.env
+backend/.env
+
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Git / editor / OS junk
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Local dev artifacts
+*.log
+*.sqlite3
