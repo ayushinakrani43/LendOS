@@ -21,6 +21,20 @@ function fmtINR(n) {
     return '₹' + Math.round(n).toLocaleString('en-IN');
 }
 
+function fmtCompact(n) {
+    if (!n && n !== 0) return '—';
+    n = Math.round(n);
+    const abs = Math.abs(n);
+    if (abs >= 10000000) return '₹' + trimZero(n / 10000000) + 'Cr';
+    if (abs >= 100000)   return '₹' + trimZero(n / 100000)   + 'L';
+    if (abs >= 1000)     return '₹' + trimZero(n / 1000)     + 'k';
+    return '₹' + n.toLocaleString('en-IN');
+}
+
+function trimZero(num) {
+    return num.toFixed(1).replace(/\.0$/, '');
+}
+
 function fmtDate(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -150,22 +164,27 @@ function updateStats(data) {
     const procFee   = data.processing_fee_total || 0;
     const netProfit = totalInterest + procFee;
 
-    document.getElementById('emi-stat-due').textContent           = fmtINR(totalDue);
-    document.getElementById('emi-stat-collected').textContent     = fmtINR(collected);
+    document.getElementById('emi-stat-due').textContent           = fmtCompact(totalDue);
+    document.getElementById('emi-stat-due').title                 = fmtINR(totalDue);
+    document.getElementById('emi-stat-collected').textContent     = fmtCompact(collected);
+    document.getElementById('emi-stat-collected').title           = fmtINR(collected);
     document.getElementById('emi-stat-pending-count').textContent = data.pending_count  ?? '—';
     document.getElementById('emi-stat-overdue').textContent       = data.overdue_count  ?? '—';
-    document.getElementById('emi-stat-interest').textContent      = fmtINR(totalInterest);
-    document.getElementById('emi-stat-profit').textContent        = fmtINR(totalInterest);
+    document.getElementById('emi-stat-interest').textContent      = fmtCompact(totalInterest);
+    document.getElementById('emi-stat-interest').title            = fmtINR(totalInterest);
+    document.getElementById('emi-stat-profit').textContent        = fmtCompact(totalInterest);
+    document.getElementById('emi-stat-profit').title              = fmtINR(totalInterest);
 
     // Interest strip — show only when there's interest earned
     const strip = document.getElementById('interestStrip');
     if (strip) {
         if (totalInterest > 0) {
             strip.style.display = 'flex';
-            document.getElementById('stripInterest').textContent  = fmtINR(totalInterest);
-document.getElementById('stripPrincipal').textContent = fmtINR(procFee);
-document.getElementById('stripTotal').textContent     = fmtINR(netProfit);
-document.getElementById('emi-stat-profit').textContent = fmtINR(netProfit);
+            document.getElementById('stripInterest').textContent  = fmtCompact(totalInterest);
+            document.getElementById('stripPrincipal').textContent = fmtCompact(procFee);
+            document.getElementById('stripTotal').textContent     = fmtCompact(netProfit);
+            document.getElementById('emi-stat-profit').textContent = fmtCompact(netProfit);
+            document.getElementById('emi-stat-profit').title       = fmtINR(netProfit);
         } else {
             strip.style.display = 'none';
         }

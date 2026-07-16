@@ -131,9 +131,10 @@ async function loadBorrowers(session, page) {
 
 function updateStats(borrowers, total) {
     document.getElementById('bstat-total').textContent    = total ?? borrowers.length;
-document.getElementById('bstat-verified').textContent = borrowers.filter(b => ['verified','submitted'].includes(b.kyc_status)).length;
+//document.getElementById('bstat-verified').textContent = borrowers.filter(b => ['verified','submitted'].includes(b.kyc_status)).length;
 document.getElementById('bstat-applied').textContent  = borrowers.filter(b => ['applied','pending_agreement','pending'].includes(b.loan_status)).length;
 document.getElementById('bstat-active').textContent   = borrowers.filter(b => ['active','disbursed'].includes(b.loan_status)).length;
+document.getElementById('bstat-closed').textContent = borrowers.filter(b => b.loan_status === 'closed').length;
 }
 
 // ── Render table ──────────────────────────────────────────────
@@ -176,7 +177,7 @@ function renderTable(borrowers, search) {
             <td style="font-family:var(--font-mono);font-size:13px;">${b.mobile || '—'}</td>
             <td style="font-family:var(--font-mono);font-size:12.5px;">${b.pan_number || '—'}</td>
             <td style="font-size:13px;">${b.employment_type ? b.employment_type.replace(/_/g,' ') : '—'}</td>
-            <td>${kycBadge(b.kyc_status)}</td>
+
             <td>${scoreChip(b.credit_score)}</td>
             <td>${loanStatusBadge(b.loan_status)}</td>
             <td style="font-size:12.5px;color:var(--text-muted);">${fmtDate(b.created_at)}</td>
@@ -255,7 +256,7 @@ const res = await fetch(`${API}/api/nbfc/dashboard/borrower/${borrowerId}?nbfc_i
                         <div class="profile-row"><span class="pr-label">Mobile</span><span class="pr-val mono">${b.mobile || '—'}</span></div>
                         <div class="profile-row"><span class="pr-label">Email</span><span class="pr-val">${b.email || '—'}</span></div>
                         <div class="profile-row"><span class="pr-label">PAN</span><span class="pr-val mono">${b.pan_number || '—'}</span></div>
-                        <div class="profile-row"><span class="pr-label">Aadhaar</span><span class="pr-val mono">${b.aadhaar_number ? 'XXXX-XXXX-' + String(b.aadhaar_number).slice(-4) : '—'}</span></div>
+                        <div class="profile-row"><span class="pr-label">Aadhaar</span><span class="pr-val mono">${b.aadhaar_number || '—'}</span></div>
                         <div class="profile-row"><span class="pr-label">Date of Birth</span><span class="pr-val">${b.date_of_birth || '—'}</span></div>
                         <div class="profile-row"><span class="pr-label">Gender</span><span class="pr-val">${b.gender || '—'}</span></div>
                         <div class="profile-row"><span class="pr-label">Employment</span><span class="pr-val">${(b.employment_type || '—').replace(/_/g,' ')}</span></div>
@@ -271,7 +272,7 @@ const res = await fetch(`${API}/api/nbfc/dashboard/borrower/${borrowerId}?nbfc_i
                         <div class="psh-label">Credit Score / 900</div>
                     </div>
                     <div class="profile-rows" style="margin-top:12px;">
-                        <div class="profile-row"><span class="pr-label">KYC Status</span><span class="pr-val">${kycBadge(b.kyc_status)}</span></div>
+
                         <div class="profile-row"><span class="pr-label">Loan Status</span><span class="pr-val">${loanStatusBadge(b.loan_status)}</span></div>
                         <div class="profile-row"><span class="pr-label">Joined</span><span class="pr-val">${fmtDate(b.created_at)}</span></div>
                     </div>

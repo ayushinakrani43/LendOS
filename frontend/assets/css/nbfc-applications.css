@@ -580,3 +580,241 @@ background: var(--white);
 .data-table tbody tr:hover td {
     background: var(--teal-50);
 }
+/* ═══════════════════════════════════════════════════════════════
+   Bulk Review — checkbox column + trigger button + modal
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Checkbox column ── */
+.col-check { width: 36px; padding-left: 16px !important; }
+.row-check-cell { width: 36px; padding-left: 16px; }
+.row-checkbox, #selectAllCheckbox {
+  width: 16px; height: 16px; accent-color: var(--teal-600); cursor: pointer;
+}
+
+/* ── "Review Selected" trigger button ── */
+.btn-bulk-review {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 16px; background: var(--teal-600); color: white;
+  border: none; border-radius: var(--radius-md); font-size: 13px;
+  font-weight: 600; font-family: var(--font-sans); cursor: pointer;
+  transition: background 0.15s; white-space: nowrap;
+}
+.btn-bulk-review:hover { background: var(--teal-700); }
+.btn-bulk-review i { font-size: 15px; }
+
+/* ── Modal overlay + shell ── */
+.bulk-modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,31,42,0.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1500; padding: 20px;
+}
+.bulk-modal {
+  width: 100%; max-width: 800px; max-height: 90vh;
+  background: var(--white); border-radius: var(--radius-xl);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.25);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── Header (teal gradient, matches brand instead of purple) ── */
+.bulk-modal-header {
+  background: linear-gradient(120deg, var(--teal-600), var(--teal-400));
+  padding: 20px 22px; display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.bulk-modal-header-left { display: flex; align-items: center; gap: 14px; }
+.bulk-modal-icon {
+  width: 42px; height: 42px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: white; flex-shrink: 0;
+}
+.bulk-modal-title { font-size: 16px; font-weight: 700; color: white; margin: 0; }
+.bulk-modal-sub { font-size: 12.5px; color: rgba(255,255,255,0.85); margin: 2px 0 0; }
+.bulk-modal-close {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.18); color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+  transition: background 0.15s; flex-shrink: 0;
+}
+.bulk-modal-close:hover { background: rgba(255,255,255,0.3); }
+
+/* ── Applicant tab strip ── */
+.bulk-tab-strip {
+  display: flex; gap: 4px; padding: 10px 14px; background: var(--off-white);
+  border-bottom: 1px solid var(--border); overflow-x: auto; flex-shrink: 0;
+}
+.bulk-tab-strip::-webkit-scrollbar { height: 4px; }
+.bulk-tab-item {
+  display: flex; align-items: center; gap: 7px; padding: 7px 12px;
+  border-radius: var(--radius-md); cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); transition: all 0.15s; flex-shrink: 0;
+}
+.bulk-tab-item:hover { background: var(--white); }
+.bulk-tab-item.active { background: var(--white); color: var(--teal-700); border-bottom-color: var(--teal-600); }
+.bulk-tab-avatar {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--teal-600); color: white;
+  font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.bulk-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.bulk-tab-dot.approved { background: var(--success); }
+.bulk-tab-dot.rejected { background: var(--error); }
+
+/* ── Body: applicant detail card ── */
+.bulk-modal-body { padding: 22px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+
+.bulk-applicant-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.bulk-applicant-id { display: flex; align-items: center; gap: 12px; }
+.bulk-applicant-avatar {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--teal-600); color: white;
+  font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.bulk-applicant-name { font-size: 15.5px; font-weight: 700; color: var(--text-primary); }
+.bulk-applicant-mobile { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.bulk-applicant-badges { display: flex; gap: 8px; }
+
+.bulk-detail-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px;
+}
+.bulk-detail-cell {
+  background: var(--off-white); border: 1px solid var(--border-light);
+  border-radius: var(--radius-md); padding: 11px 13px;
+}
+.bulk-detail-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+.bulk-detail-value { font-size: 14.5px; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
+
+.bulk-foir-cell .bulk-detail-value.safe     { color: var(--success); }
+.bulk-foir-cell .bulk-detail-value.moderate { color: #b45309; }
+.bulk-foir-cell .bulk-detail-value.high     { color: var(--error); }
+
+/* ── Decision area ── */
+.bulk-decision-box { border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+.bulk-decision-prompt { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500; }
+.bulk-decision-btns { display: flex; gap: 10px; }
+.bulk-decide-btn {
+  flex: 1; padding: 11px 14px; border-radius: var(--radius-md); font-size: 13.5px;
+  font-weight: 700; font-family: var(--font-sans); cursor: pointer; border: 1.5px solid;
+  display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s;
+}
+.bulk-decide-btn.approve { background: var(--success-bg); border-color: var(--success-border); color: var(--success); }
+.bulk-decide-btn.approve:hover { background: var(--success); color: white; }
+.bulk-decide-btn.reject { background: var(--error-bg); border-color: var(--error-border); color: var(--error); }
+.bulk-decide-btn.reject:hover { background: var(--error); color: white; }
+
+/* Reject reason inline panel */
+.bulk-reject-panel { margin-top: 12px; }
+.bulk-reject-textarea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  font-size: 13px; font-family: var(--font-sans); color: var(--text-primary); resize: vertical;
+  min-height: 64px; outline: none; box-sizing: border-box;
+}
+.bulk-reject-textarea:focus { border-color: var(--error); }
+.bulk-reject-quick { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+.bulk-reject-quick button {
+  padding: 4px 10px; font-size: 11.5px; border: 1px solid var(--border); border-radius: 99px;
+  background: var(--off-white); color: var(--text-secondary); cursor: pointer;
+}
+.bulk-reject-quick button:hover { background: #fff1f2; border-color: var(--error-border); color: var(--error); }
+.bulk-reject-panel-btns { display: flex; gap: 8px; }
+.bulk-reject-panel-btns button {
+  padding: 8px 16px; border-radius: var(--radius-md); font-size: 12.5px; font-weight: 600;
+  font-family: var(--font-sans); cursor: pointer; border: 1px solid var(--border); background: var(--white);
+}
+.bulk-reject-panel-btns .bulk-reject-confirm { background: var(--error); border-color: var(--error); color: white; }
+
+/* Already-decided state */
+.bulk-decided-banner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+}
+.bulk-decided-banner.approved { background: var(--success-bg); color: var(--success); }
+.bulk-decided-banner.rejected { background: var(--error-bg); color: var(--error); }
+.bulk-decided-banner button {
+  background: none; border: none; text-decoration: underline; font-size: 12px;
+  color: inherit; cursor: pointer; font-family: var(--font-sans); font-weight: 600;
+}
+
+/* ── Footer nav ── */
+.bulk-modal-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.bulk-nav-btns { display: flex; align-items: center; gap: 10px; }
+.bulk-nav-btn {
+  display: flex; align-items: center; gap: 6px; padding: 7px 12px; font-size: 12.5px;
+  font-weight: 600; border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--white); color: var(--text-secondary); cursor: pointer; font-family: var(--font-sans);
+}
+.bulk-nav-btn:hover:not(:disabled) { border-color: var(--teal-300); color: var(--teal-700); }
+.bulk-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.bulk-counter { font-size: 12.5px; color: var(--text-muted); font-family: var(--font-mono); }
+.bulk-tally { font-size: 12px; color: var(--text-muted); }
+.bulk-quick-actions { display: flex; gap: 8px; }
+.bulk-quick-btn {
+  display: flex; align-items: center; gap: 6px; padding: 7px 12px; font-size: 12px;
+  font-weight: 600; border-radius: var(--radius-md); cursor: pointer; font-family: var(--font-sans);
+  border: 1px solid var(--border); background: var(--white); color: var(--text-secondary);
+}
+.bulk-quick-btn.approve:hover { border-color: var(--success-border); background: var(--success-bg); color: var(--success); }
+.bulk-quick-btn.reject:hover { border-color: var(--error-border); background: var(--error-bg); color: var(--error); }
+
+/* ── Submit bar ── */
+.bulk-submit-bar { padding: 14px 20px 18px; flex-shrink: 0; }
+.bulk-progress-track { height: 4px; background: var(--border-light); border-radius: 99px; margin-bottom: 12px; overflow: hidden; }
+.bulk-progress-fill { height: 100%; background: var(--teal-600); border-radius: 99px; transition: width 0.25s ease; }
+.bulk-submit-btn {
+  width: 100%; padding: 13px; border: none; border-radius: var(--radius-md);
+  background: var(--teal-600); color: white; font-size: 14px; font-weight: 700;
+  font-family: var(--font-sans); cursor: pointer; transition: background 0.15s;
+}
+.bulk-submit-btn:disabled { background: var(--panel-bg); color: var(--text-muted); cursor: not-allowed; }
+.bulk-submit-btn:not(:disabled):hover { background: var(--teal-700); }
+
+/* ═══════════════════════════════════════════════════════════════
+   Bulk confirm popup (used before "Approve/Reject All Remaining")
+   ═══════════════════════════════════════════════════════════════ */
+.bulk-confirm-overlay {
+  position: fixed; inset: 0; background: rgba(10,31,42,0.55);
+  display: flex; align-items: center; justify-content: center; z-index: 1700; padding: 20px;
+}
+.bulk-confirm-box {
+  width: 100%; max-width: 380px; background: var(--white); border-radius: var(--radius-lg);
+  padding: 22px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.bulk-confirm-icon {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--warning-bg);
+  color: var(--warning); font-size: 22px; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.bulk-confirm-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.bulk-confirm-sub { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px; }
+.bulk-confirm-actions { display: flex; gap: 10px; }
+.bulk-confirm-actions button {
+  flex: 1; padding: 10px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+  font-family: var(--font-sans); cursor: pointer;
+}
+.bulk-confirm-cancel { border: 1px solid var(--border); background: var(--white); color: var(--text-secondary); }
+.bulk-confirm-ok { border: none; background: var(--teal-600); color: white; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .bulk-detail-grid { grid-template-columns: repeat(2, 1fr); }
+  .bulk-modal-footer { flex-direction: column; align-items: stretch; }
+  .bulk-quick-actions { justify-content: stretch; }
+  .bulk-quick-btn { flex: 1; justify-content: center; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Bulk modal: rich detail content (reuses .detail-card etc. from
+   nbfc-application-detail.css, imported alongside this file) ── */
+.bulk-modal-body .detail-card {
+  border-color: var(--border-light);
+}
+.bulk-modal-body .detail-card:last-of-type { margin-bottom: 16px; }
+
+.bulk-loading-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 20px; color: var(--text-muted); gap: 10px; font-size: 13px;
+}
+.bulk-loading-state i { font-size: 28px; animation: spin 1s linear infinite; }

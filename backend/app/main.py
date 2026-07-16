@@ -23,7 +23,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from app.services.emi_scheduler_service import run_daily_emi_jobs #noqa
 from app.models import superadmin_model
 from app.routes import superadmin_dashboard  # noqa
-
+from app.routes import auth
 from dotenv import load_dotenv
 load_dotenv()
 app = FastAPI(title="LendOS — NBFC Lending Platform", version="1.0.0")
@@ -68,6 +68,7 @@ async def shutdown():
 
 app.include_router(nbfc_auth.router, prefix="/api/nbfc", tags=["NBFC Auth"])
 app.include_router(borrower_auth.router, prefix="/api/borrower", tags=["Borrower Auth"])
+app.include_router(auth.router)
 app.include_router(kyc.router, prefix="/api/kyc", tags=["KYC"])
 app.include_router(borrower.router)
 app.include_router(nbfc_dashboard.router, prefix="/api/nbfc/dashboard", tags=["NBFC Dashboard"])
@@ -168,6 +169,7 @@ def borrower_loan_agreement():
 def borrower_loans():
     return FileResponse(os.path.join(FRONTEND_DIR, "borrower", "loans.html"))
 
+
 @app.get("/admin/overview")
 def superadmin_portal():
     return FileResponse(os.path.join(FRONTEND_DIR, "superadmin", "index.html"))
@@ -198,3 +200,4 @@ def admin_scores_page():
 @app.get("/admin/reports")
 def admin_reports_page():
     return FileResponse(os.path.join(FRONTEND_DIR, "superadmin", "admin-reports.html"))
+

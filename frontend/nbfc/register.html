@@ -1,647 +1,4 @@
 
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8"/>-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
-<!--  <title>Register — LendOS NBFC Portal</title>-->
-<!--  <link rel="preconnect" href="https://fonts.googleapis.com">-->
-<!--  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">-->
-<!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">-->
-<!--    <link rel="stylesheet" href="/static/assets/css/nbfc-register.css">-->
-
-
-<!--</head>-->
-<!--<body>-->
-<!--<div class="page">-->
-
-<!--  &lt;!&ndash; Topbar &ndash;&gt;-->
-<!--  <header class="topbar">-->
-<!--    <a class="logo" href="#">-->
-<!--      <div class="logo-icon"><i class="ti ti-building-bank"></i></div>-->
-<!--      <span class="logo-name">LendOS</span>-->
-<!--      <div class="logo-divider"></div>-->
-<!--      <span class="logo-sub">NBFC Portal</span>-->
-<!--    </a>-->
-<!--    <div class="topbar-actions">-->
-<!--      <a class="btn-borrower" href="/borrower">-->
-<!--        <i class="ti ti-user" style="font-size:13px;"></i>-->
-<!--        <span>Go to Borrower Portal</span>-->
-<!--      </a>-->
-<!--      <button class="icon-btn" title="Settings" onclick="window.location.href='/admin'">-->
-<!--        <i class="ti ti-settings"></i>-->
-<!--      </button>-->
-<!--      <button class="icon-btn" title="Help">-->
-<!--        <i class="ti ti-help-circle"></i>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </header>-->
-
-<!--  <div class="body-split">-->
-
-<!--    &lt;!&ndash; Left Panel &ndash;&gt;-->
-<!--    <aside class="left-panel">-->
-<!--      <div>-->
-<!--        <div class="badge">-->
-<!--          <span class="badge-dot"></span>-->
-<!--          NBFC Partner Portal-->
-<!--        </div>-->
-<!--        <h1 class="left-headline">-->
-<!--          Build<span class="dot-accent">.</span> Grow<span class="dot-accent">.</span><br>-->
-<!--          <span class="accent">Empower</span><span class="dot-accent">.</span>-->
-<!--        </h1>-->
-<!--        <p class="left-sub">-->
-<!--          Join the LendOS network and unlock growth with technology, trust and transparency.-->
-<!--        </p>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; SVG Illustration &ndash;&gt;-->
-<!--      <div class="left-illustration">-->
-<!--        <svg width="260" height="230" viewBox="0 0 260 230" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--          &lt;!&ndash; Shadow &ndash;&gt;-->
-<!--          <ellipse cx="130" cy="210" rx="95" ry="14" fill="rgba(42,128,153,0.08)"/>-->
-<!--          &lt;!&ndash; Building body &ndash;&gt;-->
-<!--          <rect x="55" y="88" width="150" height="118" rx="3" fill="#daeef5"/>-->
-<!--          &lt;!&ndash; Pediment &ndash;&gt;-->
-<!--          <polygon points="44,90 130,46 216,90" fill="#2a8099" opacity="0.85"/>-->
-<!--          <polygon points="56,90 130,52 204,90" fill="#3da8c0"/>-->
-<!--          &lt;!&ndash; Columns &ndash;&gt;-->
-<!--          <rect x="72"  y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>-->
-<!--          <rect x="98"  y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>-->
-<!--          <rect x="138" y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>-->
-<!--          <rect x="164" y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>-->
-<!--          &lt;!&ndash; Steps &ndash;&gt;-->
-<!--          <rect x="48"  y="198" width="164" height="9"  rx="2" fill="#7acfdf" opacity="0.55"/>-->
-<!--          <rect x="55"  y="192" width="150" height="7"  rx="2" fill="#3da8c0" opacity="0.45"/>-->
-<!--          &lt;!&ndash; Door &ndash;&gt;-->
-<!--          <rect x="113" y="155" width="44" height="48" rx="22" fill="rgba(17,51,71,0.4)"/>-->
-<!--          <rect x="118" y="160" width="34" height="42" rx="17" fill="rgba(17,51,71,0.6)"/>-->
-<!--          &lt;!&ndash; Left window &ndash;&gt;-->
-<!--          <rect x="72"  y="112" width="26" height="28" rx="3" fill="rgba(17,51,71,0.15)"/>-->
-<!--          <line x1="85"  y1="112" x2="85"  y2="140" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>-->
-<!--          <line x1="72"  y1="126" x2="98"  y2="126" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>-->
-<!--          &lt;!&ndash; Right window &ndash;&gt;-->
-<!--          <rect x="162" y="112" width="26" height="28" rx="3" fill="rgba(17,51,71,0.15)"/>-->
-<!--          <line x1="175" y1="112" x2="175" y2="140" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>-->
-<!--          <line x1="162" y1="126" x2="188" y2="126" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>-->
-<!--          &lt;!&ndash; Shield badge &ndash;&gt;-->
-<!--          <circle cx="208" cy="76" r="24" fill="#e6f4f8" stroke="#b8e8f0" stroke-width="1.5"/>-->
-<!--          <path d="M208 64 C208 64 218 69 218 78 C218 85 213.5 90 208 92.5 C202.5 90 198 85 198 78 C198 69 208 64 208 64Z" fill="#3da8c0" opacity="0.75"/>-->
-<!--          <path d="M204.5 78.5 L207.5 81.5 L213 75" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
-<!--          &lt;!&ndash; Small plant left &ndash;&gt;-->
-<!--          <rect x="46" y="188" width="5" height="14" rx="2.5" fill="#2a8099" opacity="0.45"/>-->
-<!--          <ellipse cx="48.5" cy="187" rx="8" ry="6" fill="#3da8c0" opacity="0.55"/>-->
-<!--          &lt;!&ndash; Floating cube right &ndash;&gt;-->
-<!--          <rect x="202" y="160" width="20" height="20" rx="3" fill="rgba(61,168,192,0.12)" stroke="#b8e8f0" stroke-width="1.2"/>-->
-<!--        </svg>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Trust strip &ndash;&gt;-->
-<!--      <div class="left-bottom">-->
-<!--        <div class="left-trust-item"><i class="ti ti-lock"></i> 256-bit SSL Secured</div>-->
-<!--        <div class="left-trust-item"><i class="ti ti-shield-check"></i> Your data is safe with us</div>-->
-<!--      </div>-->
-<!--    </aside>-->
-
-<!--    &lt;!&ndash; Right Panel &ndash;&gt;-->
-<!--    <main class="right-panel">-->
-<!--      <div class="form-card">-->
-
-<!--        &lt;!&ndash; Card header &ndash;&gt;-->
-<!--        <div class="card-header">-->
-<!--          <div class="card-header-icon">-->
-<!--            <i class="ti ti-user-plus"></i>-->
-<!--          </div>-->
-<!--          <div class="card-header-text">-->
-<!--            <h2>Create your NBFC account</h2>-->
-<!--            <p>Fill in the details below to get started</p>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Tabs &ndash;&gt;-->
-<!--        <div class="tabs">-->
-<!--          <div class="tab active" id="tab-register" onclick="switchTab('register')">New registration</div>-->
-<!--          <div class="tab" id="tab-login" onclick="switchTab('login')">Sign in</div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; REGISTER FORM &ndash;&gt;-->
-<!--        <div id="panel-register">-->
-<!--          <div class="card-body">-->
-
-<!--            <div class="step-bar-row">-->
-<!--              <div class="step-bar active" id="bar1"></div>-->
-<!--              <div class="step-bar" id="bar2"></div>-->
-<!--            </div>-->
-<!--            <div class="step-meta" id="step-meta"><span>Step 1 / 2</span> — Company details</div>-->
-
-<!--            <div id="alert-reg" class="alert"></div>-->
-
-<!--            &lt;!&ndash; Step 1 &ndash;&gt;-->
-<!--            <div class="step-section active" id="step1">-->
-
-<!--              <div class="section-label">Company Information</div>-->
-
-<!--              <div class="form-group">-->
-<!--                <label class="form-label">Company Name *</label>-->
-<!--                <div class="input-wrap">-->
-<!--                  <i class="ti ti-building input-icon"></i>-->
-<!--                  <input class="form-control has-icon" type="text" id="company_name" placeholder="QuickLoans Finance Pvt Ltd" autocomplete="off"/>-->
-<!--                </div>-->
-<!--                <div class="err-msg" id="e_company_name">Enter company name</div>-->
-<!--              </div>-->
-
-<!--              <div class="fg-2">-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">Work Email *</label>-->
-<!--                  <div class="input-wrap">-->
-<!--                    <i class="ti ti-mail input-icon"></i>-->
-<!--                    <input class="form-control has-icon" type="email" id="email" placeholder="admin@company.com" oninput="debouncedEmail(this)" autocomplete="new-password"/>-->
-<!--                  </div>-->
-<!--                  <div class="err-msg" id="e_email">Enter a valid email</div>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">Phone Number *</label>-->
-<!--                  <div class="phone-wrap">-->
-<!--                    <div class="phone-prefix"><i class="ti ti-phone" style="font-size:12px;"></i>&nbsp;+91</div>-->
-<!--                    <input class="form-control" type="tel" id="mobile" placeholder="9876543210" maxlength="10" autocomplete="off"/>-->
-<!--                  </div>-->
-<!--                  <div class="err-msg" id="e_mobile">Enter 10-digit mobile number</div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div class="section-label" style="margin-top:4px;">Registration Details</div>-->
-
-<!--              <div class="fg-2">-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">NBFC Reg. Number *</label>-->
-<!--                  <div class="input-wrap">-->
-<!--                    <i class="ti ti-id-badge input-icon"></i>-->
-<!--                    <input class="form-control has-icon" type="text" id="reg_number" placeholder="N-14.03112" oninput="debouncedReg(this)" autocomplete="off"/>-->
-<!--                  </div>-->
-<!--                  <div class="err-msg" id="e_reg_number">Required</div>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">GSTIN <span style="color:var(&#45;&#45;text-muted);font-weight:400;">(Optional)</span></label>-->
-<!--                  <div class="input-wrap">-->
-<!--                    <i class="ti ti-receipt-2 input-icon"></i>-->
-<!--                    <input class="form-control has-icon" type="text" id="gst_number" placeholder="22AAAAA0000A1Z5" autocomplete="off" oninput="debouncedGst(this)"/>-->
-<!--                  </div>-->
-<!--                  <div class="err-msg" id="e_gst_number">This GST number is already registered.</div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div class="fg-2">-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">City *</label>-->
-<!--                  <div class="input-wrap">-->
-<!--                    <i class="ti ti-map-pin input-icon"></i>-->
-<!--                    <input class="form-control has-icon" type="text" id="city" placeholder="Mumbai" autocomplete="off"/>-->
-<!--                  </div>-->
-<!--                  <div class="err-msg" id="e_city">Enter city</div>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                  <label class="form-label">State *</label>-->
-<!--                  <select class="form-control" id="state">-->
-<!--                    <option value="">Select state</option>-->
-<!--                    <option>Gujarat</option><option>Maharashtra</option><option>Delhi</option>-->
-<!--                    <option>Karnataka</option><option>Tamil Nadu</option><option>Rajasthan</option>-->
-<!--                    <option>Telangana</option><option>Uttar Pradesh</option><option>West Bengal</option>-->
-<!--                    <option>Madhya Pradesh</option><option>Other</option>-->
-<!--                  </select>-->
-<!--                  <div class="err-msg" id="e_state">Select a state</div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <button class="btn-primary" onclick="goStep2()" style="margin-top:4px;">-->
-<!--                Continue <i class="ti ti-arrow-right" style="font-size:15px;"></i>-->
-<!--              </button>-->
-
-<!--            </div>-->
-<!--            &lt;!&ndash; Step 2: Portal setup + Password &ndash;&gt;-->
-<!--            <div class="step-section" id="step2">-->
-
-<!--              <div class="section-label">Portal Setup</div>-->
-
-<!--              <div class="form-group">-->
-<!--                <label class="form-label">Portal Subdomain *</label>-->
-<!--                <div class="input-wrap">-->
-<!--                  <i class="ti ti-world input-icon"></i>-->
-<!--                  <input class="form-control has-icon" type="text" id="subdomain" placeholder="quickloans" autocomplete="off"-->
-<!--                    oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,'');updateSubdomainPreview();debouncedSubdomain(this)"/>-->
-<!--                </div>-->
-<!--                <div class="subdomain-hint">Your portal: <span id="subdomain-preview">yourname.lendos.app</span></div>-->
-<!--                <div class="err-msg" id="e_subdomain">Enter a valid subdomain (min 3 characters)</div>-->
-<!--              </div>-->
-
-<!--              <div class="form-group">-->
-<!--                <label class="form-label">Company Logo <span style="color:var(&#45;&#45;text-muted);font-weight:400;">(optional &middot; PNG or JPG &middot; max 2MB)</span></label>-->
-<!--                <div class="logo-upload-box" id="logo-upload-box" onclick="document.getElementById('logo_file').click()">-->
-<!--                  <div id="logo-preview-wrap">-->
-<!--                    <i class="ti ti-photo-up" style="font-size:26px;color:var(&#45;&#45;teal-300);margin-bottom:8px;"></i>-->
-<!--                    <div style="font-size:13px;color:var(&#45;&#45;text-secondary);font-weight:500;">Click to upload logo</div>-->
-<!--                    <div style="font-size:11.5px;color:var(&#45;&#45;text-muted);margin-top:3px;">PNG, JPG up to 2MB</div>-->
-<!--                  </div>-->
-<!--                  <img id="logo-img-preview" src="" alt="" style="display:none;width:80px;height:80px;object-fit:contain;border-radius:8px;"/>-->
-<!--                  <input type="file" id="logo_file" accept="image/png,image/jpeg,image/jpg" style="display:none;" onchange="previewLogo(this)"/>-->
-<!--                </div>-->
-<!--                <div class="err-msg" id="e_logo">File too large. Max 2MB allowed.</div>-->
-<!--                <div id="logo-filename" style="font-size:12px;color:var(&#45;&#45;teal-600);margin-top:5px;display:none;"></div>-->
-<!--              </div>-->
-
-<!--              <div class="section-label" style="margin-top:4px;">Security</div>-->
-
-<!--              <div class="form-group">-->
-<!--                <label class="form-label">Create Password *</label>-->
-<!--                <div class="pw-wrap">-->
-<!--                  <input class="form-control" type="password" id="password" placeholder="Minimum 8 characters" autocomplete="new-password" style="padding-right:40px;"/>-->
-<!--                  <button class="pw-toggle" type="button" onclick="togglePw('password',this)">-->
-<!--                    <i class="ti ti-eye"></i>-->
-<!--                  </button>-->
-<!--                </div>-->
-<!--                <div class="err-msg" id="e_password">Password must be at least 8 characters</div>-->
-<!--              </div>-->
-
-<!--              <div class="form-group">-->
-<!--                <label class="form-label">Confirm Password *</label>-->
-<!--                <div class="pw-wrap">-->
-<!--                  <input class="form-control" type="password" id="confirm_password" placeholder="Re-enter password" autocomplete="new-password" style="padding-right:40px;"/>-->
-<!--                  <button class="pw-toggle" type="button" onclick="togglePw('confirm_password',this)">-->
-<!--                    <i class="ti ti-eye"></i>-->
-<!--                  </button>-->
-<!--                </div>-->
-<!--                <div class="err-msg" id="e_confirm_password">Passwords do not match</div>-->
-<!--              </div>-->
-
-<!--              <div class="btn-row">-->
-<!--                <button class="btn-outline" onclick="goStep(1)">-->
-<!--                  <i class="ti ti-arrow-left"></i> Back-->
-<!--                </button>-->
-<!--                <button class="btn-primary" id="btn-register" onclick="submitRegister()">-->
-<!--                  Create account <i class="ti ti-arrow-right" style="font-size:15px;"></i>-->
-<!--                </button>-->
-<!--              </div>-->
-
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Success &ndash;&gt;-->
-<!--            <div class="success-screen" id="success-screen">-->
-<!--              <div class="success-icon"><i class="ti ti-check"></i></div>-->
-<!--              <h3>Account created!</h3>-->
-<!--              <p>Your NBFC is registered on LendOS. Check your email for a verification link. Your branded portal is ready.</p>-->
-<!--              <div class="portal-chip">-->
-<!--                <i class="ti ti-link" style="font-size:14px;"></i>-->
-<!--                <span id="portal-url-display">yourname.lendos.app</span>-->
-<!--              </div>-->
-<!--              <button class="btn-primary" style="max-width:240px;margin:0 auto;" onclick="window.location.href='/nbfc/dashboard'">-->
-<!--                Sign in to dashboard <i class="ti ti-arrow-right"></i>-->
-<!--              </button>-->
-<!--            </div>-->
-
-<!--            <div class="form-footer" id="register-signin-link">-->
-<!--              Already have an account? <a href="#" onclick="switchTab('login');return false;">Sign in</a>-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; LOGIN FORM &ndash;&gt;-->
-<!--        <div id="panel-login" style="display:none;">-->
-<!--          <div class="card-body">-->
-
-<!--            <div id="alert-login" class="alert"></div>-->
-
-<!--            <div class="form-group">-->
-<!--              <label class="form-label">Work Email</label>-->
-<!--              <div class="input-wrap">-->
-<!--                <i class="ti ti-mail input-icon"></i>-->
-<!--                <input class="form-control has-icon" type="email" id="login_email" placeholder="admin@company.com" autocomplete="off"/>-->
-<!--              </div>-->
-<!--              <div class="err-msg" id="e_login_email">Enter a valid email</div>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--              <label class="form-label">Password</label>-->
-<!--              <div class="pw-wrap">-->
-<!--                <input class="form-control" type="password" id="login_password" placeholder="Your password" style="padding-right:40px;"/>-->
-<!--                <button class="pw-toggle" type="button" onclick="togglePw('login_password',this)">-->
-<!--                  <i class="ti ti-eye"></i>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--              <div class="err-msg" id="e_login_password">Enter your password</div>-->
-<!--            </div>-->
-
-<!--            <div style="display:flex;justify-content:flex-end;margin:-8px 0 18px;">-->
-<!--              <a href="#" style="font-size:12.5px;color:var(&#45;&#45;teal-600);text-decoration:none;font-weight:500;">Forgot password?</a>-->
-<!--            </div>-->
-
-<!--            <button class="btn-primary" id="btn-login" onclick="submitLogin()">-->
-<!--              Sign in <i class="ti ti-arrow-right" style="font-size:15px;"></i>-->
-<!--            </button>-->
-
-<!--            <div class="form-footer" style="margin-top:16px;">-->
-<!--              New to LendOS? <a href="#" onclick="switchTab('register');return false;">Register your NBFC &rarr;</a>-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Card footer &ndash;&gt;-->
-<!--        <div class="card-footer">-->
-<!--          <div class="trust-item"><i class="ti ti-lock"></i> 256-bit encrypted</div>-->
-<!--          <div class="trust-item"><i class="ti ti-shield-check"></i> RBI compliant</div>-->
-<!--          <div class="trust-item"><i class="ti ti-check"></i> No setup fee</div>-->
-<!--          <div class="trust-item"><i class="ti ti-headset"></i> 24/7 support</div>-->
-<!--        </div>-->
-
-<!--      </div>&lt;!&ndash; /form-card &ndash;&gt;-->
-<!--    </main>-->
-
-<!--  </div>&lt;!&ndash; /body-split &ndash;&gt;-->
-<!--</div>&lt;!&ndash; /page &ndash;&gt;-->
-
-<!--<script src="/static/assets/js/config.js"></script>-->
-<!--<script src="/static/assets/js/api.js"></script>-->
-<!--<script src="/static/assets/js/auth.js"></script>-->
-<!--<script src="/static/assets/js/utils.js"></script>-->
-<!--<script>-->
-<!--  // Redirect if already logged in-->
-<!--  AuthService.redirectIfLoggedIn();-->
-
-<!--  let currentStep = 1;-->
-
-<!--  // ── Live duplicate checks ──────────────────────────────────────────────────-->
-<!--  const _debounce = (fn, ms = 600) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };-->
-
-<!--  async function checkEmailAvail(input) {-->
-<!--    const email = input.value.trim();-->
-<!--    if (!email || !/^\S+@\S+\.\S+$/.test(email)) return;-->
-<!--    try {-->
-<!--      const res = await fetch(`${CONFIG.BASE_URL}/api/nbfc/check-email/${encodeURIComponent(email)}`);-->
-<!--      const data = await res.json();-->
-<!--      if (!data.available) {-->
-<!--        setErr('email', true);-->
-<!--        document.getElementById('e_email').textContent = 'This email is already registered. Sign in instead.';-->
-<!--      } else {-->
-<!--        setErr('email', false);-->
-<!--      }-->
-<!--    } catch {}-->
-<!--  }-->
-
-<!--  async function checkRegAvail(input) {-->
-<!--    const reg = input.value.trim();-->
-<!--    if (!reg || reg.length < 4) return;-->
-<!--    try {-->
-<!--      const res = await fetch(`${CONFIG.BASE_URL}/api/nbfc/check-reg/${encodeURIComponent(reg)}`);-->
-<!--      const data = await res.json();-->
-<!--      if (!data.available) {-->
-<!--        setErr('reg_number', true);-->
-<!--        document.getElementById('e_reg_number').textContent = 'This registration number is already on LendOS.';-->
-<!--      } else {-->
-<!--        setErr('reg_number', false);-->
-<!--      }-->
-<!--    } catch {}-->
-<!--  }-->
-
-<!--  async function checkSubdomainAvail(input) {-->
-<!--    const sub = input.value.trim();-->
-<!--    if (!sub || sub.length < 3) return;-->
-<!--    try {-->
-<!--      const res = await fetch(`${CONFIG.BASE_URL}/api/nbfc/check-subdomain/${sub}`);-->
-<!--      const data = await res.json();-->
-<!--      if (!data.available) {-->
-<!--        setErr('subdomain', true);-->
-<!--        document.getElementById('e_subdomain').textContent = 'This subdomain is taken. Try another.';-->
-<!--      } else {-->
-<!--        setErr('subdomain', false);-->
-<!--      }-->
-<!--    } catch {}-->
-<!--  }-->
-
-<!--  const debouncedEmail     = _debounce(checkEmailAvail);-->
-<!--  const debouncedReg       = _debounce(checkRegAvail);-->
-<!--  const debouncedSubdomain = _debounce(checkSubdomainAvail);-->
-
-<!--  async function checkGstAvail(input) {-->
-<!--    const gst = input.value.trim();-->
-<!--    if (!gst || gst.length < 15) return;-->
-<!--    try {-->
-<!--        const res  = await fetch(`${CONFIG.BASE_URL}/api/nbfc/check-gst/${encodeURIComponent(gst)}`);-->
-<!--        const data = await res.json();-->
-<!--        if (!data.available) {-->
-<!--            setErr('gst_number', true);-->
-<!--            document.getElementById('e_gst_number').textContent = 'This GST number is already registered.';-->
-<!--        } else {-->
-<!--            setErr('gst_number', false);-->
-<!--        }-->
-<!--    } catch {}-->
-<!--  }-->
-
-<!--  const debouncedGst = _debounce(checkGstAvail);-->
-
-<!--  // ── Tab switching ──────────────────────────────────────────────────────────-->
-<!--  function switchTab(tab) {-->
-<!--    document.getElementById('panel-register').style.display = tab === 'register' ? 'block' : 'none';-->
-<!--    document.getElementById('panel-login').style.display    = tab === 'login'    ? 'block' : 'none';-->
-<!--    document.getElementById('tab-register').classList.toggle('active', tab === 'register');-->
-<!--    document.getElementById('tab-login').classList.toggle('active', tab === 'login');-->
-<!--  }-->
-
-<!--  // ── Step navigation ────────────────────────────────────────────────────────-->
-<!--  function goStep(n) {-->
-<!--    document.querySelectorAll('.step-section').forEach((s, i) => {-->
-<!--      s.classList.toggle('active', i + 1 === n);-->
-<!--    });-->
-<!--    ['bar1','bar2'].forEach((id, i) => {-->
-<!--      const bar = document.getElementById(id);-->
-<!--      bar.className = 'step-bar';-->
-<!--      if (i + 1 < n) bar.classList.add('done');-->
-<!--      else if (i + 1 === n) bar.classList.add('active');-->
-<!--    });-->
-<!--    const labels = ['Company details', 'Portal setup & Password'];-->
-<!--    document.getElementById('step-meta').innerHTML = `<span>Step ${n} / 2</span> — ${labels[n-1]}`;-->
-<!--    currentStep = n;-->
-<!--  }-->
-
-<!--  // ── Validation helpers ─────────────────────────────────────────────────────-->
-<!--  function setErr(id, show) {-->
-<!--    const el = document.getElementById('e_' + id);-->
-<!--    const inp = document.getElementById(id);-->
-<!--    if (el)  el.classList.toggle('show', show);-->
-<!--    if (inp) inp.classList.toggle('has-error', show);-->
-<!--  }-->
-
-<!--  function clearErrs(ids) { ids.forEach(id => setErr(id, false)); }-->
-
-<!--  // ── Subdomain preview ──────────────────────────────────────────────────────-->
-<!--  function updateSubdomainPreview() {-->
-<!--    const val = document.getElementById('subdomain').value || 'yourname';-->
-<!--    document.getElementById('subdomain-preview').textContent = val + '.lendos.app';-->
-<!--  }-->
-
-<!--  // ── Password toggle ────────────────────────────────────────────────────────-->
-<!--  function togglePw(id, btn) {-->
-<!--    const inp = document.getElementById(id);-->
-<!--    const isText = inp.type === 'text';-->
-<!--    inp.type = isText ? 'password' : 'text';-->
-<!--    btn.innerHTML = isText ? '<i class="ti ti-eye"></i>' : '<i class="ti ti-eye-off"></i>';-->
-<!--  }-->
-
-<!--  function goStep2() {-->
-<!--    const fields = ['company_name','email','mobile','reg_number','gst_number','city','state'];-->
-<!--    clearErrs(fields);-->
-<!--    let ok = true;-->
-
-<!--    if (!document.getElementById('company_name').value.trim()) { setErr('company_name', true); ok = false; }-->
-<!--    if (!Utils.isValidEmail(document.getElementById('email').value.trim())) { setErr('email', true); ok = false; }-->
-<!--    if (!Utils.isValidMobile(document.getElementById('mobile').value.trim())) { setErr('mobile', true); ok = false; }-->
-<!--    if (!document.getElementById('reg_number').value.trim()) { setErr('reg_number', true); ok = false; }-->
-<!--    if (!document.getElementById('city').value.trim()) { setErr('city', true); ok = false; }-->
-<!--    if (!document.getElementById('state').value) { setErr('state', true); ok = false; }-->
-
-<!--    if (!ok) return;-->
-
-<!--    // ── Re-run all 3 duplicate checks before allowing Continue ──-->
-<!--    const emailInput  = document.getElementById('email');-->
-<!--    const regInput    = document.getElementById('reg_number');-->
-<!--    const gstInput    = document.getElementById('gst_number');-->
-
-<!--    let duplicateFound = false;-->
-
-<!--    const checks = [-->
-<!--        { el: emailInput, errId: 'e_email',      msg: 'This email is already registered. Sign in instead.' },-->
-<!--        { el: regInput,   errId: 'e_reg_number', msg: 'This registration number is already on LendOS.' },-->
-<!--        { el: gstInput,   errId: 'e_gst_number', msg: 'This GST number is already registered.' },-->
-<!--    ];-->
-
-<!--    for (const c of checks) {-->
-<!--        const errEl = document.getElementById(c.errId);-->
-<!--        if (errEl && errEl.classList.contains('show')) {-->
-<!--            duplicateFound = true;-->
-<!--            c.el.classList.add('has-error');-->
-<!--            c.el.scrollIntoView({ behavior: 'smooth', block: 'center' });-->
-<!--            break;-->
-<!--        }-->
-<!--    }-->
-
-<!--    if (duplicateFound) return;-->
-
-<!--    goStep(2);-->
-<!--  }-->
-
-<!--  // ── Logo preview ───────────────────────────────────────────────────────────-->
-<!--  function previewLogo(input) {-->
-<!--    const file = input.files[0];-->
-<!--    if (!file) return;-->
-<!--    if (file.size > 2 * 1024 * 1024) {-->
-<!--      document.getElementById('e_logo').classList.add('show');-->
-<!--      input.value = '';-->
-<!--      return;-->
-<!--    }-->
-<!--    document.getElementById('e_logo').classList.remove('show');-->
-<!--    const reader = new FileReader();-->
-<!--    reader.onload = function(e) {-->
-<!--      document.getElementById('logo-preview-wrap').style.display = 'none';-->
-<!--      const img = document.getElementById('logo-img-preview');-->
-<!--      img.src = e.target.result;-->
-<!--      img.style.display = 'block';-->
-<!--      document.getElementById('logo-upload-box').classList.add('has-file');-->
-<!--      const fname = document.getElementById('logo-filename');-->
-<!--      fname.textContent = '✓ ' + file.name;-->
-<!--      fname.style.display = 'block';-->
-<!--    };-->
-<!--    reader.readAsDataURL(file);-->
-<!--  }-->
-
-<!--  // ── Register submit ────────────────────────────────────────────────────────-->
-<!--  async function submitRegister() {-->
-<!--    clearErrs(['subdomain','password','confirm_password']);-->
-<!--    let ok = true;-->
-
-<!--    const subdomain = document.getElementById('subdomain').value.trim();-->
-<!--    const password  = document.getElementById('password').value;-->
-<!--    const confirm   = document.getElementById('confirm_password').value;-->
-
-<!--    if (!subdomain || subdomain.length < 3) { setErr('subdomain', true); ok = false; }-->
-<!--    if (!password || password.length < 8)   { setErr('password', true); ok = false; }-->
-<!--    if (password !== confirm)               { setErr('confirm_password', true); ok = false; }-->
-<!--    if (!ok) return;-->
-
-<!--    Utils.setButtonLoading('btn-register', true, 'Create account <i class="ti ti-arrow-right"></i>');-->
-
-<!--    const formData = new FormData();-->
-<!--    formData.append('company_name',        document.getElementById('company_name').value.trim());-->
-<!--    formData.append('company_type', 'NBFC – Personal loan');-->
-<!--    formData.append('registration_number', document.getElementById('reg_number').value.trim());-->
-<!--    formData.append('gst_number',          document.getElementById('gst_number').value.trim());-->
-<!--    formData.append('email',               document.getElementById('email').value.trim());-->
-<!--    formData.append('mobile',              document.getElementById('mobile').value.trim());-->
-<!--    formData.append('city',                document.getElementById('city').value.trim());-->
-<!--    formData.append('state',               document.getElementById('state').value);-->
-
-<!--    formData.append('subdomain',           subdomain);-->
-<!--    formData.append('password',            password);-->
-
-<!--    const logoFile = document.getElementById('logo_file').files[0];-->
-<!--    if (logoFile) formData.append('logo', logoFile);-->
-
-<!--    const res = await AuthService.registerWithLogo(formData);-->
-
-<!--    if (res.ok) {-->
-<!--      document.querySelectorAll('.step-section.active').forEach(s => s.style.display = 'none');-->
-<!--      document.getElementById('step-bar-row')?.remove();-->
-<!--      document.getElementById('step-meta').style.display = 'none';-->
-<!--      const sbr = document.querySelector('.step-bar-row'); if(sbr) sbr.style.display = 'none';-->
-<!--      document.getElementById('portal-url-display').textContent = subdomain + '.lendos.app';-->
-<!--      document.getElementById('success-screen').style.display = 'block';-->
-<!--      const footerLink = document.getElementById('register-signin-link');-->
-<!--      if (footerLink) footerLink.style.display = 'none';-->
-<!--    } else {-->
-<!--      showFormAlert('alert-reg', res.data.detail || 'Registration failed. Please try again.', 'error');-->
-<!--      Utils.setButtonLoading('btn-register', false, 'Create account <i class="ti ti-arrow-right"></i>');-->
-<!--    }-->
-<!--  }-->
-
-<!--  // ── Login submit ───────────────────────────────────────────────────────────-->
-<!--  async function submitLogin() {-->
-<!--    clearErrs(['login_email','login_password']);-->
-<!--    let ok = true;-->
-
-<!--    const email    = document.getElementById('login_email').value.trim();-->
-<!--    const password = document.getElementById('login_password').value;-->
-
-<!--    if (!Utils.isValidEmail(email)) { setErr('login_email', true); ok = false; }-->
-<!--    if (!password) { setErr('login_password', true); ok = false; }-->
-<!--    if (!ok) return;-->
-
-<!--    Utils.setButtonLoading('btn-login', true, 'Sign in <i class="ti ti-arrow-right"></i>');-->
-
-<!--    const res = await AuthService.login(email, password);-->
-
-<!--    if (res.ok) {-->
-<!--      window.location.href = '/nbfc/dashboard';-->
-<!--    } else {-->
-<!--      showFormAlert('alert-login', res.data.detail || 'Invalid email or password.', 'error');-->
-<!--      Utils.setButtonLoading('btn-login', false, 'Sign in <i class="ti ti-arrow-right"></i>');-->
-<!--    }-->
-<!--  }-->
-
-<!--  // ── Alert helper ───────────────────────────────────────────────────────────-->
-<!--  function showFormAlert(id, msg, type) {-->
-<!--    const box = document.getElementById(id);-->
-<!--    box.innerHTML = `<i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i> ${msg}`;-->
-<!--    box.className = `alert ${type} show`;-->
-<!--    setTimeout(() => box.classList.remove('show'), 5000);-->
-<!--  }-->
-
-<!--  // Enter key on login-->
-<!--  document.addEventListener('keydown', e => {-->
-<!--    if (e.key === 'Enter' && document.getElementById('panel-login').style.display !== 'none') {-->
-<!--      submitLogin();-->
-<!--    }-->
-<!--  });-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -652,14 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <link rel="stylesheet" href="/static/assets/css/nbfc-register.css">
-
-
+  <link rel="stylesheet" href="/static/assets/css/nbfc-register.css">
 </head>
 <body>
 <div class="page">
 
-  <!-- Topbar -->
   <header class="topbar">
     <a class="logo" href="#">
       <div class="logo-icon"><i class="ti ti-building-bank"></i></div>
@@ -683,7 +37,6 @@
 
   <div class="body-split">
 
-    <!-- Left Panel -->
     <aside class="left-panel">
       <div>
         <div class="badge">
@@ -699,76 +52,59 @@
         </p>
       </div>
 
-      <!-- SVG Illustration -->
       <div class="left-illustration">
         <svg width="260" height="230" viewBox="0 0 260 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Shadow -->
           <ellipse cx="130" cy="210" rx="95" ry="14" fill="rgba(42,128,153,0.08)"/>
-          <!-- Building body -->
           <rect x="55" y="88" width="150" height="118" rx="3" fill="#daeef5"/>
-          <!-- Pediment -->
           <polygon points="44,90 130,46 216,90" fill="#2a8099" opacity="0.85"/>
           <polygon points="56,90 130,52 204,90" fill="#3da8c0"/>
-          <!-- Columns -->
           <rect x="72"  y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>
           <rect x="98"  y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>
           <rect x="138" y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>
           <rect x="164" y="90" width="14" height="116" rx="7" fill="rgba(255,255,255,0.82)"/>
-          <!-- Steps -->
           <rect x="48"  y="198" width="164" height="9"  rx="2" fill="#7acfdf" opacity="0.55"/>
           <rect x="55"  y="192" width="150" height="7"  rx="2" fill="#3da8c0" opacity="0.45"/>
-          <!-- Door -->
           <rect x="113" y="155" width="44" height="48" rx="22" fill="rgba(17,51,71,0.4)"/>
           <rect x="118" y="160" width="34" height="42" rx="17" fill="rgba(17,51,71,0.6)"/>
-          <!-- Left window -->
           <rect x="72"  y="112" width="26" height="28" rx="3" fill="rgba(17,51,71,0.15)"/>
           <line x1="85"  y1="112" x2="85"  y2="140" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
           <line x1="72"  y1="126" x2="98"  y2="126" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
-          <!-- Right window -->
           <rect x="162" y="112" width="26" height="28" rx="3" fill="rgba(17,51,71,0.15)"/>
           <line x1="175" y1="112" x2="175" y2="140" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
           <line x1="162" y1="126" x2="188" y2="126" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
-          <!-- Shield badge -->
           <circle cx="208" cy="76" r="24" fill="#e6f4f8" stroke="#b8e8f0" stroke-width="1.5"/>
           <path d="M208 64 C208 64 218 69 218 78 C218 85 213.5 90 208 92.5 C202.5 90 198 85 198 78 C198 69 208 64 208 64Z" fill="#3da8c0" opacity="0.75"/>
           <path d="M204.5 78.5 L207.5 81.5 L213 75" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Small plant left -->
           <rect x="46" y="188" width="5" height="14" rx="2.5" fill="#2a8099" opacity="0.45"/>
           <ellipse cx="48.5" cy="187" rx="8" ry="6" fill="#3da8c0" opacity="0.55"/>
-          <!-- Floating cube right -->
           <rect x="202" y="160" width="20" height="20" rx="3" fill="rgba(61,168,192,0.12)" stroke="#b8e8f0" stroke-width="1.2"/>
         </svg>
       </div>
 
-      <!-- Trust strip -->
       <div class="left-bottom">
         <div class="left-trust-item"><i class="ti ti-lock"></i> 256-bit SSL Secured</div>
         <div class="left-trust-item"><i class="ti ti-shield-check"></i> Your data is safe with us</div>
       </div>
     </aside>
 
-    <!-- Right Panel -->
     <main class="right-panel">
       <div class="form-card">
 
-        <!-- Card header -->
         <div class="card-header">
-          <div class="card-header-icon">
+          <div class="card-header-icon" id="cardHeaderIcon">
             <i class="ti ti-user-plus"></i>
           </div>
           <div class="card-header-text">
-            <h2>Create your NBFC account</h2>
-            <p>Fill in the details below to get started</p>
+            <h2 id="cardHeaderTitle">Create your NBFC account</h2>
+            <p id="cardHeaderSub">Fill in the details below to get started</p>
           </div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
           <div class="tab active" id="tab-register" onclick="switchTab('register')">New registration</div>
           <div class="tab" id="tab-login" onclick="switchTab('login')">Sign in</div>
         </div>
 
-        <!-- REGISTER FORM -->
         <div id="panel-register">
           <div class="card-body">
 
@@ -780,7 +116,6 @@
 
             <div id="alert-reg" class="alert"></div>
 
-            <!-- Step 1 -->
             <div class="step-section active" id="step1">
 
               <div class="section-label">Company Information</div>
@@ -820,20 +155,15 @@
                   <label class="form-label">NBFC Reg. Number *</label>
                   <div class="input-wrap">
                     <i class="ti ti-id-badge input-icon"></i>
-<!--                    <input class="form-control has-icon" type="text" id="reg_number" placeholder="N-14.03112" oninput="debouncedReg(this)" autocomplete="off"/>-->
-                  <input class="form-control has-icon" type="text" id="reg_number" placeholder="N-14.03112" maxlength="10"
-       oninput="this.value=this.value.toUpperCase();debouncedReg(this)" autocomplete="off"/>
+                    <input class="form-control has-icon" type="text" id="reg_number" placeholder="N-14.03112" maxlength="10" oninput="this.value=this.value.toUpperCase();debouncedReg(this)" autocomplete="off"/>
                   </div>
-<!--                  <div class="err-msg" id="e_reg_number">Required</div>-->
-                    <div class="err-msg" id="e_reg_number">Enter a valid NBFC reg. number (e.g. N-14.03112)</div>
+                  <div class="err-msg" id="e_reg_number">Enter a valid NBFC reg. number (e.g. N-14.03112)</div>
                 </div>
                 <div class="form-group">
                   <label class="form-label">GSTIN *</label>
                   <div class="input-wrap">
                     <i class="ti ti-receipt-2 input-icon"></i>
-<!--                    <input class="form-control has-icon" type="text" id="gst_number" placeholder="22AAAAA0000A1Z5" autocomplete="off" oninput="debouncedGst(this)"/>-->
-                  <input class="form-control has-icon" type="text" id="gst_number" placeholder="22AAAAA0000A1Z5" maxlength="15" autocomplete="off"
-       oninput="this.value=this.value.toUpperCase().replace(/[^0-9A-Z]/g,'').slice(0,15);debouncedGst(this)"/>
+                    <input class="form-control has-icon" type="text" id="gst_number" placeholder="22AAAAA0000A1Z5" maxlength="15" autocomplete="off" oninput="this.value=this.value.toUpperCase().replace(/[^0-9A-Z]/g,'').slice(0,15);debouncedGst(this)"/>
                   </div>
                   <div class="err-msg" id="e_gst_number">This GST number is already registered.</div>
                 </div>
@@ -866,7 +196,6 @@
               </button>
 
             </div>
-            <!-- Step 2: Portal setup + Password -->
             <div class="step-section" id="step2">
 
               <div class="section-label">Branding</div>
@@ -921,7 +250,6 @@
 
             </div>
 
-            <!-- Success -->
             <div class="success-screen" id="success-screen">
               <div class="success-icon"><i class="ti ti-check"></i></div>
               <h3>Account created!</h3>
@@ -938,7 +266,6 @@
           </div>
         </div>
 
-        <!-- LOGIN FORM -->
         <div id="panel-login" style="display:none;">
           <div class="card-body">
 
@@ -965,7 +292,7 @@
             </div>
 
             <div style="display:flex;justify-content:flex-end;margin:-8px 0 18px;">
-              <a href="#" style="font-size:12.5px;color:var(--teal-600);text-decoration:none;font-weight:500;">Forgot password?</a>
+              <a href="#" onclick="showForgotPassword();return false;" style="font-size:12.5px;color:var(--teal-600);text-decoration:none;font-weight:500;">Forgot password?</a>
             </div>
 
             <button class="btn-primary" id="btn-login" onclick="submitLogin()">
@@ -979,7 +306,65 @@
           </div>
         </div>
 
-        <!-- Card footer -->
+        <div id="panel-forgot" style="display:none;">
+          <div class="card-body">
+
+            <div id="alert-forgot" class="alert"></div>
+
+            <div id="forgot-step-1">
+              <p style="font-size:13.5px;color:#475569;margin-bottom:16px;">Enter your registered work email address to receive a password reset OTP.</p>
+
+              <div class="form-group">
+                <label class="form-label">Work Email</label>
+                <div class="input-wrap">
+                  <i class="ti ti-mail input-icon"></i>
+                  <input class="form-control has-icon" type="email" id="forgot_email_input" placeholder="admin@company.com"/>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-send-otp" onclick="requestNbfcResetOtp()">
+                Send OTP <i class="ti ti-arrow-right" style="font-size:15px;"></i>
+              </button>
+            </div>
+
+            <div id="forgot-step-2" style="display:none;">
+              <p style="font-size:13.5px;color:#475569;margin-bottom:16px;">We've sent a 6-digit OTP to your email. Enter it below to reset your password.</p>
+
+              <div class="form-group">
+                <label class="form-label">OTP</label>
+                <div class="input-wrap">
+                  <i class="ti ti-lock input-icon"></i>
+                  <input class="form-control has-icon" type="text" id="forgot_otp_input" placeholder="123456" maxlength="6" style="letter-spacing:4px;font-weight:bold;"/>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <div class="pw-wrap">
+                  <input class="form-control" type="password" id="forgot_new_password" placeholder="Minimum 8 characters"/>
+                  <button class="pw-toggle" type="button" onclick="togglePw('forgot_new_password',this)"><i class="ti ti-eye"></i></button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <div class="pw-wrap">
+                  <input class="form-control" type="password" id="forgot_confirm_password" placeholder="Re-enter password"/>
+                  <button class="pw-toggle" type="button" onclick="togglePw('forgot_confirm_password',this)"><i class="ti ti-eye"></i></button>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-reset-pw" onclick="submitNbfcNewPassword()">
+                Reset Password <i class="ti ti-check" style="font-size:15px;"></i>
+              </button>
+            </div>
+
+            <div class="form-footer" style="margin-top:16px;">
+              Remembered your password? <a href="#" onclick="switchTab('login');return false;">Sign in &rarr;</a>
+            </div>
+          </div>
+        </div>
+
         <div class="card-footer">
           <div class="trust-item"><i class="ti ti-lock"></i> 256-bit encrypted</div>
           <div class="trust-item"><i class="ti ti-shield-check"></i> RBI compliant</div>
@@ -987,16 +372,155 @@
           <div class="trust-item"><i class="ti ti-headset"></i> 24/7 support</div>
         </div>
 
-      </div><!-- /form-card -->
-    </main>
+      </div></main>
 
-  </div><!-- /body-split -->
-</div><!-- /page -->
-
-<script src="/static/assets/js/config.js"></script>
+  </div></div><script src="/static/assets/js/config.js"></script>
 <script src="/static/assets/js/api.js"></script>
 <script src="/static/assets/js/auth.js"></script>
 <script src="/static/assets/js/utils.js"></script>
 <script src="/static/assets/js/nbfc-register.js"></script>
+
+<script>
+  function showFormAlertForgot(id, msg, type) {
+    const box = document.getElementById(id);
+    box.innerHTML = `<i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i> ${msg}`;
+    // Based on your existing CSS logic: it appends '.show' to display
+    box.className = `alert ${type} show`;
+    // We do not auto-hide this one so they have time to read it during reset flow
+  }
+
+  function showForgotPassword() {
+    document.getElementById('panel-register').style.display = 'none';
+    document.getElementById('panel-login').style.display = 'none';
+    document.getElementById('panel-forgot').style.display = 'block';
+
+    // Update headers to fit forgot password context
+    document.getElementById('cardHeaderTitle').innerText = 'Reset Password';
+    document.getElementById('cardHeaderSub').innerText = 'Recover access to your NBFC account';
+    document.getElementById('cardHeaderIcon').innerHTML = '<i class="ti ti-lock-exclamation"></i>';
+
+    // Clear previous states
+    document.getElementById('forgot-step-1').style.display = 'block';
+    document.getElementById('forgot-step-2').style.display = 'none';
+    const alertBox = document.getElementById('alert-forgot');
+    alertBox.className = 'alert';
+  }
+
+  // Hook into existing switchTab from nbfc-register.js to make sure our panel hides properly
+  const originalSwitchTab = window.switchTab;
+  window.switchTab = function(tabId) {
+    if(document.getElementById('panel-forgot')) {
+      document.getElementById('panel-forgot').style.display = 'none';
+    }
+
+    // Restore default headers
+    document.getElementById('cardHeaderTitle').innerText = 'Create your NBFC account';
+    document.getElementById('cardHeaderSub').innerText = 'Fill in the details below to get started';
+    document.getElementById('cardHeaderIcon').innerHTML = '<i class="ti ti-user-plus"></i>';
+
+    if (typeof originalSwitchTab === 'function') {
+      originalSwitchTab(tabId);
+    }
+  };
+
+  async function requestNbfcResetOtp() {
+    const email = document.getElementById('forgot_email_input').value.trim();
+    const alertBox = document.getElementById('alert-forgot');
+    alertBox.className = 'alert'; // hide previous alerts
+
+    if (!email) {
+      showFormAlertForgot('alert-forgot', 'Please enter your work email address.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-send-otp');
+    btn.innerHTML = '<div class="spinner-border" style="width:1rem;height:1rem;border-color:white;border-bottom-color:transparent;border-radius:50%;border-style:solid;border-width:2px;display:inline-block;animation:spin 1s linear infinite;"></div> Sending...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch('/api/nbfc/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to send OTP.');
+      }
+
+      // Success
+      showFormAlertForgot('alert-forgot', 'OTP sent to your email.', 'success');
+
+      // Move to Step 2
+      document.getElementById('forgot-step-1').style.display = 'none';
+      document.getElementById('forgot-step-2').style.display = 'block';
+
+    } catch (error) {
+      showFormAlertForgot('alert-forgot', error.message, 'error');
+    } finally {
+      btn.innerHTML = 'Send OTP <i class="ti ti-arrow-right" style="font-size:15px;"></i>';
+      btn.disabled = false;
+    }
+  }
+
+  async function submitNbfcNewPassword() {
+    const email = document.getElementById('forgot_email_input').value.trim();
+    const otp = document.getElementById('forgot_otp_input').value.trim();
+    const newPass = document.getElementById('forgot_new_password').value;
+    const confirmPass = document.getElementById('forgot_confirm_password').value;
+
+    const alertBox = document.getElementById('alert-forgot');
+    alertBox.className = 'alert';
+
+    if (!otp || otp.length !== 6) {
+      showFormAlertForgot('alert-forgot', 'Please enter a valid 6-digit OTP.', 'error');
+      return;
+    }
+    if (newPass.length < 8) {
+      showFormAlertForgot('alert-forgot', 'Password must be at least 8 characters.', 'error');
+      return;
+    }
+    if (newPass !== confirmPass) {
+      showFormAlertForgot('alert-forgot', 'Passwords do not match.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-reset-pw');
+    btn.innerHTML = '<div class="spinner-border" style="width:1rem;height:1rem;border-color:white;border-bottom-color:transparent;border-radius:50%;border-style:solid;border-width:2px;display:inline-block;animation:spin 1s linear infinite;"></div> Resetting...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch('/api/nbfc/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, otp: otp, new_password: newPass })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to reset password.');
+      }
+
+      // Success
+      showFormAlertForgot('alert-forgot', 'Password reset successful! You can now sign in.', 'success');
+
+      setTimeout(() => {
+        switchTab('login');
+      }, 2000);
+
+    } catch (error) {
+      showFormAlertForgot('alert-forgot', error.message, 'error');
+    } finally {
+      btn.innerHTML = 'Reset Password <i class="ti ti-check" style="font-size:15px;"></i>';
+      btn.disabled = false;
+    }
+  }
+
+  // Adding the spinner animation dynamically so it works even if you don't have it in your CSS
+  const style = document.createElement('style');
+  style.innerHTML = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
+  document.head.appendChild(style);
+</script>
 </body>
 </html>

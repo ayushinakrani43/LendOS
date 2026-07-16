@@ -218,7 +218,7 @@ if (d.status === 'disbursed') {
     }
 
     // ── Show action buttons + decision card for pending/applied ──
-    const canDecide = d.status === 'applied' || d.status === 'pending';
+  const canDecide = d.status === 'applied';
     if (canDecide) {
         document.getElementById('headerActions').style.display = 'flex';
         document.getElementById('decisionCard').style.display  = 'block';

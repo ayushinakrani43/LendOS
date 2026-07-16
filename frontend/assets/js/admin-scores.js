@@ -1,3 +1,4 @@
+
 const API = window.API_BASE || window.location.origin;
 
 function getSession() {
@@ -21,6 +22,21 @@ const GRADE_CLASS = {
     'Poor':      'poor',
     'Very Poor': 'verypoor',
 };
+
+// Normalizes any casing/spacing variant of a grade string to the canonical
+// label used as a key in GRADE_CLASS (e.g. "excellent" / "EXCELLENT" -> "Excellent")
+function normalizeGrade(rawGrade) {
+    if (!rawGrade) return '';
+    const key = rawGrade.trim().toLowerCase();
+    const map = {
+        'excellent':  'Excellent',
+        'good':       'Good',
+        'fair':       'Fair',
+        'poor':       'Poor',
+        'very poor':  'Very Poor',
+    };
+    return map[key] || rawGrade.trim();
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
     const session = getSession();
@@ -56,11 +72,11 @@ async function loadScores() {
 
 function renderStats() {
     const total     = allScores.length;
-    const excellent = allScores.filter(s => s.grade === 'Excellent').length;
-    const good      = allScores.filter(s => s.grade === 'Good').length;
-    const fair      = allScores.filter(s => s.grade === 'Fair').length;
-    const poor      = allScores.filter(s => s.grade === 'Poor').length;
-    const veryPoor  = allScores.filter(s => s.grade === 'Very Poor').length;
+    const excellent = allScores.filter(s => normalizeGrade(s.grade) === 'Excellent').length;
+    const good      = allScores.filter(s => normalizeGrade(s.grade) === 'Good').length;
+    const fair      = allScores.filter(s => normalizeGrade(s.grade) === 'Fair').length;
+    const poor      = allScores.filter(s => normalizeGrade(s.grade) === 'Poor').length;
+    const veryPoor  = allScores.filter(s => normalizeGrade(s.grade) === 'Very Poor').length;
 
     document.getElementById('statTotal').textContent     = total;
     document.getElementById('statExcellent').textContent = excellent;
@@ -73,8 +89,8 @@ function renderTable() {
     const filtered = currentTab === 'all'
         ? allScores
         : currentTab === 'poor'
-            ? allScores.filter(s => s.grade === 'Poor' || s.grade === 'Very Poor')
-            : allScores.filter(s => (GRADE_CLASS[s.grade] || '') === currentTab);
+            ? allScores.filter(s => ['Poor', 'Very Poor'].includes(normalizeGrade(s.grade)))
+            : allScores.filter(s => (GRADE_CLASS[normalizeGrade(s.grade)] || '') === currentTab);
 
     document.getElementById('resultsCount').textContent =
         `${filtered.length} of ${allScores.length} records`;
@@ -92,7 +108,8 @@ function renderTable() {
 
     document.getElementById('tableBody').innerHTML = filtered.map(s => {
         const initials = (s.borrower_name || 'B').charAt(0).toUpperCase();
-        const cls = GRADE_CLASS[s.grade] || '';
+        const gradeLabel = normalizeGrade(s.grade);
+        const cls = GRADE_CLASS[gradeLabel] || '';
         return `
             <tr>
                 <td>
@@ -106,7 +123,7 @@ function renderTable() {
                 </td>
                 <td class="muted">${s.nbfc_name || '—'}</td>
                 <td><span class="score-val ${cls}">${s.final_score}</span></td>
-                <td><span class="status-badge ${cls}">${s.grade}</span></td>
+                <td><span class="status-badge ${cls}">${gradeLabel}</span></td>
                 <td><span class="action-pill">${(s.nbfc_action || '').replace(/_/g, ' ')}</span></td>
                 <td class="muted">${fmtDate(s.created_at)}</td>
                 <td><div class="tbl-actions">
@@ -159,7 +176,8 @@ function num(v, decimals = 0) {
 }
 
 function renderModal(s) {
-    const cls = GRADE_CLASS[s.grade] || '';
+    const gradeLabel = normalizeGrade(s.grade);
+    const cls = GRADE_CLASS[gradeLabel] || '';
 
     document.getElementById('modalAvatar').textContent = (s.borrower_name || 'B').charAt(0).toUpperCase();
     document.getElementById('modalTitle').textContent = s.borrower_name || '—';
@@ -172,7 +190,7 @@ function renderModal(s) {
                 <div class="score-hero-sub">Base score: ${s.base_score} / 900</div>
             </div>
             <div class="score-hero-right">
-                <span class="status-badge ${cls}" style="font-size:13px; padding:5px 14px;">${s.grade}</span>
+                <span class="status-badge ${cls}" style="font-size:13px; padding:5px 14px;">${gradeLabel}</span>
                 <div style="margin-top:8px;"><span class="action-pill">${(s.nbfc_action || '').replace(/_/g, ' ')}</span></div>
             </div>
         </div>

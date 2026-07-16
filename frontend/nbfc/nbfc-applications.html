@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="/static/assets/css/nbfc-base.css">
+  <link rel="stylesheet" href="/static/assets/css/nbfc-application-detail.css">
   <link rel="stylesheet" href="/static/assets/css/nbfc-applications.css">
 </head>
 <body>
@@ -91,6 +93,10 @@
           <p class="page-sub">Review, approve, or reject borrower applications from your portal.</p>
         </div>
         <div class="page-header-actions">
+          <button class="btn-bulk-review" id="bulkReviewBtn" style="display:none;" onclick="openBulkReview()">
+            <i class="ti ti-checklist"></i>
+            <span id="bulkReviewCount">Review Selected</span>
+          </button>
           <div class="search-wrap">
             <i class="ti ti-search"></i>
             <input type="text" id="searchInput" placeholder="Search borrower, amount…"
@@ -169,6 +175,7 @@
           <table class="data-table" id="applicationsTable">
             <thead>
               <tr>
+                <th class="col-check"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)"></th>
                 <th class="col-borrower">Borrower</th>
                 <th class="col-amount">Loan Amount</th>
                 <th class="col-tenure">Tenure</th>
@@ -188,9 +195,9 @@
             </thead>
             <tbody id="tableBody">
               <!-- Loading skeleton -->
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-wrap"><div class="skeleton-line w60"></div></div></td></tr>
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-wrap"><div class="skeleton-line w80"></div></div></td></tr>
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-wrap"><div class="skeleton-line w50"></div></div></td></tr>
+              <tr class="skeleton-row"><td colspan="10"><div class="skeleton-wrap"><div class="skeleton-line w60"></div></div></td></tr>
+              <tr class="skeleton-row"><td colspan="10"><div class="skeleton-wrap"><div class="skeleton-line w80"></div></div></td></tr>
+              <tr class="skeleton-row"><td colspan="10"><div class="skeleton-wrap"><div class="skeleton-line w50"></div></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -215,6 +222,71 @@
 </div>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ── Bulk Review Modal ── -->
+<div class="bulk-modal-overlay" id="bulkModalOverlay" style="display:none;">
+  <div class="bulk-modal">
+
+    <!-- Header -->
+    <div class="bulk-modal-header">
+      <div class="bulk-modal-header-left">
+        <div class="bulk-modal-icon"><i class="ti ti-file-check"></i></div>
+        <div>
+          <h2 class="bulk-modal-title" id="bulkModalTitle">Bulk Review — 0 Applications</h2>
+          <p class="bulk-modal-sub">Review and decide each application</p>
+        </div>
+      </div>
+      <button class="bulk-modal-close" onclick="closeBulkReview()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- Applicant tab strip -->
+    <div class="bulk-tab-strip" id="bulkTabStrip"></div>
+
+    <!-- Body -->
+    <div class="bulk-modal-body" id="bulkModalBody"></div>
+
+    <!-- Footer nav -->
+    <div class="bulk-modal-footer">
+      <div class="bulk-nav-btns">
+        <button class="bulk-nav-btn" id="bulkPrevBtn" onclick="bulkGoPrev()"><i class="ti ti-arrow-left"></i> Prev</button>
+        <span class="bulk-counter" id="bulkCounter">1 / 1</span>
+        <button class="bulk-nav-btn" id="bulkNextBtn" onclick="bulkGoNext()">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+      <div class="bulk-tally" id="bulkTally">0 approved · 0 rejected · 0 pending</div>
+      <div class="bulk-quick-actions">
+        <button class="bulk-quick-btn approve" onclick="confirmBulkApplyAll('approved')">
+          <i class="ti ti-checks"></i> Approve All
+        </button>
+        <button class="bulk-quick-btn reject" onclick="confirmBulkApplyAll('rejected')">
+          <i class="ti ti-ban"></i> Reject All
+        </button>
+      </div>
+    </div>
+
+    <!-- Submit bar -->
+    <div class="bulk-submit-bar">
+      <div class="bulk-progress-track"><div class="bulk-progress-fill" id="bulkProgressFill" style="width:0%"></div></div>
+      <button class="bulk-submit-btn" id="bulkSubmitBtn" onclick="submitBulkDecisions()" disabled>
+        Decide all applications to continue
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Bulk confirm popup ── -->
+<div class="bulk-confirm-overlay" id="bulkConfirmOverlay" style="display:none;">
+  <div class="bulk-confirm-box">
+    <div class="bulk-confirm-icon" id="bulkConfirmIcon"><i class="ti ti-alert-triangle"></i></div>
+    <div class="bulk-confirm-title" id="bulkConfirmTitle">Apply to all remaining?</div>
+    <div class="bulk-confirm-sub" id="bulkConfirmSub"></div>
+    <div class="bulk-confirm-actions">
+      <button class="bulk-confirm-cancel" onclick="closeBulkConfirm()">Cancel</button>
+      <button class="bulk-confirm-ok" id="bulkConfirmOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <script src="/static/assets/js/config.js"></script>
 <script src="/static/assets/js/nbfc-applications.js"></script>
 </body>

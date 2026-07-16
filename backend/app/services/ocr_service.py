@@ -545,22 +545,27 @@ def _tesseract_name_from_pan(image_bytes: bytes) -> str | None:
 
 _VALIDATE_PROMPT = {
     "aadhaar": """You are a KYC document validator for an Indian NBFC.
-Look at this image and decide if it is a genuine Indian Aadhaar card.
+    Look at this image and decide if it is a genuine Indian Aadhaar card.
 
-A genuine Aadhaar card must have:
-- "Aadhaar" text or UIDAI logo
-- A 12-digit Aadhaar number
-- A name and date of birth
-- QR code (usually bottom-left)
+    Validation rules:
+    - REQUIRED: A 12-digit Aadhaar number must be visible
+    - REQUIRED: A person's name must be visible
+    - OPTIONAL: UIDAI logo — do NOT reject if not clearly visible due to photo angle or lighting
+    - OPTIONAL: QR code — do NOT reject if missing or not visible
+    - OPTIONAL: Date of birth
 
-Return ONLY this JSON, no explanation:
-{
-  "is_valid": true or false,
-  "document_detected": "what this actually looks like",
-  "confidence": "HIGH / MEDIUM / LOW",
-  "rejection_reason": null or "short reason if invalid"
-}""",
+    Only reject if:
+    - The image is clearly NOT an Aadhaar card (e.g. PAN card, passport, blank paper)
+    - No Aadhaar number is visible at all
+    - The image is too blurry to read anything
 
+    Return ONLY this JSON, no explanation:
+    {
+      "is_valid": true or false,
+      "document_detected": "what this actually looks like",
+      "confidence": "HIGH / MEDIUM / LOW",
+      "rejection_reason": null or "short reason if invalid"
+    }""",
     "pan": """You are a KYC document validator for an Indian NBFC.
 Look at this image and decide if it is a genuine Indian PAN card.
 

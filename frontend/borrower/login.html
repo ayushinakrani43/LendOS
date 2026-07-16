@@ -8,12 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<link rel="stylesheet" href="/static/assets/css/borrower-login.css">
+  <link rel="stylesheet" href="/static/assets/css/borrower-login.css">
 </head>
 <body>
 <div class="page">
 
-  <!-- ── Topbar ── -->
   <header class="topbar">
     <a class="logo" href="/">
       <div class="logo-icon" id="topLogoIcon"><i class="ti ti-building-bank"></i></div>
@@ -32,7 +31,6 @@
 
   <div class="body-split">
 
-    <!-- ── Left Panel ── -->
     <aside class="left-panel">
       <div>
         <div class="badge">
@@ -49,53 +47,41 @@
         </p>
       </div>
 
-      <!-- SVG Illustration -->
       <div class="left-illustration">
         <svg width="260" height="230" viewBox="0 0 260 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Shadow -->
           <ellipse cx="130" cy="212" rx="90" ry="12" fill="rgba(42,128,153,0.08)"/>
-          <!-- Phone body -->
           <rect x="80" y="30" width="100" height="175" rx="16" fill="#daeef5"/>
           <rect x="84" y="34" width="92" height="167" rx="13" fill="white"/>
-          <!-- Screen content -->
           <rect x="92" y="55" width="76" height="8" rx="4" fill="#e6f4f8"/>
           <rect x="92" y="68" width="50" height="6" rx="3" fill="#b8e8f0"/>
-          <!-- Score circle -->
           <circle cx="130" cy="115" r="32" fill="#e6f4f8" stroke="#b8e8f0" stroke-width="2"/>
           <circle cx="130" cy="115" r="32" fill="none" stroke="#3da8c0" stroke-width="3" stroke-dasharray="140 60" stroke-linecap="round" transform="rotate(-90 130 115)"/>
           <text x="130" y="111" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="16" font-weight="700" fill="#1b5068">742</text>
           <text x="130" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#7a9aaa">SCORE</text>
-          <!-- Bottom bars -->
           <rect x="92" y="158" width="40" height="5" rx="2.5" fill="#e6f4f8"/>
           <rect x="136" y="158" width="32" height="5" rx="2.5" fill="#3da8c0" opacity="0.5"/>
           <rect x="92" y="168" width="60" height="5" rx="2.5" fill="#e6f4f8"/>
           <rect x="156" y="168" width="12" height="5" rx="2.5" fill="#3da8c0" opacity="0.3"/>
-          <!-- Check badge -->
           <circle cx="195" cy="65" r="22" fill="#e6f4f8" stroke="#b8e8f0" stroke-width="1.5"/>
           <circle cx="195" cy="65" r="14" fill="#3da8c0" opacity="0.8"/>
           <path d="M189 65 L193 69 L201 61" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Floating rupee coin -->
           <circle cx="68" cy="100" r="18" fill="#e6f4f8" stroke="#b8e8f0" stroke-width="1.5"/>
           <text x="68" y="106" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#2a8099">₹</text>
-          <!-- Floating dots -->
           <circle cx="200" cy="150" r="5" fill="#3da8c0" opacity="0.25"/>
           <circle cx="210" cy="168" r="3" fill="#3da8c0" opacity="0.2"/>
           <circle cx="60" cy="140" r="4" fill="#3da8c0" opacity="0.2"/>
         </svg>
       </div>
 
-      <!-- Trust strip -->
       <div class="left-bottom">
         <div class="left-trust-item"><i class="ti ti-lock"></i> 256-bit SSL Secured</div>
         <div class="left-trust-item"><i class="ti ti-shield-check"></i> Aadhaar verified KYC</div>
       </div>
     </aside>
 
-    <!-- ── Right Panel ── -->
     <main class="right-panel">
       <div class="form-card">
 
-        <!-- Card header -->
         <div class="card-header">
           <div class="card-header-icon" id="cardHeaderIcon">
             <i class="ti ti-user-plus"></i>
@@ -106,52 +92,43 @@
           </div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
           <div class="tab active" id="tab-register" onclick="switchTab('register')">New registration</div>
           <div class="tab" id="tab-login" onclick="switchTab('login')">Sign in</div>
         </div>
 
-        <!-- ══ REGISTER FORM ══ -->
         <div id="panel-register">
           <div class="card-body">
 
-            <!-- Step bars — 3 steps -->
             <div class="step-bar-row">
               <div class="step-bar active" id="bar1"></div>
               <div class="step-bar" id="bar2"></div>
               <div class="step-bar" id="bar3"></div>
             </div>
-      <div class="step-meta" id="step-meta"><span>Step 1 / 3</span> — Account setup</div>
-
+            <div class="step-meta" id="step-meta"><span>Step 1 / 3</span> — Account setup</div>
             <div id="alert-reg" class="alert error"></div>
 
-            <!-- ── Step 1: Personal details + Password ── -->
             <div class="step-section active" id="step1">
-
               <div class="section-label">Personal Information</div>
-
-           <div class="form-group">
-  <label class="form-label">Mobile Number *</label>
-  <div class="phone-wrap">
-    <div class="phone-prefix"><i class="ti ti-phone" style="font-size:12px;"></i>&nbsp;+91</div>
-    <input class="form-control" type="tel" id="mobile" placeholder="9876543210" maxlength="10" inputmode="numeric"
-      oninput="this.value=this.value.replace(/\D/g,'').slice(0,10);debouncedMobile(this)"/>
-  </div>
-  <div class="err-msg" id="e_mobile">Enter a valid 10-digit mobile number</div>
-</div>
+              <div class="form-group">
+                <label class="form-label">Mobile Number *</label>
+                <div class="phone-wrap">
+                  <div class="phone-prefix"><i class="ti ti-phone" style="font-size:12px;"></i>&nbsp;+91</div>
+                  <input class="form-control" type="tel" id="mobile" placeholder="9876543210" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10);debouncedMobile(this)"/>
+                </div>
+                <div class="err-msg" id="e_mobile">Enter a valid 10-digit mobile number</div>
+              </div>
 
               <div class="form-group">
                 <label class="form-label">Email Address *</label>
                 <div class="input-wrap">
                   <i class="ti ti-mail input-icon"></i>
-                  <input class="form-control has-icon" type="email" id="email" placeholder="rahul@email.com"
-                    autocomplete="email" oninput="debouncedEmail(this)"/>
+                  <input class="form-control has-icon" type="email" id="email" placeholder="rahul@email.com" autocomplete="email" oninput="debouncedEmail(this)"/>
                 </div>
                 <div class="err-msg" id="e_email">Enter a valid email address</div>
               </div>
 
-                <div class="form-group">
+              <div class="form-group">
                 <label class="form-label">Employment Type *</label>
                 <div class="input-wrap">
                   <i class="ti ti-briefcase input-icon"></i>
@@ -170,8 +147,7 @@
               <div class="form-group">
                 <label class="form-label">Password *</label>
                 <div class="pw-wrap">
-                  <input class="form-control" type="password" id="password" placeholder="Minimum 8 characters"
-                    autocomplete="new-password" style="padding-right:40px;" oninput="checkStr(this.value)"/>
+                  <input class="form-control" type="password" id="password" placeholder="Minimum 8 characters" autocomplete="new-password" style="padding-right:40px;" oninput="checkStr(this.value)"/>
                   <button class="pw-toggle" type="button" onclick="togglePw('password',this)"><i class="ti ti-eye"></i></button>
                 </div>
                 <div class="pw-strength">
@@ -187,8 +163,7 @@
               <div class="form-group">
                 <label class="form-label">Confirm Password *</label>
                 <div class="pw-wrap">
-                  <input class="form-control" type="password" id="confirm_password" placeholder="Re-enter password"
-                    autocomplete="new-password" style="padding-right:40px;"/>
+                  <input class="form-control" type="password" id="confirm_password" placeholder="Re-enter password" autocomplete="new-password" style="padding-right:40px;"/>
                   <button class="pw-toggle" type="button" onclick="togglePw('confirm_password',this)"><i class="ti ti-eye"></i></button>
                 </div>
                 <div class="err-msg" id="e_confirm_password">Passwords do not match</div>
@@ -202,165 +177,133 @@
               <button class="btn-primary" onclick="goStep2()" style="margin-top:4px;">
                 Continue <i class="ti ti-arrow-right" style="font-size:15px;"></i>
               </button>
-
             </div>
 
-         <!-- ── Step 2: Document Upload ── -->
-<div class="step-section" id="step2">
+            <div class="step-section" id="step2">
+              <div class="kyc-info">
+                <i class="ti ti-scan"></i>
+                <p>Upload your Aadhaar and PAN card photos. We'll automatically extract and fill your details in the next step.</p>
+              </div>
+              <div class="section-label">Upload Documents</div>
+              <div class="form-group">
+                <label class="form-label">Aadhaar Card Photo *</label>
+                <div class="doc-upload-box" id="aadhaar-upload-box" onclick="document.getElementById('aadhaar-file-input').click()">
+                  <div class="doc-upload-idle" id="aadhaar-idle">
+                    <i class="ti ti-id-badge" style="font-size:28px;color:var(--teal-300);"></i>
+                    <div class="doc-upload-title">Click to upload Aadhaar card</div>
+                    <div class="doc-upload-sub">Front side · PNG or JPG · Max 5MB</div>
+                  </div>
+                  <img id="aadhaar-preview" style="display:none;width:100%;max-height:140px;object-fit:contain;border-radius:var(--radius-md);" alt="Aadhaar preview"/>
+                  <div class="doc-upload-done" id="aadhaar-done" style="display:none;">
+                    <i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i>
+                    <span id="aadhaar-filename"></span>
+                  </div>
+                </div>
+                <input type="file" id="aadhaar-file-input" accept="image/png,image/jpeg,image/jpg" style="display:none;" onchange="handleDocUpload(this,'aadhaar')"/>
+                <div class="err-msg" id="e_aadhaar_upload">Please upload your Aadhaar card photo</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">PAN Card Photo *</label>
+                <div class="doc-upload-box" id="pan-upload-box" onclick="document.getElementById('pan-file-input').click()">
+                  <div class="doc-upload-idle" id="pan-idle">
+                    <i class="ti ti-credit-card" style="font-size:28px;color:var(--teal-300);"></i>
+                    <div class="doc-upload-title">Click to upload PAN card</div>
+                    <div class="doc-upload-sub">Clear front photo · PNG or JPG · Max 5MB</div>
+                  </div>
+                  <img id="pan-preview" style="display:none;width:100%;max-height:140px;object-fit:contain;border-radius:var(--radius-md);" alt="PAN preview"/>
+                  <div class="doc-upload-done" id="pan-done" style="display:none;">
+                    <i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i>
+                    <span id="pan-filename"></span>
+                  </div>
+                </div>
+                <input type="file" id="pan-file-input" accept="image/png,image/jpeg,image/jpg" style="display:none;" onchange="handleDocUpload(this,'pan')"/>
+                <div class="err-msg" id="e_pan_upload">Please upload your PAN card photo</div>
+              </div>
+              <div id="ocr-status" style="display:none;" class="kyc-info">
+                <div class="spinner-teal"></div>
+                <p id="ocr-status-text">Reading documents… please wait</p>
+              </div>
+              <div id="alert-upload" class="alert error"></div>
+              <div class="btn-row" style="margin-top:4px;">
+                <button class="btn-outline" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Back</button>
+                <button class="btn-primary" id="btn-scan" onclick="runOCRAndNext()">
+                  Scan & Continue <i class="ti ti-arrow-right" style="font-size:15px;"></i>
+                </button>
+              </div>
+            </div>
 
-  <div class="kyc-info">
-    <i class="ti ti-scan"></i>
-    <p>Upload your Aadhaar and PAN card photos. We'll automatically extract and fill your details in the next step.</p>
-  </div>
+            <div class="step-section" id="step3">
+              <div class="kyc-info" style="background:var(--success-bg);border-color:var(--success-border);">
+                <i class="ti ti-circle-check" style="color:var(--success);"></i>
+                <p style="color:#1a6b4a;">Documents scanned successfully! Please review and correct the details below if needed.</p>
+              </div>
+              <div class="section-label">Personal Details</div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Full Name *</label>
+                  <div class="input-wrap">
+                    <i class="ti ti-user input-icon"></i>
+                    <input class="form-control has-icon" type="text" id="full_name" placeholder="As on Aadhaar card"/>
+                  </div>
+                  <div class="err-msg" id="e_full_name">Please enter your full name</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Date of Birth *</label>
+                  <div class="input-wrap">
+                    <i class="ti ti-calendar input-icon"></i>
+                    <input class="form-control has-icon" type="text" id="date_of_birth" placeholder="DD/MM/YYYY" maxlength="10"/>
+                  </div>
+                  <div class="err-msg" id="e_date_of_birth">Enter valid date of birth</div>
+                </div>
+              </div>
+              <div class="fg-2">
+                <div class="form-group">
+                  <label class="form-label">Gender *</label>
+                  <select class="form-control" id="gender">
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div class="err-msg" id="e_gender">Please select gender</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Aadhaar Number *</label>
+                  <div class="input-wrap">
+                    <i class="ti ti-id-badge input-icon"></i>
+                    <input class="form-control has-icon" type="text" id="aadhaar_number" placeholder="1234 5678 9012" maxlength="14" inputmode="numeric" oninput="fmtAadhaar(this)"/>
+                  </div>
+                  <div class="err-msg" id="e_aadhaar_number">Enter valid 12-digit Aadhaar number</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">PAN Number *</label>
+                <div class="input-wrap">
+                  <i class="ti ti-credit-card input-icon"></i>
+                  <input class="form-control has-icon" type="text" id="pan_number" placeholder="ABCDE1234F" maxlength="10" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10)"/>
+                </div>
+                <div class="err-msg" id="e_pan_number">Enter valid PAN number</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Address</label>
+                <div class="input-wrap">
+                  <i class="ti ti-map-pin input-icon"></i>
+                  <input class="form-control has-icon" type="text" id="address" placeholder="Address as on Aadhaar card"/>
+                </div>
+              </div>
+              <div id="alert-submit" class="alert error"></div>
+              <div class="btn-row">
+                <button class="btn-outline" onclick="goStep(2)"><i class="ti ti-arrow-left"></i> Back</button>
+                <button class="btn-primary" id="btn-register" onclick="submitRegister()">
+                  Create account <i class="ti ti-arrow-right" style="font-size:15px;"></i>
+                </button>
+              </div>
+            </div>
 
-  <div class="section-label">Upload Documents</div>
-
-  <!-- Aadhaar upload -->
-  <div class="form-group">
-    <label class="form-label">Aadhaar Card Photo *</label>
-    <div class="doc-upload-box" id="aadhaar-upload-box"
-         onclick="document.getElementById('aadhaar-file-input').click()">
-      <div class="doc-upload-idle" id="aadhaar-idle">
-        <i class="ti ti-id-badge" style="font-size:28px;color:var(--teal-300);"></i>
-        <div class="doc-upload-title">Click to upload Aadhaar card</div>
-        <div class="doc-upload-sub">Front side · PNG or JPG · Max 5MB</div>
-      </div>
-      <img id="aadhaar-preview" style="display:none;width:100%;max-height:140px;object-fit:contain;border-radius:var(--radius-md);" alt="Aadhaar preview"/>
-      <div class="doc-upload-done" id="aadhaar-done" style="display:none;">
-        <i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i>
-        <span id="aadhaar-filename"></span>
-      </div>
-    </div>
-    <input type="file" id="aadhaar-file-input" accept="image/png,image/jpeg,image/jpg" style="display:none;"
-           onchange="handleDocUpload(this,'aadhaar')"/>
-    <div class="err-msg" id="e_aadhaar_upload">Please upload your Aadhaar card photo</div>
-  </div>
-
-  <!-- PAN upload -->
-  <div class="form-group">
-    <label class="form-label">PAN Card Photo *</label>
-    <div class="doc-upload-box" id="pan-upload-box"
-         onclick="document.getElementById('pan-file-input').click()">
-      <div class="doc-upload-idle" id="pan-idle">
-        <i class="ti ti-credit-card" style="font-size:28px;color:var(--teal-300);"></i>
-        <div class="doc-upload-title">Click to upload PAN card</div>
-        <div class="doc-upload-sub">Clear front photo · PNG or JPG · Max 5MB</div>
-      </div>
-      <img id="pan-preview" style="display:none;width:100%;max-height:140px;object-fit:contain;border-radius:var(--radius-md);" alt="PAN preview"/>
-      <div class="doc-upload-done" id="pan-done" style="display:none;">
-        <i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i>
-        <span id="pan-filename"></span>
-      </div>
-    </div>
-    <input type="file" id="pan-file-input" accept="image/png,image/jpeg,image/jpg" style="display:none;"
-           onchange="handleDocUpload(this,'pan')"/>
-    <div class="err-msg" id="e_pan_upload">Please upload your PAN card photo</div>
-  </div>
-
-  <!-- OCR scanning status -->
-  <div id="ocr-status" style="display:none;" class="kyc-info">
-    <div class="spinner-teal"></div>
-    <p id="ocr-status-text">Reading documents… please wait</p>
-  </div>
-
-  <div id="alert-upload" class="alert error"></div>
-
-  <div class="btn-row" style="margin-top:4px;">
-    <button class="btn-outline" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Back</button>
-    <button class="btn-primary" id="btn-scan" onclick="runOCRAndNext()">
-      Scan & Continue <i class="ti ti-arrow-right" style="font-size:15px;"></i>
-    </button>
-  </div>
-
-</div>
-
-<!-- ── Step 3: Confirm Details (auto-filled from OCR) ── -->
-<div class="step-section" id="step3">
-
-  <div class="kyc-info" style="background:var(--success-bg);border-color:var(--success-border);">
-    <i class="ti ti-circle-check" style="color:var(--success);"></i>
-    <p style="color:#1a6b4a;">Documents scanned successfully! Please review and correct the details below if needed.</p>
-  </div>
-
-  <div class="section-label">Personal Details</div>
-
-  <div class="fg-2">
-    <div class="form-group">
-      <label class="form-label">Full Name *</label>
-      <div class="input-wrap">
-        <i class="ti ti-user input-icon"></i>
-        <input class="form-control has-icon" type="text" id="full_name" placeholder="As on Aadhaar card"/>
-      </div>
-      <div class="err-msg" id="e_full_name">Please enter your full name</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Date of Birth *</label>
-      <div class="input-wrap">
-        <i class="ti ti-calendar input-icon"></i>
-        <input class="form-control has-icon" type="text" id="date_of_birth" placeholder="DD/MM/YYYY" maxlength="10"/>
-      </div>
-      <div class="err-msg" id="e_date_of_birth">Enter valid date of birth</div>
-    </div>
-  </div>
-
-  <div class="fg-2">
-    <div class="form-group">
-      <label class="form-label">Gender *</label>
-      <select class="form-control" id="gender">
-        <option value="">Select gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <div class="err-msg" id="e_gender">Please select gender</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Aadhaar Number *</label>
-      <div class="input-wrap">
-        <i class="ti ti-id-badge input-icon"></i>
-        <input class="form-control has-icon" type="text" id="aadhaar_number"
-          placeholder="1234 5678 9012" maxlength="14" inputmode="numeric"
-          oninput="fmtAadhaar(this)"/>
-      </div>
-      <div class="err-msg" id="e_aadhaar_number">Enter valid 12-digit Aadhaar number</div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="form-label">PAN Number *</label>
-    <div class="input-wrap">
-      <i class="ti ti-credit-card input-icon"></i>
-      <input class="form-control has-icon" type="text" id="pan_number"
-        placeholder="ABCDE1234F" maxlength="10"
-        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10)"/>
-    </div>
-    <div class="err-msg" id="e_pan_number">Enter valid PAN number</div>
-  </div>
-
-  <div class="form-group">
-    <label class="form-label">Address</label>
-    <div class="input-wrap">
-      <i class="ti ti-map-pin input-icon"></i>
-      <input class="form-control has-icon" type="text" id="address" placeholder="Address as on Aadhaar card"/>
-    </div>
-  </div>
-
-  <div id="alert-submit" class="alert error"></div>
-
-  <div class="btn-row">
-    <button class="btn-outline" onclick="goStep(2)"><i class="ti ti-arrow-left"></i> Back</button>
-    <button class="btn-primary" id="btn-register" onclick="submitRegister()">
-      Create account <i class="ti ti-arrow-right" style="font-size:15px;"></i>
-    </button>
-  </div>
-
-</div>
-
-            <!-- ── Success ── -->
             <div class="success-screen" id="success-screen">
               <div class="success-icon"><i class="ti ti-check"></i></div>
               <h3>Account created!</h3>
-             <p id="success-msg">Your account is ready. Redirecting to your dashboard…</p>
+              <p id="success-msg">Your account is ready. Redirecting to your dashboard…</p>
               <button class="btn-primary" style="max-width:240px;margin:0 auto;" onclick="redirectAfterAuth()">
                 Continue <i class="ti ti-arrow-right"></i>
               </button>
@@ -369,14 +312,11 @@
             <div class="form-footer" id="register-signin-link">
               Already have an account? <a href="#" onclick="switchTab('login');return false;">Sign in</a>
             </div>
-
           </div>
         </div>
 
-        <!-- ══ LOGIN FORM ══ -->
         <div id="panel-login" style="display:none;">
           <div class="card-body">
-
             <div id="alert-login" class="alert error"></div>
             <div id="alert-login-ok" class="alert success"></div>
 
@@ -384,9 +324,7 @@
               <label class="form-label">Email Address</label>
               <div class="input-wrap">
                 <i class="ti ti-mail input-icon"></i>
-                <input class="form-control has-icon" type="email" id="login_email"
-                  placeholder="rahul@email.com" autocomplete="email"
-                  onkeydown="if(event.key==='Enter')submitLogin()"/>
+                <input class="form-control has-icon" type="email" id="login_email" placeholder="rahul@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')submitLogin()"/>
               </div>
               <div class="err-msg" id="e_login_email">Enter a valid email</div>
             </div>
@@ -394,16 +332,14 @@
             <div class="form-group">
               <label class="form-label">Password</label>
               <div class="pw-wrap">
-                <input class="form-control" type="password" id="login_password"
-                  placeholder="Your password" style="padding-right:40px;"
-                  onkeydown="if(event.key==='Enter')submitLogin()"/>
+                <input class="form-control" type="password" id="login_password" placeholder="Your password" style="padding-right:40px;" onkeydown="if(event.key==='Enter')submitLogin()"/>
                 <button class="pw-toggle" type="button" onclick="togglePw('login_password',this)"><i class="ti ti-eye"></i></button>
               </div>
               <div class="err-msg" id="e_login_password">Enter your password</div>
             </div>
 
             <div style="display:flex;justify-content:flex-end;margin:-8px 0 18px;">
-              <a href="#" style="font-size:12.5px;color:var(--teal-600);text-decoration:none;font-weight:500;">Forgot password?</a>
+              <a href="#" onclick="showForgotPassword();return false;" style="font-size:12.5px;color:var(--teal-600);text-decoration:none;font-weight:500;">Forgot password?</a>
             </div>
 
             <button class="btn-primary" id="btn-login" onclick="submitLogin()">
@@ -413,11 +349,69 @@
             <div class="form-footer" style="margin-top:16px;">
               New to LendOS? <a href="#" onclick="switchTab('register');return false;">Create account →</a>
             </div>
-
           </div>
         </div>
 
-        <!-- ── Card footer ── -->
+        <div id="panel-forgot" style="display:none;">
+          <div class="card-body">
+
+            <div id="alert-forgot" class="alert error"></div>
+            <div id="alert-forgot-ok" class="alert success"></div>
+
+            <div id="forgot-step-1">
+              <p style="font-size:13.5px;color:#475569;margin-bottom:16px;">Enter your registered email address to receive a password reset OTP.</p>
+
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="input-wrap">
+                  <i class="ti ti-mail input-icon"></i>
+                  <input class="form-control has-icon" type="email" id="forgot_email_input" placeholder="rahul@email.com"/>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-send-otp" onclick="requestResetOtp()">
+                Send OTP <i class="ti ti-arrow-right" style="font-size:15px;"></i>
+              </button>
+            </div>
+
+            <div id="forgot-step-2" style="display:none;">
+              <p style="font-size:13.5px;color:#475569;margin-bottom:16px;">We've sent a 6-digit OTP to your email. Enter it below to reset your password.</p>
+
+              <div class="form-group">
+                <label class="form-label">OTP</label>
+                <div class="input-wrap">
+                  <i class="ti ti-lock input-icon"></i>
+                  <input class="form-control has-icon" type="text" id="forgot_otp_input" placeholder="123456" maxlength="6" style="letter-spacing:4px;font-weight:bold;"/>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <div class="pw-wrap">
+                  <input class="form-control" type="password" id="forgot_new_password" placeholder="Minimum 8 characters"/>
+                  <button class="pw-toggle" type="button" onclick="togglePw('forgot_new_password',this)"><i class="ti ti-eye"></i></button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <div class="pw-wrap">
+                  <input class="form-control" type="password" id="forgot_confirm_password" placeholder="Re-enter password"/>
+                  <button class="pw-toggle" type="button" onclick="togglePw('forgot_confirm_password',this)"><i class="ti ti-eye"></i></button>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-reset-pw" onclick="submitNewPassword()">
+                Reset Password <i class="ti ti-check" style="font-size:15px;"></i>
+              </button>
+            </div>
+
+            <div class="form-footer" style="margin-top:16px;">
+              Remembered your password? <a href="#" onclick="switchTab('login');return false;">Sign in →</a>
+            </div>
+          </div>
+        </div>
+
         <div class="card-footer">
           <div class="trust-item"><i class="ti ti-lock"></i> 256-bit encrypted</div>
           <div class="trust-item"><i class="ti ti-shield-check"></i> Aadhaar verified</div>
@@ -425,18 +419,149 @@
           <div class="trust-item"><i class="ti ti-headset"></i> 24/7 support</div>
         </div>
 
-      </div><!-- /form-card -->
-    </main>
-
-  </div><!-- /body-split -->
-</div><!-- /page -->
-
-<script src="/static/assets/js/config.js"></script>
+      </div></main>
+  </div></div><script src="/static/assets/js/config.js"></script>
 <script src="/static/assets/js/api.js"></script>
 <script src="/static/assets/js/auth.js"></script>
 <script src="/static/assets/js/utils.js"></script>
-
 <script src="/static/assets/js/borrower-login.js?v=2"></script>
-</body>
 
+<script>
+  function showForgotPassword() {
+    document.getElementById('panel-register').style.display = 'none';
+    document.getElementById('panel-login').style.display = 'none';
+    document.getElementById('panel-forgot').style.display = 'block';
+
+    // Update headers
+    document.getElementById('cardHeaderTitle').innerText = 'Reset Password';
+    document.getElementById('cardHeaderSub').innerText = 'Recover access to your account';
+    document.getElementById('cardHeaderIcon').innerHTML = '<i class="ti ti-lock-exclamation"></i>';
+
+    // Clear previous states
+    document.getElementById('forgot-step-1').style.display = 'block';
+    document.getElementById('forgot-step-2').style.display = 'none';
+    document.getElementById('alert-forgot').style.display = 'none';
+    document.getElementById('alert-forgot-ok').style.display = 'none';
+  }
+
+  // Hook into existing switchTab to make sure our panel hides appropriately
+  const originalSwitchTab = window.switchTab;
+  window.switchTab = function(tabId) {
+    if(document.getElementById('panel-forgot')) {
+      document.getElementById('panel-forgot').style.display = 'none';
+    }
+    if (typeof originalSwitchTab === 'function') {
+      originalSwitchTab(tabId);
+    }
+  };
+
+  async function requestResetOtp() {
+    const email = document.getElementById('forgot_email_input').value.trim();
+    const alertErr = document.getElementById('alert-forgot');
+    const alertOk = document.getElementById('alert-forgot-ok');
+
+    alertErr.style.display = 'none';
+    alertOk.style.display = 'none';
+
+    if (!email) {
+      alertErr.innerText = 'Please enter your email address.';
+      alertErr.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('btn-send-otp');
+    btn.innerHTML = '<div class="spinner-border" style="width:1rem;height:1rem;"></div> Sending...';
+    btn.disabled = true;
+
+    try {
+      // IMPLEMENTATION NOTE: Replace '/api/auth/forgot-password' with your actual backend route
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send OTP. Please check your email address.');
+      }
+
+      // Success
+      alertOk.innerText = 'OTP sent to your email.';
+      alertOk.style.display = 'block';
+
+      // Move to Step 2
+      document.getElementById('forgot-step-1').style.display = 'none';
+      document.getElementById('forgot-step-2').style.display = 'block';
+
+    } catch (error) {
+      alertErr.innerText = error.message;
+      alertErr.style.display = 'block';
+    } finally {
+      btn.innerHTML = 'Send OTP <i class="ti ti-arrow-right" style="font-size:15px;"></i>';
+      btn.disabled = false;
+    }
+  }
+
+  async function submitNewPassword() {
+    const email = document.getElementById('forgot_email_input').value.trim();
+    const otp = document.getElementById('forgot_otp_input').value.trim();
+    const newPass = document.getElementById('forgot_new_password').value;
+    const confirmPass = document.getElementById('forgot_confirm_password').value;
+
+    const alertErr = document.getElementById('alert-forgot');
+    const alertOk = document.getElementById('alert-forgot-ok');
+
+    alertErr.style.display = 'none';
+
+    if (!otp || otp.length !== 6) {
+      alertErr.innerText = 'Please enter a valid 6-digit OTP.';
+      alertErr.style.display = 'block';
+      return;
+    }
+    if (newPass.length < 8) {
+      alertErr.innerText = 'Password must be at least 8 characters.';
+      alertErr.style.display = 'block';
+      return;
+    }
+    if (newPass !== confirmPass) {
+      alertErr.innerText = 'Passwords do not match.';
+      alertErr.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('btn-reset-pw');
+    btn.innerHTML = '<div class="spinner-border" style="width:1rem;height:1rem;"></div> Resetting...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, otp: otp, new_password: newPass })
+      });
+
+      if (!response.ok) {
+        // Read the actual error message sent by FastAPI
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to reset password.');
+      }
+
+      // Success
+      alertOk.innerText = 'Password reset successful! You can now sign in.';
+      alertOk.style.display = 'block';
+
+      setTimeout(() => {
+        switchTab('login');
+      }, 2000);
+
+    } catch (error) {
+      alertErr.innerText = error.message;
+      alertErr.style.display = 'block';
+    } finally {
+      btn.innerHTML = 'Reset Password <i class="ti ti-check" style="font-size:15px;"></i>';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
 </html>

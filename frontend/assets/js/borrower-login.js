@@ -165,6 +165,16 @@ function handleDocUpload(input, type) {
   reader.readAsDataURL(file);
 }
 
+function namesMatchClient(nameA, nameB, threshold = 0.5) {
+  if (!nameA || !nameB) return false;
+  const wordsA = new Set(nameA.trim().toUpperCase().split(/\s+/));
+  const wordsB = new Set(nameB.trim().toUpperCase().split(/\s+/));
+  if (wordsA.size === 0) return false;
+  let matched = 0;
+  wordsA.forEach(w => { if (wordsB.has(w)) matched++; });
+  return (matched / wordsA.size) >= threshold;
+}
+
 // ── Run OCR and go to step 3 ──────────────────────────────────────────────────
 async function runOCRAndNext() {
   clearErrs(['aadhaar_upload','pan_upload']);
@@ -241,8 +251,25 @@ console.log('address field:', document.getElementById('address').value);
         setErr('aadhaar_upload', true, 'Could not read Aadhaar number. Please upload a clearer photo of your Aadhaar card front side.');
         return;
     }
-    if (!pData.pan_number) {
+//    if (!pData.pan_number) {
+//        setErr('pan_upload', true, 'Could not read PAN number. Please upload a clearer photo of your PAN card.');
+//        return;
+//    }
+//
+//    goStep(3);
+
+if (!pData.pan_number) {
         setErr('pan_upload', true, 'Could not read PAN number. Please upload a clearer photo of your PAN card.');
+        return;
+    }
+
+    // ── Cross-check: do the Aadhaar and PAN belong to the same person? ──────
+    if (aData.name && pData.name && !namesMatchClient(aData.name, pData.name)) {
+        status.style.display = 'none';
+        setErr('pan_upload', true,
+            `The name on your PAN card ("${pData.name}") doesn't match the name on your Aadhaar card ("${aData.name}"). ` +
+            `Please make sure both documents belong to you and re-upload if needed.`
+        );
         return;
     }
 
